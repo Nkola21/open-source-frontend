@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { OpenService } from 'src/app/shared/services/open.service';
+import { Plan } from './../plans.model';
+
 
 @Component({
   selector: 'app-plan-view',
@@ -6,10 +10,28 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./plan-view.component.css']
 })
 export class PlanViewComponent implements OnInit {
-
-  constructor() { }
+  plan: Plan;
+  constructor(public openService: OpenService,
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.route.params.subscribe(
+      (params) => {
+        const id = +params['id'];
+        this.initPlan(id);
+      }
+    )
   }
 
+  initPlan(plan_id: number) {
+    this.openService.getUrl(`plans/${plan_id}`)
+    .subscribe(
+      (plan: Plan) => {
+        console.log(plan);
+        this.plan = plan;
+      },
+      error => {
+        console.log("error occured.");
+      });
+  }
 }

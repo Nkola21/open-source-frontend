@@ -85,10 +85,9 @@ export class ParlourListComponent implements OnInit {
     this.loadingState = 'loading';
     this.dataSource = new ParlourDataSource([], this.page);
 
-    this.openService.getUrl(`parlour/`)
+    this.openService.getUrl(`parlours/`)
       .subscribe(
         (parlours: Array<any>) => {
-          console.log(parlours);
           this.parlours = parlours;
           this.configureParlours(parlours);
           this.loadingState = 'complete';

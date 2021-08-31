@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PolicyFormComponent } from './policy-form.component';
+import { DependantListComponent } from './dependant-list.component';
 
-describe('PolicyFormComponent', () => {
-  let component: PolicyFormComponent;
-  let fixture: ComponentFixture<PolicyFormComponent>;
+describe('MainMembersComponent', () => {
+  let component: DependantListComponent;
+  let fixture: ComponentFixture<DependantListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PolicyFormComponent ]
+      declarations: [ DependantListComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PolicyFormComponent);
+    fixture = TestBed.createComponent(DependantListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

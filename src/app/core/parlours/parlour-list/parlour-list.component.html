@@ -57,8 +57,8 @@
               <ng-container matColumnDef="actions">
                 <th style="width: 330px;" mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let parlour">
-                  <button mat-button class="citiq-button" (click)="navigateToPalourView(parlour)">VIEW</button>
-                  <button mat-button class="citiq-button" (click)="navigateToPalourForm(parlour)">EDIT</button>
+                  <button class="btn btn-danger btn-sm m-2" (click)="navigateToPalourView(parlour)">VIEW</button>
+                  <button class="btn btn-danger btn-sm m-2" (click)="navigateToPalourForm(parlour)">EDIT</button>
                 </td>
               </ng-container>
 

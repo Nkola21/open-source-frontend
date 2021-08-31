@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OpenService } from 'src/app/shared/services/open.service';
-import { Parlour } from './../parlours.models';
+import { Consultant } from './../consultants.models';
 
 @Component({
-  selector: 'app-parlour-view',
-  templateUrl: './parlour-view.component.html',
-  styleUrls: ['./parlour-view.component.css']
+  selector: 'app-consultant-view',
+  templateUrl: './consultant-view.component.html',
+  styleUrls: ['./consultant-view.component.css']
 })
-export class ParlourViewComponent implements OnInit {
-  parlour:Parlour;
+export class ConsultantViewComponent implements OnInit {
+  consultant: Consultant;
 
   constructor(
     public openService: OpenService,
-    private route: ActivatedRoute,) { }
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(
@@ -24,12 +24,11 @@ export class ParlourViewComponent implements OnInit {
     )
   }
 
-  initParlour(parlour_id: number) {
-    this.openService.getUrl(`parlours/${parlour_id}`)
+  initParlour(consultant_id: number) {
+    this.openService.getUrl(`consultants/${consultant_id}`)
     .subscribe(
-      (parlour: Parlour) => {
-        console.log(parlour);
-        this.parlour = parlour;
+      (consultant: Consultant) => {
+        this.consultant = consultant;
       },
       error => {
         console.log("error occured.");

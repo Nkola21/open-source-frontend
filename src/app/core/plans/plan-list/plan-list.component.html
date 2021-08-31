@@ -32,35 +32,42 @@
                   showFirstLastButtons
                   ></mat-paginator>
               <table mat-table #table [dataSource]="dataSource" class="table" style="width: 100%">
-                <ng-container matColumnDef="id">
-                    <th style="padding-right: 35px;" mat-header-cell *matHeaderCellDef> ID</th>
-                    <td style="padding-right: 35px;" mat-cell *matCellDef="let plan"> {{plan.id}}
+                <ng-container matColumnDef="plan">
+                    <th style="padding-right: 35px;" mat-header-cell *matHeaderCellDef> Plan Name</th>
+                    <td style="padding-right: 35px;" mat-cell *matCellDef="let plan"> {{plan.plan}}
                     </td>
                 </ng-container>
-                <ng-container matColumnDef="parlour_name">
-                  <th style="padding-right: 35px;" mat-header-cell *matHeaderCellDef> Name</th>
-                  <td style="padding-right: 35px;" mat-cell *matCellDef="let plan"> {{plan.parlour_name}}
+                <ng-container matColumnDef="cover">
+                  <th style="padding-right: 35px;" mat-header-cell *matHeaderCellDef> Cover</th>
+                  <td style="padding-right: 35px;" mat-cell *matCellDef="let plan"> {{plan.cover}}
                   </td>
                 </ng-container>
   
-                <ng-container matColumnDef="person_name">
-                  <th style="padding-left: 40px; padding-right: 10px;" mat-header-cell *matHeaderCellDef> Contact Person</th>
+                <ng-container matColumnDef="premium">
+                  <th style="padding-left: 40px; padding-right: 10px;" mat-header-cell *matHeaderCellDef>Premium</th>
                   <td style="padding-left: 40px; padding-right: 10px;" mat-cell *matCellDef="let plan">
-                    {{plan.person_name}} </td>
+                    {{plan.premium}} </td>
                 </ng-container>
   
-                <ng-container matColumnDef="number">
-                  <th style="padding-left: 10px;" mat-header-cell *matHeaderCellDef>Contact Number</th>
+                <ng-container matColumnDef="beneficiaries">
+                  <th style="padding-left: 10px;" mat-header-cell *matHeaderCellDef>Benefiaries</th>
                   <td style="padding-left: 10px;" mat-cell *matCellDef="let plan">
-                    {{plan.number}}
+                    {{plan.benefiaries}}
                   </td>
                 </ng-container>
   
+                <ng-container matColumnDef="has_benefits">
+                  <th style="padding-left: 10px;" mat-header-cell *matHeaderCellDef>Has Benefits</th>
+                  <td style="padding-left: 10px;" mat-cell *matCellDef="let plan">
+                    {{plan.has_benefits}}
+                  </td>
+                </ng-container>
+
                 <ng-container matColumnDef="actions">
                   <th style="width: 330px;" mat-header-cell *matHeaderCellDef></th>
                   <td mat-cell *matCellDef="let plan">
-                    <button mat-button class="citiq-button" (click)="navigateToPlanView(plan)">VIEW</button>
-                    <button mat-button class="citiq-button" (click)="navigateToPlanForm(plan)">EDIT</button>
+                    <button class="btn btn-danger btn-sm m-2" (click)="navigateToPlanView(plan)">VIEW</button>
+                    <button class="btn btn-danger btn-sm" (click)="navigateToPlanForm(plan)">EDIT</button>
                   </td>
                 </ng-container>
   

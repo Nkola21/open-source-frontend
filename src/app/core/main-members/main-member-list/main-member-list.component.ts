@@ -48,7 +48,7 @@ const dialogConfig = new MatDialogConfig();
 })
 export class MainMemberListComponent implements OnInit {
 
-  displayedColumns = ['id', 'main_member_name', 'person_name', 'number', 'actions'];
+  displayedColumns = ['first_name', 'last_name', 'contact', 'date_joined', 'actions'];
   main_members: Array<any> = [];
   dataSource: any;
   page: any;
@@ -85,15 +85,16 @@ export class MainMemberListComponent implements OnInit {
     this.loadingState = 'loading';
     this.dataSource = new MainMemberDataSource([], this.page);
 
-    this.openService.getUrl(`main_member/`)
+    this.openService.getUrl(`main-members/`)
       .subscribe(
         (main_members: Array<any>) => {
+          console.log(main_members);          
           this.main_members = main_members;
           this.configureMainMembers(main_members);
           this.loadingState = 'complete';
         },
         error => {
-          console.log("error occured.");
+          console.log(error);
         });
   }
 

@@ -9,7 +9,7 @@ import { Observable, BehaviorSubject, merge } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { OpenService } from 'src/app/shared/services/open.service';
 
-export class PlanDataSource extends DataSource<any> {
+export class ConsultantDataSource extends DataSource<any> {
 
   /** Connect function called by the table to retrieve one stream containing the data to render. */
   dataChange: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
@@ -42,14 +42,14 @@ export class PlanDataSource extends DataSource<any> {
 const dialogConfig = new MatDialogConfig();
 
 @Component({
-  selector: 'app-plan-list',
-  templateUrl: './plan-list.component.html',
-  styleUrls: ['./plan-list.component.css']
+  selector: 'app-consultant-list',
+  templateUrl: './consultant-list.component.html',
+  styleUrls: ['./consultant-list.component.css']
 })
-export class PlanListComponent implements OnInit {
+export class ConsultantListComponent implements OnInit {
 
-  displayedColumns = ['plan', 'cover', 'premium', 'beneficiaries', "has_benefits", "actions"];
-  plans: Array<any> = [];
+  displayedColumns = ['full_name', 'number', 'branch', 'email', 'actions'];
+  consultants: Array<any> = [];
   dataSource: any;
   page: any;
   loadingState: any;
@@ -63,7 +63,7 @@ export class PlanListComponent implements OnInit {
     public router: Router) { }
 
   ngOnInit(): void {
-    this.initPlans();
+    this.initConsultants();
   }
 
   initializePaginator() {
@@ -72,25 +72,25 @@ export class PlanListComponent implements OnInit {
 
   onPaginatorChange(event: any) {
     this.page = event;
-    this.dataSource = new PlanDataSource(this.plans, this.page);
+    this.dataSource = new ConsultantDataSource(this.consultants, this.page);
   }
 
-  initPlans() {
-    this.plans = [];
+  initConsultants() {
+    this.consultants = [];
     this.page = {
       'pageSize': 5,
       'pageIndex': 0,
     };
 
     this.loadingState = 'loading';
-    this.dataSource = new PlanDataSource([], this.page);
+    this.dataSource = new ConsultantDataSource([], this.page);
 
-    this.openService.getUrl(`plans/`)
+    this.openService.getUrl(`consultants/`)
       .subscribe(
-        (plans: Array<any>) => {
-          console.log(plans)
-          this.plans = plans;
-          this.configurePlans(plans);
+        (consultants: Array<any>) => {
+          console.log(consultants);
+          this.consultants = consultants;
+          this.configureConsultants(consultants);
           this.loadingState = 'complete';
         },
         error => {
@@ -98,17 +98,17 @@ export class PlanListComponent implements OnInit {
         });
   }
 
-  configurePlans(plans: Array<any>): void {
-    this.tableSize = this.plans.length
-    this.dataSource = new MatTableDataSource(plans);
+  configureConsultants(consultants: Array<any>): void {
+    this.tableSize = this.consultants.length
+    this.dataSource = new MatTableDataSource(consultants);
     this.initializePaginator()
   }
 
-  navigateToPlanView(plan: any) {
-    this.router.navigate(['plans', plan.id,'view']);
+  navigateToConsultantView(consultant: any) {
+    this.router.navigate(['consultants', consultant.id,'view']);
   }
 
-  navigateToPlanForm(plan: any) {
-    this.router.navigate(['plans', plan.id,'form']);
+  navigateToConsultantForm(consultant: any) {
+    this.router.navigate(['consultants', consultant.id,'form']);
   }
 }

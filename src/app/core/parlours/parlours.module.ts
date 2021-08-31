@@ -8,7 +8,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ParlourFormComponent } from './parlour-form/parlour-form.component';
-
+import { PlansModule } from './../plans/plans.module';
 
 const ParlourRouting: ModuleWithProviders<ParloursModule> = RouterModule.forChild([
   {
@@ -36,7 +36,8 @@ const ParlourRouting: ModuleWithProviders<ParloursModule> = RouterModule.forChil
     MaterialModule,
     MatListModule,
     MatTooltipModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PlansModule
   ],
   declarations: [
     ParlourListComponent,

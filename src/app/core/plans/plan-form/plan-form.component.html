@@ -1,1 +1,52 @@
-<p>plan-form works!</p>
+<mat-card>
+    <mat-card-title class="mat-card-title-alt" fxLayout="row" fxLayoutAlign="center">
+        <h2 style="margin-left: auto;">Plan Form</h2>
+      </mat-card-title>
+      <mat-card-content>
+        <form style="margin-top: 2%">
+            <div class="mb-3 row" style="margin-bottom: 10%;">
+                <label for="plan" class="col-sm-2 col-form-label">Plan Name:</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="plan">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="cover" class="col-sm-2 col-form-label">Cover:</label>
+                <div class="col-sm-6">
+                <input type="text" class="form-control" id="cover">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="premium" class="col-sm-2 col-form-label">Premium</label>
+                <div class="col-sm-6">
+                <input type="text" class="form-control" id="premium">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="email1" class="col-sm-2 col-form-label">Email address:</label>
+                <div class="col-sm-6">
+                <input type="email" class="form-control" id="email1">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="member_age_restriction" class="col-sm-2 col-form-label">Member Age Restriction:</label>
+                <div class="col-sm-6">
+                <input type="password" class="form-control" id="member_age_restriction">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="member_minimum_age" class="col-sm-2 col-form-label">Member Minimum Age:</label>
+                <div class="col-sm-6">
+                <input type="password" class="form-control" id="member_minimum_age">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="member_maximum_age" class="col-sm-2 col-form-label">Member Maximum Age:</label>
+                <div class="col-sm-6">
+                <input type="password" class="form-control" id="member_maximum_age">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </mat-card-content>
+</mat-card>

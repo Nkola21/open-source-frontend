@@ -1,5 +1,22 @@
 <div class="main">
   <mat-card class="line-top">
+    <mat-card-header class="justify-content-center">
+      <button type="button" [routerLink]="['/parlours/']" class="btn btn-danger btn-lg m-2">
+        <span class="fa fa-pencil"></span> Parlours
+      </button>
+      <button type="button" id="linkMeters" class="btn btn-danger btn-lg m-2" [routerLink]="['/consultants/']">
+        <span class="fa fa-link"></span> Consultant
+      </button>
+      <button type="button" id="linkMeters" class="btn btn-danger btn-lg m-2" [routerLink]="['/plans/']">
+        <span class="fa fa-link"></span> Plans
+      </button>
+      <button id="makeActiveButton" [routerLink]="['/main-members/']" class="btn btn-danger btn-lg m-2">
+        Applicants
+      </button>
+      <button id="makeInactiveButton" class="btn btn-danger btn-lg m-2">
+        Policies
+      </button>
+    </mat-card-header>
     <mat-card-content>
       <router-outlet></router-outlet>
     </mat-card-content>

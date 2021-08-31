@@ -1,1 +1,59 @@
-<p>plan-view works!</p>
+<div class="card" style="margin-bottom: 3%;margin-top: 2%;">
+    <div class="card-header sub-header">
+        <h2>Plan Details</h2>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-6">
+            <table class="table table-horiz">
+                <tbody>
+                    <tr>
+                        <th width="50%"><strong>Plan:</strong></th>
+                        <td>{{plan.plan}}</td>
+                    </tr>
+                    <tr>
+                        <th><strong>Plan Cover:</strong></th>
+                        <td>
+                            <span>{{ plan.cover}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><strong>Plan Premium:</strong></th>
+                        <td>{{ plan.premium}}</td>
+                    </tr>
+                    <tr>
+                        <th><strong>Number of Beneficiaries:</strong></th>
+                        <td>{{ plan.beneficiaries}}</td>
+                    </tr>
+                    <tr>
+                        <th><strong>Benefits:</strong></th>
+                        <td>{{ plan.has_benefits}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+  
+        <div class="col-sm-6">
+            <table class="table table-horiz">
+                <tbody>
+                    <tr>
+                        <th width="50%"><strong>Age Restriction:</strong></th>
+                        <td>{{ plan.member_age_restriction }}</td>
+                    </tr>
+                    <tr>
+                        <th width="50%"><strong>Min. Age restriction:</strong></th>
+                        <td>{{ plan.member_minimum_age }}</td>
+                    </tr>
+                    <tr>
+                        <th><strong>Max. Age restriction:</strong></th>
+                        <td>{{ plan.member_maximum_age }}</td>
+                    </tr>
+                    <tr>
+                        <th><strong>Consider Age:</strong></th>
+                        <td>{{ plan.consider_age }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+  </div>

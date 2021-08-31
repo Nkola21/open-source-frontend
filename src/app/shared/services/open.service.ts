@@ -45,6 +45,12 @@ export class OpenService {
     return headers;
   }
 
+  getSecureHeaders(): HttpHeaders {
+    let headers = new HttpHeaders();
+    headers = headers.set('Authorization', 'Bearer ' + this.getUserToken());
+    return headers;
+  }
+
   paramsToURLSearchParams(params: any): HttpParams {
     let searchParams = new HttpParams();
     if (params) {

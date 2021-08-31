@@ -1,0 +1,45 @@
+<div class="card" style="margin-bottom: 3%;margin-top: 2%;">
+    <div class="card-header sub-header">
+        <h2>Parlour Details</h2>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-6">
+            <table class="table table-horiz">
+                <tbody>
+                    <tr>
+                        <th width="50%"><strong>First Name:</strong></th>
+                        <td>{{consultant.first_name}}</td>
+                    </tr>
+                    <tr>
+                        <th><strong>Last Name:</strong></th>
+                        <td>
+                            <span>{{ consultant.last_name}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><strong>Parlour Branch:</strong></th>
+                        <td>{{ consultant.branch}}</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+  
+        <div class="col-sm-6">
+            <table class="table table-horiz">
+                <tbody>
+                    <tr>
+                        <th><strong>Email Address:</strong></th>
+                        <td>{{ consultant.email}}</td>
+                    </tr>
+                    <tr>
+                        <th><strong>Contact Number:</strong></th>
+                        <td>{{ consultant.number}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+  </div>
+  <!-- <app-main-member-list></app-main-member-list> -->

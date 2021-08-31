@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ParlourListComponent } from './parlour-list.component';
+import { MainMemberViewComponent } from './dependant-view.component';
 
-describe('ParloursComponent', () => {
-  let component: ParlourListComponent;
-  let fixture: ComponentFixture<ParlourListComponent>;
+describe('MainMemberViewComponent', () => {
+  let component: MainMemberViewComponent;
+  let fixture: ComponentFixture<MainMemberViewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ParlourListComponent ]
+      declarations: [ MainMemberViewComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ParlourListComponent);
+    fixture = TestBed.createComponent(MainMemberViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

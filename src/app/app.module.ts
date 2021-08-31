@@ -9,7 +9,7 @@ import { ParloursModule } from './core/parlours/parlours.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { OpenService } from './shared/services/open.service';
-import { PolicyModule } from './core/policies/policy.module';
+import { ConsultantModule } from './core/consultants/consultant.module';
 import { PlansModule } from './core/plans/plans.module';
 import { MainMembersModule } from './core/main-members/main_members.module';
 
@@ -17,7 +17,7 @@ import { MainMembersModule } from './core/main-members/main_members.module';
 const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
   { path: '',
     pathMatch: 'full',
-    redirectTo: 'parlours' }
+    redirectTo: '/parlours' }
 ], { useHash: false, relativeLinkResolution: 'legacy' });
 
 @NgModule({
@@ -32,7 +32,7 @@ const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
     MatCardModule,
     RouterModule,
     ParloursModule,
-    PolicyModule,
+    ConsultantModule,
     PlansModule,
     MainMembersModule
   ],
