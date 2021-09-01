@@ -12,7 +12,10 @@ import { OpenService } from './shared/services/open.service';
 import { ConsultantModule } from './core/consultants/consultant.module';
 import { PlansModule } from './core/plans/plans.module';
 import { MainMembersModule } from './core/main-members/main_members.module';
-
+// import { ServicesModule } from './core/services/services.module';
+import { HomeModule } from './core/home/home.module';
+import { LoginModule } from './core/login/login.module';
+import { SignupModule } from './core/signup/signup.module';
 
 const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
   { path: '',
@@ -34,7 +37,11 @@ const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
     ParloursModule,
     ConsultantModule,
     PlansModule,
-    MainMembersModule
+    MainMembersModule,
+    // ServicesModule,
+    HomeModule,
+    LoginModule,
+    SignupModule
   ],
   providers: [OpenService],
   bootstrap: [AppComponent]

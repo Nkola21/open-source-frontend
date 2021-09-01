@@ -2,6 +2,23 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
 import { Observable, of, throwError } from 'rxjs';
+// import {trimWhiteSpace} from './../../shared/';
+
+
+export function trimWhiteSpace(obj) {
+  for (let prop in obj) {
+    if (obj.hasOwnProperty(prop)) {
+      if (typeof obj[prop] === 'string') {
+        obj[prop] = obj[prop].trim();
+      }
+      if (typeof obj[prop] === "object"){
+        trimWhiteSpace(obj[prop]);
+      }
+    }
+  }
+  return obj;
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -81,6 +98,7 @@ export class OpenService {
     /* let errMsg = (error.message) ? error.message :
      error.status ? `${error.status} - ${error.statusText}` : 'Server error';
      console.error(error); */ // log to console instead
+    console.debug(error);
     return throwError(error);
   }
 
@@ -142,5 +160,4 @@ export class OpenService {
     return this.http.post(url, JSON.stringify(obj), { headers: headers })
       .pipe(catchError(this.handleError));
   }
-
 }

@@ -12,7 +12,7 @@ import { ConsultantFormComponent } from './consultant-form/consultant-form.compo
 
 const ConsultantRouting: ModuleWithProviders<ConsultantModule> = RouterModule.forChild([
   {
-    path: 'consultants',
+    path: 'consultants/parlour/:id',
     pathMatch: 'full',
     component: ConsultantListComponent,
     canActivate: []
@@ -24,6 +24,10 @@ const ConsultantRouting: ModuleWithProviders<ConsultantModule> = RouterModule.fo
   },
   {
     path: 'consultants/:Id/form',
+    component: ConsultantFormComponent
+  },
+  {
+    path: 'consultants/parlour/:id',
     component: ConsultantFormComponent
   }
 

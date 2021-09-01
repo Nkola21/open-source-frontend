@@ -6,3 +6,13 @@ export interface Parlour {
     email: string,
     created: string
 }
+
+export function newParlour() {
+    return {
+        parlour_name: '',
+        person_name: '',
+        address: '',
+        number: '',
+        email: ''
+    }
+}

@@ -10,6 +10,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ParlourFormComponent } from './parlour-form/parlour-form.component';
 import { PlansModule } from './../plans/plans.module';
 
+
 const ParlourRouting: ModuleWithProviders<ParloursModule> = RouterModule.forChild([
   {
     path: 'parlours',
