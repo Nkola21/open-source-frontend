@@ -1,22 +1,19 @@
 
-    <section class="imgcontainer text-center">
-    <div class="container">
-      <section class="img">
-        <img src="./images/avatar.png" alt="Avatar" class="avatar">
-      </section>
-      <label for="parl"><b><small>Username or Email Address</small></b></label>
-      <input type="text" class="form-control small" id="floatingPourname" placeholder="Enter Username or Email Address" required>
-      <label for="fullname"><b><small>Password</small></b></label>
-      <input type="text" class="form-control" id="fullname " placeholder="Enter Password" required>
-      <label>
-        <input type="checkbox" checked="checked" name="remember"><small>Remember me</small> 
-      </label>
+<mat-card class="d-flex justify-content-center col-sm-5 mt-4 line-top" style="margin-left: 25%;">
+  <form [formGroup]="form" (ngSubmit)="postSignin()" class="col-md-6">
+    <div class="mb-3">
+      <label for="username" class="col-form-label fs-4">Username:</label>
+      <input type="text" placeholder="Enter Username or Email Address" mandatory class="form-control" id="username" formControlName="username">
     </div>
   
-    <div class="container ">
-      
-      <button type="button" class="btn btn-dark small">Login</button>
-      <span class="psw small ">Forgot <a href="#">password?</a></span>
+    <div class="mb-3">
+      <label for="password" class="col-form-label fs-4">Password:</label>
+      <input type="password" mandatory class="form-control" placeholder="Enter Password" id="password" formControlName="password">
     </div>
-        
-    </section>
+          
+    <div class="col-12">
+      <button class="btn btn-lg btn-primary" type="submit" (click)="postSignin()">Login</button>
+    </div>
+  </form>
+</mat-card>
+

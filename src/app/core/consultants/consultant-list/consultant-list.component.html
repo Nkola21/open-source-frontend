@@ -1,14 +1,14 @@
 
 <mat-card>
-    <div *ngIf="loadingState == 'complete' && consultants.length == 0" class="-y-sm">
+    <div *ngIf="consultants.length == 0" class="-y-sm">
       <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="20px">
         <div fxFlex="100">
-          <mat-card style="margin-top: 30px">
+          <mat-card style="margin-top: 30px" class="line-top">
             <mat-card-title class="mat-card-title-alt" fxLayout="row" fxLayoutAlign="center">
-              <h2>Consultants</h2>
+              <p class="fs-1"><strong>Consultants</strong></p>
             </mat-card-title>
             <mat-card-content>
-              <p style="margin-top: 2rem;"><strong>There are currently no registered consultants. </strong></p>
+              <p style="margin-top: 2rem;"><strong class="fs-4">There are currently no registered consultants. </strong></p>
             </mat-card-content>
           </mat-card>
         </div>
@@ -18,9 +18,9 @@
     <div *ngIf="dataSource && consultants.length > 0" [ngClass]="{'animated fadeIn': dataSource}">
       <div fxLayout="row" fxLayoutAlign="center start">
         <div fxFlex="100">
-          <mat-card style="margin-top: 30px">
+          <mat-card style="margin-top: 30px" class="line-top">
             <mat-card-title class="mat-card-title-alt" fxLayout="row" fxLayoutAlign="center">
-              <h2 style="margin-left: auto;">Funeral Parlour Dashboard</h2>
+              <p class="fs-1"><strong>Consultants</strong></p>
             </mat-card-title>
   
             <mat-card-content>

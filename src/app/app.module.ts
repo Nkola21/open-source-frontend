@@ -12,15 +12,19 @@ import { OpenService } from './shared/services/open.service';
 import { ConsultantModule } from './core/consultants/consultant.module';
 import { PlansModule } from './core/plans/plans.module';
 import { MainMembersModule } from './core/main-members/main_members.module';
+import { ExtendedMembersModule } from './core/extended-members/extended_members.module';
 // import { ServicesModule } from './core/services/services.module';
 import { HomeModule } from './core/home/home.module';
 import { LoginModule } from './core/login/login.module';
 import { SignupModule } from './core/signup/signup.module';
+// import { NavSignInModule } from './core/nav-signin/nav-signin.module';
+import { NavbarModule } from './core/navbar/navbar.module';
+import { NavbuttonsModule } from './core/nav-buttons/nav-buttons.module';
 
 const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
   { path: '',
     pathMatch: 'full',
-    redirectTo: '/parlours' }
+    redirectTo: '/home' }
 ], { useHash: false, relativeLinkResolution: 'legacy' });
 
 @NgModule({
@@ -38,10 +42,14 @@ const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
     ConsultantModule,
     PlansModule,
     MainMembersModule,
+    ExtendedMembersModule,
     // ServicesModule,
     HomeModule,
     LoginModule,
-    SignupModule
+    SignupModule,
+    // NavSignInModule,
+    NavbarModule,
+    NavbuttonsModule
   ],
   providers: [OpenService],
   bootstrap: [AppComponent]

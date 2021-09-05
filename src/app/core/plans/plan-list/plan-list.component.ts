@@ -48,21 +48,23 @@ const dialogConfig = new MatDialogConfig();
 })
 export class PlanListComponent implements OnInit {
 
-  displayedColumns = ['plan', 'cover', 'premium', 'beneficiaries', "has_benefits", "actions"];
+  displayedColumns = ['plan', 'cover', 'premium', "actions"];
   plans: Array<any> = [];
   dataSource: any;
   page: any;
   loadingState: any;
   tableSize: number;
-
+  user: any;
+  permission: any
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     public openService: OpenService,
-    public dialog: MatDialog,
     public router: Router) { }
 
   ngOnInit(): void {
+    this.permission = this.openService.getPermissions();
+    this.user = this.openService.getUser();
     this.initPlans();
   }
 
@@ -76,6 +78,7 @@ export class PlanListComponent implements OnInit {
   }
 
   initPlans() {
+    const permission = this.permission.permission;
     this.plans = [];
     this.page = {
       'pageSize': 5,
@@ -85,7 +88,7 @@ export class PlanListComponent implements OnInit {
     this.loadingState = 'loading';
     this.dataSource = new PlanDataSource([], this.page);
 
-    this.openService.getUrl(`plans/`)
+    this.openService.getUrl(`${permission.toLowerCase()}s/${this.user.id}/plans/all`)
       .subscribe(
         (plans: Array<any>) => {
           console.log(plans)

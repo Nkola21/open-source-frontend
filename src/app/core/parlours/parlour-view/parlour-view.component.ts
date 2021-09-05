@@ -28,7 +28,6 @@ export class ParlourViewComponent implements OnInit {
     this.openService.getUrl(`parlours/${parlour_id}`)
     .subscribe(
       (parlour: Parlour) => {
-        console.log(parlour);
         this.parlour = parlour;
       },
       error => {

@@ -1,55 +1,5 @@
-<section class="header">
-  <div class="containers">
-      <nav class="navbar navbar-expand-lg navbar-light">
-        
-           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false">
-            <i class="fa fa-bars"></i>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto text-right">
-              <li class="nav-item">
-                <a class="nav-link" [routerLink]="['/home/']" routerLinkActive="active">HOME</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" [routerLink]="['/services/']" routerLinkActive="active" >SERVICES</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" >CONTACTS</a>
-              </li>
-              <li class="nav-item">
-              <button type="button" class="btn btn-dark text-right" [routerLink]="['/login/']" routerLinkActive="active">LOGIN</button>
-              </li>
-              <li class="nav-item">
-              <button type="button" class="btn btn-dark text-right" [routerLink]="['/signup/']" routerLinkActive="active">SIGNUP</button>  
-              </li>
-            </ul>
-          </div>
-        </nav>
-        
-  </div>
-</section>
-
-<div class="main" >
-  <mat-card class="line-top">
-    <mat-card-header class="justify-content-center">
-      <!-- <button type="button" [routerLink]="['/parlours/']" class="btn btn-danger btn-lg m-2">
-        <span class="fa fa-pencil"></span> Parlours
-      </button> -->
-      <button type="button" id="linkMeters" class="btn btn-danger btn-lg m-2" [routerLink]="['/consultants/parlour/id']">
-        <span class="fa fa-link"></span> Consultant
-      </button>
-      <button type="button" id="linkMeters" class="btn btn-danger btn-lg m-2" [routerLink]="['/plans/parlour/id']">
-        <span class="fa fa-link"></span> Plans
-      </button>
-      <button id="makeActiveButton" [routerLink]="['/main-members/consultant/id']" class="btn btn-danger btn-lg m-2">
-        Applicants
-      </button>
-      <!-- <button id="makeInactiveButton" class="btn btn-danger btn-lg m-2">
-        Policies
-      </button> -->
-    </mat-card-header>
-    <mat-card-content>
-      <router-outlet></router-outlet>
-    </mat-card-content>
-  </mat-card>
+<div>
+  <app-navbar></app-navbar  >
+    <app-nav-buttons></app-nav-buttons>
+  <router-outlet></router-outlet>
 </div>

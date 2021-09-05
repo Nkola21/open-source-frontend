@@ -14,16 +14,28 @@ export class PlanFormBuilder {
     details = details === undefined ? newPlan() : details;
     return this.formBuilder.group({
       'id': [details.id],
-      'plan': [details.plan],
-      'cover': [details.cover],
-      'premium': [details.premium],
-      'member_age_restriction': [details.member_age_restriction, Validators.required],
-      'member_minimum_age': [details.member_minimum_age, Validators.maxLength(11)],
-      'member_maximum_age': [details.member_maximum_age, Validators.maxLength(11)],
-      'beneficiaries': [details.beneficiaries, [Validators.required, Validators.maxLength(100)]],
-      'benefits': [details.notes],
+      'plan': [details.plan, [Validators.required]],
+      'cover': [details.cover, [Validators.required]],
+      'premium': [details.premium, [Validators.required]],
+      'main_members': [details.main_members, [Validators.required]],
+      'member_age_restriction': [details.member_age_restriction],
+      'member_minimum_age': [details.member_minimum_age],
+      'member_maximum_age': [details.member_maximum_age],
+      'extended_members': [details.extended_members],
+      'extended_age_restriction': [details.extended_age_restriction], 
+      'extended_minimum_age': [details.extended_minimum_age],
+      'extended_maximum_age': [details.extended_maximum_age],
       'consider_age': [details.consider_age],
-      'has_benefits': [details.has_benefits]
+      'dependant_minimum_age': [details.dependant_minimum_age],
+      'dependant_maximum_age': [details.dependant_maximum_age],
+      'dependants': [details.dependants],
+      'additional_extended_members': [details.additional_extended_members],
+      'additional_extended_consider_age': [details.additional_extended_consider_age], 
+      'additional_extended_minimum_age': [details.additional_extended_minimum_age],
+      'additional_extended_maximum_age': [details.additional_extended_maximum_age],
+      'benefits': [details.benefits],
+      'has_benefits': [details.has_benefits],
+      'parlour': [details.parlour]
     });
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataSource } from '@angular/cdk/collections';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -48,22 +48,26 @@ const dialogConfig = new MatDialogConfig();
 })
 export class MainMemberListComponent implements OnInit {
 
-  displayedColumns = ['first_name', 'last_name', 'contact', 'date_joined', 'actions'];
+  displayedColumns = ['full_name', 'id_number', 'contact', 'extended_members', 'premium', 'policy_num', 'policy', 'date_joined', 'status', 'actions'];
   main_members: Array<any> = [];
   dataSource: any;
   page: any;
   loadingState: any;
   tableSize: number;
-
+  permission: any
+  user: any;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     public openService: OpenService,
     public dialog: MatDialog,
+    private route: ActivatedRoute,
     public router: Router) { }
 
   ngOnInit(): void {
-    this.initMainMembers();
+    this.permission = this.openService.getPermissions();
+    this.user = this.openService.getUser();
+    this.initMainMembers(this.user.id)
   }
 
   initializePaginator() {
@@ -75,8 +79,9 @@ export class MainMemberListComponent implements OnInit {
     this.dataSource = new MainMemberDataSource(this.main_members, this.page);
   }
 
-  initMainMembers() {
+  initMainMembers(id) {
     this.main_members = [];
+    const permission = this.permission.permission;
     this.page = {
       'pageSize': 5,
       'pageIndex': 0,
@@ -85,10 +90,10 @@ export class MainMemberListComponent implements OnInit {
     this.loadingState = 'loading';
     this.dataSource = new MainMemberDataSource([], this.page);
 
-    this.openService.getUrl(`main-members/`)
+    this.openService.getUrl(`${permission.toLowerCase()}s/${id}/main-members/all`)
       .subscribe(
         (main_members: Array<any>) => {
-          console.log(main_members);          
+          console.log(main_members);         
           this.main_members = main_members;
           this.configureMainMembers(main_members);
           this.loadingState = 'complete';
@@ -105,10 +110,14 @@ export class MainMemberListComponent implements OnInit {
   }
 
   navigateToMainMemberView(main_member: any) {
-    this.router.navigate(['main_members', main_member.id,'view']);
+    this.router.navigate(['main-members', main_member.id,'view']);
   }
 
   navigateToMainMemberForm(main_member: any) {
-    this.router.navigate(['main_members', main_member.id,'form']);
+    this.router.navigate(['main-members', main_member.id,'form']);
+  }
+
+  navigateToExtendedMembersListView(id: number) {
+    this.router.navigate(['applicants', id,'extended-members', 'all']);
   }
 }

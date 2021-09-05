@@ -1,1 +1,50 @@
-<p>consultant-form works!</p>
+
+<mat-card>
+    <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="20px">
+        <div fxFlex="100">
+          <mat-card style="margin-top: 30px" class="line-top">
+            <mat-card-title class="mat-card-title-alt" fxLayout="row" fxLayoutAlign="center">
+              <p class="fs-1"><strong>Consultant Form</strong></p>
+            </mat-card-title>
+          </mat-card>
+        </div>
+      </div>
+    <mat-card class="d-flex justify-content-center">
+        <form [formGroup]="form" (ngSubmit)="submit()" class="col-md-6" *ngIf="form">
+        <div class="mb-3">
+            <label for="first_name" class="col-form-label fs-4 d-flex justify-content-center">First Name:</label>
+            <input type="text" placeholder="First Name" mandatory class="form-control" id="first_name" formControlName="first_name">
+          </div>
+  
+          <div class="mb-3">
+            <label for="last_name" class="col-form-label fs-4 d-flex justify-content-center">Last Name:</label>
+            <input type="last_name" mandatory class="form-control" placeholder="Last Name" id="last_name" formControlName="last_name">
+          </div>
+  
+          <div class="mb-3">
+            <label for="username" class="col-form-label fs-4 d-flex justify-content-center">Username:</label>
+            <input mandatory class="form-control" placeholder="Enter Username" id="username" formControlName="username" />
+          </div>
+
+          <div class="mb-3">
+            <label for="email" class="col-form-label fs-4 d-flex justify-content-center">Email:</label>
+            <input mandatory class="form-control" type="email" placeholder="Enter Email Address" id="email" formControlName="email" />
+          </div>
+
+          <div class="mb-3">
+            <label for="branch" class="col-form-label fs-4 d-flex justify-content-center">Parlour Branch:</label>
+            <input mandatory class="form-control" type="text" placeholder="Parlour Branch" id="branch" formControlName="branch" />
+          </div>
+
+          <div class="mb-5">
+            <label for="contact" class="col-form-label fs-4 d-flex justify-content-center">Contact Number:</label>
+            <input mandatory class="form-control" type="number"  placeholder="Contact Number" id="contact" formControlName="contact" />
+          </div>
+  
+          <div class="col-12 d-flex justify-content-center">
+            <button class="btn-danger btn-lg w-50 m-2" type="submit" (click)="goBack($event)">Back</button>
+            <button class="btn-danger btn-lg w-50 m-2" type="submit" (click)="submit()">Submit</button>
+          </div>
+        </form>
+    </mat-card>
+  </mat-card>

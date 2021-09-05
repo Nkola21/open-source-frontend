@@ -68,6 +68,22 @@ export class OpenService {
     return headers;
   }
 
+  setUser(user) {
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+
+  getUser() {
+    return JSON.parse(localStorage.getItem('user'));
+  }
+
+  setPermissions(permissions) {
+    localStorage.setItem('permissions', JSON.stringify(permissions));
+  }
+
+  getPermissions() {
+    return JSON.parse(localStorage.getItem('permissions'));
+  }
+
   paramsToURLSearchParams(params: any): HttpParams {
     let searchParams = new HttpParams();
     if (params) {
@@ -102,8 +118,8 @@ export class OpenService {
     return throwError(error);
   }
 
-  getOne(resource: string, id: number) {
-    const url = `${this.getBaseUrl()}/${resource}/${id}`;
+  getOne(resource: string) {
+    const url = `${this.getBaseUrl()}/${resource}`;
     return this.http.get(url, { headers: this.getHeaders() })
       .pipe(catchError(this.handleError));
   }
@@ -131,7 +147,7 @@ export class OpenService {
   }
 
   put(resource: string, obj: any): Observable<any> {
-    const url = `${this.getBaseUrl()}/${resource}/${obj.id}`;
+    const url = `${this.getBaseUrl()}/${resource}`;
     let headers = this.getHeaders();
     headers = headers.append('Content-Type', 'application/json');
     return this.http.put(url, JSON.stringify(obj), { headers: headers })

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataSource } from '@angular/cdk/collections';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -60,10 +60,16 @@ export class ConsultantListComponent implements OnInit {
   constructor(
     public openService: OpenService,
     public dialog: MatDialog,
+    private route: ActivatedRoute,
     public router: Router) { }
 
   ngOnInit(): void {
-    this.initConsultants();
+    this.route.params.subscribe(
+      (params) => {
+        const id = +params['parlour_id'];
+        this.initConsultants(id);
+      }
+    )
   }
 
   initializePaginator() {
@@ -75,7 +81,7 @@ export class ConsultantListComponent implements OnInit {
     this.dataSource = new ConsultantDataSource(this.consultants, this.page);
   }
 
-  initConsultants() {
+  initConsultants(id) {
     this.consultants = [];
     this.page = {
       'pageSize': 5,
@@ -85,7 +91,7 @@ export class ConsultantListComponent implements OnInit {
     this.loadingState = 'loading';
     this.dataSource = new ConsultantDataSource([], this.page);
 
-    this.openService.getUrl(`consultants/`)
+    this.openService.getUrl(`parlours/${id}/consultants/`)
       .subscribe(
         (consultants: Array<any>) => {
           console.log(consultants);
@@ -94,7 +100,7 @@ export class ConsultantListComponent implements OnInit {
           this.loadingState = 'complete';
         },
         error => {
-          console.log("error occured.");
+          console.log(error);
         });
   }
 

@@ -1,10 +1,10 @@
 export interface Parlour {
-    id?: number,
-    parlour_name: string,
-    person_name: string,
-    number: string,
-    email: string,
-    created: string
+    id?: number;
+    parlour_name: string;
+    person_name: string;
+    number: string;
+    email: string;
+    created: string;
 }
 
 export function newParlour() {
@@ -13,6 +13,9 @@ export function newParlour() {
         person_name: '',
         address: '',
         number: '',
-        email: ''
-    }
+        email: '',
+        username: '',
+        password: '',
+        confirm_password: ''
+    };
 }
