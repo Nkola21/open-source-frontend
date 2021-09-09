@@ -12,6 +12,8 @@ import { OpenService } from './shared/services/open.service';
 import { ConsultantModule } from './core/consultants/consultant.module';
 import { PlansModule } from './core/plans/plans.module';
 import { MainMembersModule } from './core/main-members/main_members.module';
+// import { ApplicantModule } from './core/applicants/applicants.module';
+import { PaymentModule } from './core/payments/payments.module';
 import { ExtendedMembersModule } from './core/extended-members/extended_members.module';
 // import { ServicesModule } from './core/services/services.module';
 import { HomeModule } from './core/home/home.module';
@@ -20,6 +22,7 @@ import { SignupModule } from './core/signup/signup.module';
 // import { NavSignInModule } from './core/nav-signin/nav-signin.module';
 import { NavbarModule } from './core/navbar/navbar.module';
 import { NavbuttonsModule } from './core/nav-buttons/nav-buttons.module';
+
 
 const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
   { path: '',
@@ -43,6 +46,8 @@ const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
     PlansModule,
     MainMembersModule,
     ExtendedMembersModule,
+    // ApplicantModule,
+    PaymentModule,
     // ServicesModule,
     HomeModule,
     LoginModule,

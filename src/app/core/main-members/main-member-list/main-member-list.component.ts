@@ -39,6 +39,8 @@ export class MainMemberDataSource extends DataSource<any> {
   disconnect() { }
 }
 
+
+
 const dialogConfig = new MatDialogConfig();
 
 @Component({
@@ -50,6 +52,7 @@ export class MainMemberListComponent implements OnInit {
 
   displayedColumns = ['full_name', 'id_number', 'contact', 'extended_members', 'premium', 'policy_num', 'policy', 'date_joined', 'status', 'actions'];
   main_members: Array<any> = [];
+  main_member: any;
   dataSource: any;
   page: any;
   loadingState: any;
@@ -81,7 +84,7 @@ export class MainMemberListComponent implements OnInit {
 
   initMainMembers(id) {
     this.main_members = [];
-    const permission = this.permission.permission;
+    const permission = this.permission;
     this.page = {
       'pageSize': 5,
       'pageIndex': 0,
@@ -120,4 +123,35 @@ export class MainMemberListComponent implements OnInit {
   navigateToExtendedMembersListView(id: number) {
     this.router.navigate(['applicants', id,'extended-members', 'all']);
   }
+
+  
+  navigateToPaymentsForm(id: number) {
+    this.router.navigate(['applicants', id,'extended-members', 'all']);
+  }
+
+  confirmDeleteApplicant(main_member) {
+    console.log(main_member);
+    this.main_member = main_member;
+    const button = document.getElementById('modalShow');
+    console.log(button);
+    button.click();
+  }
+
+  // showBankAccountSearchModal() {
+
+  //   const button = document.getElementById('bankAccountNumberSearchPrompt');
+  //   button.click();
+  // }
+
+  handleDelete(main_member) {
+    this.openService.delete(`main-members/${main_member.id}/delete`)
+      .subscribe(
+        (consultant: any) => {
+
+        },
+        error => {
+          console.log(error);
+        });
+  }
+
 }

@@ -2,47 +2,47 @@
 <mat-card class="d-flex justify-content-center">
   <form [formGroup]="form" (ngSubmit)="postSignUp()" class="col-md-6">
       <div class="mb-3">
-          <label for="parlour_name" class="col-form-label fs-4">Parlour Name:</label>
+          <label for="parlour_name" class="col-form-label fs-4 d-flex justify-content-center">Parlour Name:</label>
           <input type="text" placeholder="Enter Funeral Parlour Name" mandatory class="form-control" id="parlour_name" formControlName="parlour_name">
         </div>
 
         <div class="mb-3">
-          <label for="person_name" class="col-form-label fs-4">Full Name:</label>
+          <label for="person_name" class="col-form-label fs-4 d-flex justify-content-center">Full Name:</label>
           <input type="person_name" mandatory class="form-control" placeholder="Enter Full Name" id="person_name" formControlName="person_name">
         </div>
 
         <div class="mb-3">
-          <label for="number" class="col-form-label fs-4">Contact Number:</label>
+          <label for="number" class="col-form-label fs-4 d-flex justify-content-center">Contact Number:</label>
           <input mandatory class="form-control" type="number"  placeholder="Enter Phone Number" id="number" formControlName="number" />
         </div>
 
         <div class="mb-3">
-          <label for="email" class="col-form-label fs-4">Email:</label>
+          <label for="email" class="col-form-label fs-4 d-flex justify-content-center">Email:</label>
           <input mandatory class="form-control" type="email" placeholder="Enter Email Address" id="email" formControlName="email" />
         </div>
 
         <div class="mb-3">
-          <label for="address" class="col-form-label fs-4">Address:</label>
-          <textarea mandatory class="form-control" placeholder="Enter Physical Address" id="address" formControlName="address"></textarea>
+          <label for="address" class="col-form-label fs-4 d-flex justify-content-center">Address:</label>
+          <textarea mandatory rows="3" class="form-control" placeholder="Enter Physical Address" id="address" formControlName="address"></textarea>
         </div>
 
         <div class="mb-3">
-          <label for="username" class="col-form-label fs-4">Username:</label>
+          <label for="username" class="col-form-label fs-4 d-flex justify-content-center">Username:</label>
           <input mandatory class="form-control" placeholder="Enter Username" id="username" formControlName="username" />
         </div>
 
         <div class="mb-3">
-          <label for="password" class="col-form-label fs-4">Password:</label>
+          <label for="password" class="col-form-label fs-4 d-flex justify-content-center">Password:</label>
           <input mandatory class="form-control" type="password" placeholder="Enter Password" id="password" formControlName="password" />
         </div>
 
-        <div class="mb-3">
-          <label for="confirm_password" class="col-form-label fs-4">Confirm Password:</label>
+        <div class="mb-4">
+          <label for="confirm_password" class="col-form-label fs-4 d-flex justify-content-center">Confirm Password:</label>
           <input mandatory class="form-control" type="password" placeholder="Enter Confirm Password" id="confirm_password" formControlName="confirm_password" />
         </div>
 
-        <div class="col-12">
-          <button class="btn btn-primary" type="submit" (click)="postSignUp()">Submit</button>
+        <div class="col-12 d-flex justify-content-center">
+          <button class="btn col-md-6 btn-danger d-flex justify-content-center" type="submit" (click)="postSignUp()">Submit</button>
         </div>
       </form>
   

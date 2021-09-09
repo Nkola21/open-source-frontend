@@ -87,7 +87,7 @@ export class ExtendedMemberListComponent implements OnInit {
 
   initExtendedMembers(id) {
     this.extended_members = [];
-    const permission = this.permission.permission;
+    const permission = this.permission;
     this.page = {
       'pageSize': 5,
       'pageIndex': 0,
@@ -122,8 +122,4 @@ export class ExtendedMemberListComponent implements OnInit {
     this.router.navigate(['main_members', extended_members.id,'form']);
   }
 
-  navigateToExtendedMembersListView(id: any) {
-    console.log(id)
-    this.router.navigate(['extended_members', id,'all']);
-  }
 }

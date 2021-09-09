@@ -6,7 +6,6 @@ export interface Consultant {
     number: string;
     email: string;
     branch: string;
-    contact: string;
 }
 
 export function newConsultant() {
@@ -16,7 +15,6 @@ export function newConsultant() {
         username: '',
         number: '',
         email: '',
-        branch: '',
-        contact: ''
+        branch: ''
     }
 }

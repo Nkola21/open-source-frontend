@@ -20,6 +20,9 @@ export class PlanFormComponent implements OnInit {
   extra_checked = false;
   additional_checked = false;
   benefits_checked = false;
+  user: any;
+  parlour_id: any;
+  permission: any
   
   constructor(public openService: OpenService,
     private route: ActivatedRoute,
@@ -32,19 +35,26 @@ export class PlanFormComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(
       (params) => {
+        console.log(params);
         const id = +params['id'];
+        const parlour_id = +params['parlour_id'];
         if (id) {
-        this.openService.getOne(`plans/${id}`)
+        this.openService.getOne(`plans/${id}/get`)
           .subscribe(
             plan => {
+              console.log(plan);
               this.plan = plan as Plan;
               this.initForm(this.plan);
             },
             error => console.log(error));
-        }else {
+        }else{
+          console.log("Plan")
           this.initForm(this.plan);
         }
     });
+    this.permission = this.openService.getPermissions();
+    this.user = this.openService.getUser();
+    this.parlour_id = this.openService.getParlourId();
   }
 
   initForm(plan: Plan) {
@@ -53,13 +63,14 @@ export class PlanFormComponent implements OnInit {
   }
 
   submit() {
-    const formValue = this.form.value;
+    let formValue = this.form.value;
+    formValue["parlour_id"] = this.parlour_id
     console.log(formValue);
     if (this.plan) {
       this.openService.put(`plans/${this.plan.id}/update`, formValue)
         .subscribe(
           (plan: any) => {
-            
+
           },
         error => {
             console.log(error);

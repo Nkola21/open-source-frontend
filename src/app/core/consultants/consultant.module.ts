@@ -25,6 +25,10 @@ const ConsultantRouting: ModuleWithProviders<ConsultantModule> = RouterModule.fo
   {
     path: 'consultants/:id/form',
     component: ConsultantFormComponent
+  },
+  {
+    path: 'consultants/form',
+    component: ConsultantFormComponent
   }
 
 ]);

@@ -54,6 +54,7 @@ export class ConsultantListComponent implements OnInit {
   page: any;
   loadingState: any;
   tableSize: number;
+  consultant: any;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -116,5 +117,20 @@ export class ConsultantListComponent implements OnInit {
 
   navigateToConsultantForm(consultant: any) {
     this.router.navigate(['consultants', consultant.id,'form']);
+  }
+
+  confirmDelete(consultant) {
+    this.consultant = consultant;
+  }
+
+  handleDelete(consultant) {
+    this.openService.delete(`consultants/${consultant.id}/delete`)
+      .subscribe(
+        (consultant: any) => {
+
+        },
+        error => {
+          console.log(error);
+        });
   }
 }

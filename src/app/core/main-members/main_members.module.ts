@@ -12,7 +12,13 @@ import { MainMemberFormComponent } from './main-member-form/main-member-form.com
 
 const MainMemberRouting: ModuleWithProviders<MainMembersModule> = RouterModule.forChild([
   {
-    path: 'main-members/all',
+    path: 'consultants/:id/applicants',
+    pathMatch: 'full',
+    component: MainMemberListComponent,
+    canActivate: []
+  },
+  {
+    path: 'parlours/:id/applicants',
     pathMatch: 'full',
     component: MainMemberListComponent,
     canActivate: []

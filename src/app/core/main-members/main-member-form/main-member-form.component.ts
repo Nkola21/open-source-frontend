@@ -8,11 +8,11 @@ export class MainMemberFormBuilder {
   constructor(private formBuilder: FormBuilder) {
   }
 
-  buildForm(parlour) {
-    return this.buildConsultantForm(parlour);
+  buildForm(main_member) {
+    return this.buildMainMemberForm(main_member);
   }
 
-  buildConsultantForm(details) {
+  buildMainMemberForm(details) {
     details = details === undefined ? newMainMember() : details;
     return this.formBuilder.group({
       'id': [details.id],

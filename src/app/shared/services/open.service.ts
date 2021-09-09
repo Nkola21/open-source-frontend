@@ -37,7 +37,7 @@ export class OpenService {
   }
 
   getClientUrl(): any {
-    return localStorage.getItem('clientUrl');
+    return 'http://localhost:4200/home';
   }
 
   isProduction(): boolean {
@@ -77,12 +77,21 @@ export class OpenService {
   }
 
   setPermissions(permissions) {
-    localStorage.setItem('permissions', JSON.stringify(permissions));
+    localStorage.setItem('permissions', permissions);
   }
 
   getPermissions() {
-    return JSON.parse(localStorage.getItem('permissions'));
+    return localStorage.getItem('permissions');
   }
+
+  setParlourId(parlour_id) {
+    localStorage.setItem('parlour_id', parlour_id);
+  }
+
+  getParlourId() {
+    return localStorage.getItem('parlour_id');
+  }
+
 
   paramsToURLSearchParams(params: any): HttpParams {
     let searchParams = new HttpParams();
@@ -154,8 +163,8 @@ export class OpenService {
       .pipe(catchError(this.handleError));
   }
 
-  delete(resource: string, id: number) {
-    const url = `${this.getBaseUrl()}/${resource}/${id}`;
+  delete(resource: string) {
+    const url = `${this.getBaseUrl()}/${resource}`;
     const headers = this.getHeaders();
     return this.http.delete(url, { headers: headers })
       .pipe(catchError(this.handleError));

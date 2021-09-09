@@ -12,7 +12,7 @@ import { PlanFormComponent } from './plan-form/plan-form.component';
 
 const PlanRouting: ModuleWithProviders<PlansModule> = RouterModule.forChild([
   {
-    path: 'plans/all',
+    path: 'parlours/:id/plans',
     pathMatch: 'full',
     component: PlanListComponent,
     canActivate: []
@@ -23,7 +23,11 @@ const PlanRouting: ModuleWithProviders<PlansModule> = RouterModule.forChild([
     canActivate: []
   },
   {
-    path: 'plans/:Id/form',
+    path: 'plans/:id/form',
+    component: PlanFormComponent
+  },
+  {
+    path: 'plans/form',
     component: PlanFormComponent
   }
 

@@ -55,6 +55,7 @@ export class PlanListComponent implements OnInit {
   loadingState: any;
   tableSize: number;
   user: any;
+  parlour_id: any;
   permission: any
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -65,6 +66,7 @@ export class PlanListComponent implements OnInit {
   ngOnInit(): void {
     this.permission = this.openService.getPermissions();
     this.user = this.openService.getUser();
+    this.parlour_id = this.openService.getParlourId();
     this.initPlans();
   }
 
@@ -78,7 +80,8 @@ export class PlanListComponent implements OnInit {
   }
 
   initPlans() {
-    const permission = this.permission.permission;
+    const permission = this.permission;
+
     this.plans = [];
     this.page = {
       'pageSize': 5,
@@ -88,16 +91,15 @@ export class PlanListComponent implements OnInit {
     this.loadingState = 'loading';
     this.dataSource = new PlanDataSource([], this.page);
 
-    this.openService.getUrl(`${permission.toLowerCase()}s/${this.user.id}/plans/all`)
+    this.openService.getUrl(`parlours/${this.parlour_id}/plans/all`)
       .subscribe(
         (plans: Array<any>) => {
-          console.log(plans)
           this.plans = plans;
           this.configurePlans(plans);
           this.loadingState = 'complete';
         },
         error => {
-          console.log("error occured.");
+          console.log(error);
         });
   }
 
@@ -113,5 +115,11 @@ export class PlanListComponent implements OnInit {
 
   navigateToPlanForm(plan: any) {
     this.router.navigate(['plans', plan.id,'form']);
+  }
+
+  navigateToPlainForm(event) {
+    event.preventDefault();
+    console.log("Navigate");
+    this.router.navigate(['plans', 'form']);
   }
 }

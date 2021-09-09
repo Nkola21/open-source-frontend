@@ -23,7 +23,7 @@ export class ConsultantFormBuilder {
       'email': [details.email, [Validators.required]],
       'username': [details.username, [Validators.required, Validators.minLength(6)]],
       'branch': [details.branch, [Validators.required]],
-      'contact': [details.contact, [Validators.required]]
+      'number': [details.number, [Validators.required]]
     });
   }
 }
@@ -39,6 +39,9 @@ export class ConsultantFormComponent implements OnInit {
   consultant: any;
   formBuilder: ConsultantFormBuilder;
   form: FormGroup;
+  user: any;
+  parlour_id: number;
+  permission: any
 
   constructor(public openService: OpenService,
     private route: ActivatedRoute,
@@ -48,6 +51,9 @@ export class ConsultantFormComponent implements OnInit {
      }
 
   ngOnInit(): void {
+    this.permission = this.openService.getPermissions();
+    this.user = this.openService.getUser();
+    this.parlour_id = this.permission == "Parlour" ? this.user.id : this.user.parlour_id;
     this.route.params.subscribe(
       (params) => {
         const id = +params['id'];
@@ -76,7 +82,8 @@ export class ConsultantFormComponent implements OnInit {
   }
 
   submit() {
-    const formValue = this.form.value;
+    let formValue = this.form.value;
+    formValue["parlour_id"] = this.parlour_id
     console.log(formValue);
     if (this.consultant) {
       this.openService.put(`consultants/${this.consultant.id}/update`, formValue)

@@ -1,0 +1,10 @@
+ul {
+    background: black;
+    height: 70px;
+    align-content: center;
+}
+li.inner {
+    border-right-color: #c0c2c3;
+    border-right-style: solid;
+    border-right-width: thin;
+}

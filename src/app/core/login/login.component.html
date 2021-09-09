@@ -1,18 +1,18 @@
 
-<mat-card class="d-flex justify-content-center col-sm-5 mt-4 line-top" style="margin-left: 25%;">
+<mat-card class="d-flex justify-content-center col-sm-5 line-top" style="margin: 10% 0 0 25%;">
   <form [formGroup]="form" (ngSubmit)="postSignin()" class="col-md-6">
     <div class="mb-3">
-      <label for="username" class="col-form-label fs-4">Username:</label>
+      <label for="username" class="col-form-label fs-4 d-flex justify-content-center">Username:</label>
       <input type="text" placeholder="Enter Username or Email Address" mandatory class="form-control" id="username" formControlName="username">
     </div>
   
     <div class="mb-3">
-      <label for="password" class="col-form-label fs-4">Password:</label>
+      <label for="password" class="col-form-label fs-4 d-flex justify-content-center">Password:</label>
       <input type="password" mandatory class="form-control" placeholder="Enter Password" id="password" formControlName="password">
     </div>
           
-    <div class="col-12">
-      <button class="btn btn-lg btn-primary" type="submit" (click)="postSignin()">Login</button>
+    <div class="col-12 d-flex justify-content-center">
+      <button class="btn btn-lg btn-danger" type="submit" (click)="postSignin()">Login</button>
     </div>
   </form>
 </mat-card>

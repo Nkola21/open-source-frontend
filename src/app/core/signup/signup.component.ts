@@ -39,7 +39,7 @@ export class SignupComponent implements OnInit {
 
         },
         error => {
-          console.log("error occured.");
+          console.log(error);
         });
   }
 

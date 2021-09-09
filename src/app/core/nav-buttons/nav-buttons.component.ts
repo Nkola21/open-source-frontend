@@ -11,6 +11,7 @@ import { OpenService } from 'src/app/shared/services/open.service';
 export class NavbuttonsComponent implements OnInit {
   user: any
   permission: any
+  parlour_id: any;
 
   constructor(
     public openService: OpenService,
@@ -21,6 +22,7 @@ export class NavbuttonsComponent implements OnInit {
   ngOnInit(): void {
     this.permission = this.openService.getPermissions();
     this.user = this.openService.getUser();
+    this.parlour_id = this.openService.getParlourId();
   }
 
   // redirectToView(user_id, permission) {
@@ -34,18 +36,25 @@ export class NavbuttonsComponent implements OnInit {
   // }
 
   redirectToMainMembersView() {
-    const permission = this.permission.permission;
-    const view = [`/main-members/all`];
+    const permission = this.permission;
+    const view = [`/${this.permission.toLowerCase()}s/${this.user.id}/applicants`];
     this.router.navigate(view);
   }
 
   redirectToPlansView() {
-    const view = [`/plans/all`];
+    const view = [`/parlours/${this.parlour_id}/plans/all`];
     this.router.navigate(view);
   }
 
-  redirectToAdminView(user_id) {
-    const view = [`/${this.permission.toLowerCase()}s/${user_id}/consultants`];
+  redirectToConsultantsView() {
+    const view = [`/parlours/${this.user.id}/consultants`];
     this.router.navigate(view);
+  }
+
+  notConsultant(){
+    return this.permission != 'Consultant';
+  }
+  getEntity() {
+    return `${this.permission.toLowerCase()}s` 
   }
 }

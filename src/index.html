@@ -15,10 +15,27 @@
   <link href="./assets/css/home.css" rel="stylesheet">
 
 </head>
-<body class="mat-typography">
+<body class="mat-typography" style="background-color: #fff;padding-bottom: 5%;">
   <app-root></app-root>
 </body>
 
+<ul class="nav justify-content-center align-content-center" id="footer">
+  <li class="nav-item">
+    <span class="text-light fs-6">&copy&nbsp;<span class="this-year"></span></span>
+  </li>
+  <li class="nav-item">
+    <span class="text-light fs-6">|</span>
+  </li>
+  <li class="nav-item">
+    <a class="text-light fs-6" href="#">Terms</a>
+  </li>
+  <li class="nav-item">
+    <span class="text-light fs-6">|</span>
+  </li>
+  <li class="nav-item">
+    <span class="text-light fs-6">Powered by Nko & Tumie technologies</span>
+  </li>
+</ul>
 <script>
   const d = new Date();
   const year = d.getFullYear()

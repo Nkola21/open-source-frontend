@@ -1,24 +1,68 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light" *ngIf="user">
   <div class="container-fluid">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-      <a class="navbar-brand" routerLink="/home">Hidden brand</a>
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex justify-content-middle">
-        <li class="nav-item">
-          <a class="" aria-current="page" href="#">Home</a>
+    <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarTogglerDemo01">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex justify-content-center">
+        <li>
+          <a class="" aria-current="page" href="#"></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
+          <a class="nav-link" href="#"></a>
         </li>
         <li class="nav-item">
-          <a class="" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+          <a class="" href="#"></a>
         </li>
       </ul>
-      <div class="d-flex justify-content-around mr-3">
-        <a class="btn btn-outline-success" [routerLink]="['login']">Search</a>
-        <button class="btn btn-outline-success" type="submit">Search</button>
+      <div class="m-2">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0" >
+            <li>
+              <a id="Logout" class="btn btn-dark" [routerLink]="['/login']" routerLinkActive="active align-content-top" style="height: 40px; margin-right: 10px">
+                <p class="fs-5" style="margin-bottom: 45px;">{{ getUsername() }}</p>
+              </a>
+            </li>
+            <li>
+              <a id="logout" class="btn btn-dark " (click)="handleLogout()" style="height: 40px;">
+                  <p class="fs-5">Logout</p>
+              </a>
+              </li>
+          </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light" *ngIf="!user">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarTogglerDemo01">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex justify-content-center">
+        <li>
+          <a class="" aria-current="page" href="#"></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#"></a>
+        </li>
+        <li class="nav-item">
+          <a class="" href="#"></a>
+        </li>
+      </ul>
+      <div class="m-2">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0" >
+          <li>
+            <a id="Logout" class="btn btn-dark" [routerLink]="['/login']" routerLinkActive="active align-content-top" style="height: 40px; margin-right: 10px">
+              <p class="fs-5" style="margin-bottom: 45px;">Login</p>
+            </a>  
+          </li>
+          <li>
+            <a id="signup" class="btn btn-dark " [routerLink]="['/signup']" routerLinkActive="active" style="height: 40px;">
+                <p class="fs-5">SignUp</p>
+            </a>
+            </li>
+        </ul>
       </div>
     </div>
   </div>
