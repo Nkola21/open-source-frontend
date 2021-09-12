@@ -10,6 +10,7 @@ import { map } from 'rxjs/operators';
 import { OpenService } from 'src/app/shared/services/open.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+// import { saveAs } from 'file-saver';
 
 
 export class SearchFormBuilder {
@@ -75,6 +76,7 @@ export class MainMemberListComponent implements OnInit {
   formBuilder: SearchFormBuilder;
   form: FormGroup;
   searchField: null;
+  status: null;
   dataSource: any;
   page: any;
   loadingState: any;
@@ -97,10 +99,18 @@ export class MainMemberListComponent implements OnInit {
   ngOnInit(): void {
     this.permission = this.openService.getPermissions();
     this.user = this.openService.getUser();
+    console.log(this.permission);
     this.initSearchForm(this.searchField);
     this.initMainMembers(this.user.id)
   }
 
+  isParlour() {
+    return this.permission == 'Parlour';
+  }
+
+  isConsultant() {
+    return this.permission == 'Consultant';
+  }
   initializePaginator() {
     this.dataSource.paginator = this.paginator;
   }
@@ -143,8 +153,9 @@ export class MainMemberListComponent implements OnInit {
     this.initializePaginator()
   }
 
-  navigateToMainMemberView(main_member: any) {
-    this.router.navigate(['main-members', main_member.id,'view']);
+  navigateToPaymentForm(main_member: any) {
+    'applicants/:id/payment/form'
+    this.router.navigate(['applicants', main_member.id, 'payment', 'form']);
   }
 
   navigateToMainMemberForm(main_member: any) {
@@ -160,17 +171,16 @@ export class MainMemberListComponent implements OnInit {
     this.router.navigate(['applicants', id,'extended-members', 'all']);
   }
 
-  confirmDeleteApplicant(main_member) {
-    this.main_member = main_member;
-    const button = document.getElementById('showModal');
+  confirmDeleteApplicant() {
+    const button = document.getElementById('deleteApplicant');
     button.click();
   }
 
   handleDelete(main_member) {
     this.openService.delete(`main-members/${main_member.id}/delete`)
       .subscribe(
-        (consultant: any) => {
-
+        (main_member: any) => {
+          this.toastr.success('Applicant has been deleted!', 'Success');
         },
         error => {
           console.log(error);
@@ -196,7 +206,8 @@ export class MainMemberListComponent implements OnInit {
   getByPaymentStatus(status) {
     this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?status=${status}`)
       .subscribe(
-        (main_members: Array<any>) => {         
+        (main_members: Array<any>) => {
+          this.status = status;
           this.main_members = main_members;
           this.configureMainMembers(main_members);
           this.loadingState = 'complete';
@@ -212,6 +223,8 @@ export class MainMemberListComponent implements OnInit {
     this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?search_string=${formValue["searchField"]}`)
       .subscribe(
         (main_members: Array<any>) => {
+          this.status = null;
+          this.searchField = formValue["searchField"];
           this.main_members = main_members;
           this.configureMainMembers(main_members);
           this.loadingState = 'complete';
@@ -225,4 +238,39 @@ export class MainMemberListComponent implements OnInit {
     this.toastr.success('Success', 'Toastr fun!');
   }
 
+  getCVSFile(event) {
+    event.preventDefault();
+    this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/file`)
+      .subscribe(
+        (main_members: Array<any>) => {
+          console.log("success.");
+          // console.log(main_members);
+          this.downloadFile(main_members);
+          this.loadingState = 'complete';
+        },
+        error => {
+          console.log(error);
+        });
+  }
+
+  downloadFile(data: any) {
+    const replacer = (key, value) => (value === null ? '' : value); // specify how you want to handle null values here
+    const header = ["First Name", "Last Name", "ID Number", "Contact Number", "Policy Number", "Date Joined", "Status", "Cover", "Premium"]
+
+    const csv = data.map((row) =>
+      [row.first_name, row.first_name, row.id_number, row.contact, row.applicant.policy_num, row.date_joined, row.applicant.status, row.applicant.plan.cover, row.applicant.plan.premium].join(",")
+    );
+    csv.unshift(header.join(','));
+    const csvArray = csv.join('\r\n');
+  
+    const a = document.createElement('a');
+    const blob = new Blob([csvArray], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+  
+    a.href = url;
+    a.download = 'Applicants.csv';
+    a.click();
+    window.URL.revokeObjectURL(url);
+    a.remove();
+  }
 }

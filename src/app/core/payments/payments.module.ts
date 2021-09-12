@@ -24,7 +24,7 @@ const PaymentRouting: ModuleWithProviders<PaymentModule> = RouterModule.forChild
     canActivate: []
   },
   {
-    path: 'applicants/:id/payment/form',
+    path: 'applicants/:applicant_id/payment/form',
     component: PaymentFormComponent
   }
 

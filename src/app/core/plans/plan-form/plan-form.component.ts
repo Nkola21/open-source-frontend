@@ -74,22 +74,41 @@ export class PlanFormComponent implements OnInit {
             this.showSuccess();
           },
         error => {
-            console.log(error);
+          this.showError(error);
         });
     }else {
       this.openService.post(`plans`, formValue)
         .subscribe(
           (plan: any) => {
-
+            this.showSuccess();
           },
         error => {
-            console.log(error);
+            this.showError(error);
         });
     }
   }
 
   showSuccess() {
     this.toastr.success('New Plan saved successfully!', 'Success!!!');
+  }
+
+  showError(error) {
+    let errors = {};
+    errors = error.json();
+    const description = errors.hasOwnProperty('errors') ? this.getErrorDetails(error) : errors['description'];
+    this.toastr.error(description, errors['title'], {timeOut: 3000});
+    // this.toastr.error('Error', 'Major Error', {
+    //   timeOut: 3000,
+    // });
+  }
+
+  getErrorDetails(error) {
+    const body = error.json();
+    let dets = '';
+    for (const key of Object.keys(body['errors'])) {
+      dets += `${key} - ${body['errors'][key]}\n`;
+    }
+    return dets;
   }
 
   goBack(event) {

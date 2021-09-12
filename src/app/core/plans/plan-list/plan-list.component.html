@@ -6,7 +6,7 @@
           <mat-card style="margin-top: 30px">
             <mat-card-title class="mat-card-title-alt" fxLayout="row" fxLayoutAlign="center">
               <div style="margin-right: 90%; margin-bottom: -30px;">
-                <a class="btn btn-md btn-danger" (click)="navigateToPlainForm($event)" >Add Plan</a>
+                <a class="btn btn-md btn-danger" (click)="navigateToPlainForm($event)" *ngIf="isParlour()">Add Plan</a>
               </div>
               <p class="fs-2">Parlour Plans</p>
             </mat-card-title>
@@ -24,7 +24,7 @@
           <mat-card style="margin-top: 30px">
             <mat-card-title class="mat-card-title-alt" fxLayout="row" fxLayoutAlign="center">
               <div style="margin-right: 90%; margin-bottom: -30px;">
-                <a class="btn btn-md btn-danger" (click)="navigateToPlainForm($event)" >Add Plan</a>
+                <a class="btn btn-md btn-danger" (click)="navigateToPlainForm($event)" *ngIf="isParlour()">Add Plan</a>
               </div>
               <div>
                 <h2 style="margin-left: auto;">Parlour Plans</h2>

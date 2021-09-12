@@ -6,18 +6,18 @@ export class PaymentFormBuilder {
     constructor(private formBuilder: FormBuilder) {
     }
   
-    buildForm(main_member) {
-        return this.buildPaymentForm(main_member);
+    buildForm(payment) {
+        return this.buildPaymentForm(payment);
     }
 
     buildPaymentForm(details) {
         details = details === undefined ? newPayment() : details;
         return this.formBuilder.group({
-            'id': [details.id],
             'date': [details.date, [Validators.required]],
             'applicant_id': [details.applicant_id, [Validators.required]],
-            'plan_id': [details.plan_id, [Validators.required]],
-            'parlour_id': [details.parlour_id, [Validators.required]]
+            'cover': [details.cover, [Validators.required]],
+            'premium': [details.premium, [Validators.required]],
+            'last_payment': [details.last_payment, [Validators.required]]
         });
     }
 }

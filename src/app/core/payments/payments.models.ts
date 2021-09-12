@@ -1,6 +1,7 @@
 export interface Payment {
     id?: number;
     date: Date;
+    last_payment: Date;
     person_name: string;
     applicant_id: number;
     parlour_id: number;
@@ -10,9 +11,9 @@ export interface Payment {
 export function newPayment() {
     return {
         date: null,
-        person_name: null,
         applicant_id: null,
-        parlour_id: null,
-        plan_id: null
+        cover: null,
+        last_payment: null,
+        premium: null
     };
 }

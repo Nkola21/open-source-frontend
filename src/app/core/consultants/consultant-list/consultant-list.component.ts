@@ -8,8 +8,10 @@ import { Observable, BehaviorSubject, merge } from 'rxjs';
 
 import { map } from 'rxjs/operators';
 import { OpenService } from 'src/app/shared/services/open.service';
-
+import { ToastrService } from 'ngx-toastr';
 export class ConsultantDataSource extends DataSource<any> {
+
+
 
   /** Connect function called by the table to retrieve one stream containing the data to render. */
   dataChange: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
@@ -62,7 +64,8 @@ export class ConsultantListComponent implements OnInit {
     public openService: OpenService,
     public dialog: MatDialog,
     private route: ActivatedRoute,
-    public router: Router) { }
+    public router: Router,
+    private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(
@@ -119,15 +122,16 @@ export class ConsultantListComponent implements OnInit {
     this.router.navigate(['consultants', consultant.id,'form']);
   }
 
-  confirmDelete(consultant) {
-    this.consultant = consultant;
+  confirmDeleteConsultant() {
+    const button = document.getElementById('deleteConsultant');
+    button.click();
   }
 
   handleDelete(consultant) {
     this.openService.delete(`consultants/${consultant.id}/delete`)
       .subscribe(
         (consultant: any) => {
-
+          this.toastr.success("Successfully deleted consultant.", "Success")
         },
         error => {
           console.log(error);

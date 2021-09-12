@@ -41,7 +41,7 @@ const MainMemberRouting: ModuleWithProviders<MainMembersModule> = RouterModule.f
     MainMemberRouting,
     MaterialModule,
     MatListModule,
-    MatTooltipModule,
+    // MatTooltipModule,
     ReactiveFormsModule
   ],
   declarations: [
