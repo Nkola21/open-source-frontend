@@ -24,9 +24,16 @@
   
   .vl {
       border-left: 3px solid black;
-      height: 400px;
+      height: 350px;
       position: absolute;
       left:25%;
       margin-left: 2px;
       top: -10;
     }
+    .element{
+      height: 30vh; /* Would mean 50% of Viewport height */
+      width:  70vw; /* Would mean 75% of Viewport width*/
+      font-size: 20px;
+      
+    
+    } 

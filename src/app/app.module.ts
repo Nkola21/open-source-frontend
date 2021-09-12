@@ -15,7 +15,9 @@ import { MainMembersModule } from './core/main-members/main_members.module';
 // import { ApplicantModule } from './core/applicants/applicants.module';
 import { PaymentModule } from './core/payments/payments.module';
 import { ExtendedMembersModule } from './core/extended-members/extended_members.module';
-// import { ServicesModule } from './core/services/services.module';
+import { ServicesModule } from './core/services/services.module';
+
+import { ContactModule } from './core/contact/contact.module';
 import { HomeModule } from './core/home/home.module';
 import { LoginModule } from './core/login/login.module';
 import { SignupModule } from './core/signup/signup.module';
@@ -23,6 +25,7 @@ import { SignupModule } from './core/signup/signup.module';
 import { NavbarModule } from './core/navbar/navbar.module';
 import { NavbuttonsModule } from './core/nav-buttons/nav-buttons.module';
 import { ToastrModule } from 'ngx-toastr';
+//import { ContactComponent } from './core/contact/contact.component';
 
 const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
   { path: '',
@@ -33,6 +36,7 @@ const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
 @NgModule({
   declarations: [
     AppComponent,
+   // ContactComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,13 +52,15 @@ const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
     ExtendedMembersModule,
     // ApplicantModule,
     PaymentModule,
-    // ServicesModule,
+    ServicesModule,
+    ContactModule,
     HomeModule,
     LoginModule,
     SignupModule,
     // NavSignInModule,
     NavbarModule,
     NavbuttonsModule,
+    rootRouting,
     ToastrModule.forRoot()
   ],
   providers: [OpenService],

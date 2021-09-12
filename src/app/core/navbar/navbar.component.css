@@ -1,3 +1,62 @@
-nav {
-    background:#ff0000 !important;
-}
+* {
+    margin: 0;
+    padding:0;
+    font-family:'Arial Narrow';
+    
+  }
+    .header
+    {
+      background: red;
+     
+      
+    }
+   
+    .nav-item {
+      margin-left: 1px;
+      margin-bottom:10px;
+      padding: 3px;
+      margin: 7px 0px 2px 5px;
+    }
+    .btn2{
+      background-color: black;
+      margin: 3px 0px 2px 5px;
+      width: 70px;
+      padding: 0px;
+    
+
+    }
+    .nav-link {
+      color:white!important;
+      font-size: 15px !important;
+      padding: 0 0 5px 0 !important;
+      display: unset !important;
+      font-weight: 300%!important;
+      font-family: serif;
+      padding: 15px;
+      margin-top: 0px 20px;
+    }
+    .navbar-brand img {
+      width: 100px;
+      top:0; 
+      left:1px;
+      background-color: whitesmoke;
+      height: 60px;
+      position:fixed; 
+      
+    }
+    .fa-bars {
+      color: #fff;
+      font-size: 40px!important;
+    }
+    .navbar-toggler {
+      border: 0 !important;
+      outline: none !important;
+      padding: initial !important;
+    }
+    .active-home {
+      border-bottom: 2px solid #fff;
+    }
+    .nav-link:hover {
+      border-bottom: 2px solid #fff;
+    }
+    
