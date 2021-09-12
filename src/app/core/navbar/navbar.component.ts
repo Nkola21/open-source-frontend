@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { OpenService } from 'src/app/shared/services/open.service';
 
@@ -7,8 +7,8 @@ import { OpenService } from 'src/app/shared/services/open.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit {
-  user: any;
+export class NavbarComponent implements OnInit, OnChanges {
+  @Input() user: any;
   permission: any;
 
   constructor(public openService: OpenService,
@@ -17,6 +17,10 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this.user = this.openService.getUser();
     this.permission = this.openService.getPermissions();    
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.user = changes.user;
   }
 
   handleLogout() {

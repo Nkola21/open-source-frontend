@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { OpenService } from 'src/app/shared/services/open.service';
 import { Plan } from './../plans.model';
 import { PlanFormBuilder } from './plan-form.builder';
-
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-plan-form',
@@ -27,8 +27,9 @@ export class PlanFormComponent implements OnInit {
   constructor(public openService: OpenService,
     private route: ActivatedRoute,
     public router: Router,
-    private fb: FormBuilder
-  ) { 
+    private fb: FormBuilder,
+    private toastr: ToastrService
+  ) {
       this.formBuilder = new PlanFormBuilder(fb)
     }
 
@@ -70,7 +71,7 @@ export class PlanFormComponent implements OnInit {
       this.openService.put(`plans/${this.plan.id}/update`, formValue)
         .subscribe(
           (plan: any) => {
-
+            this.showSuccess();
           },
         error => {
             console.log(error);
@@ -85,6 +86,10 @@ export class PlanFormComponent implements OnInit {
             console.log(error);
         });
     }
+  }
+
+  showSuccess() {
+    this.toastr.success('New Plan saved successfully!', 'Success!!!');
   }
 
   goBack(event) {

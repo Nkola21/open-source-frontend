@@ -22,7 +22,7 @@ import { SignupModule } from './core/signup/signup.module';
 // import { NavSignInModule } from './core/nav-signin/nav-signin.module';
 import { NavbarModule } from './core/navbar/navbar.module';
 import { NavbuttonsModule } from './core/nav-buttons/nav-buttons.module';
-
+import { ToastrModule } from 'ngx-toastr';
 
 const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
   { path: '',
@@ -54,7 +54,8 @@ const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
     SignupModule,
     // NavSignInModule,
     NavbarModule,
-    NavbuttonsModule
+    NavbuttonsModule,
+    ToastrModule.forRoot()
   ],
   providers: [OpenService],
   bootstrap: [AppComponent]

@@ -15,19 +15,15 @@
           <a class="" href="#"></a>
         </li>
       </ul>
-      <div class="m-2">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0" >
-            <li>
-              <a id="Logout" class="btn btn-dark" [routerLink]="['/login']" routerLinkActive="active align-content-top" style="height: 40px; margin-right: 10px">
-                <p class="fs-5" style="margin-bottom: 45px;">{{ getUsername() }}</p>
-              </a>
-            </li>
-            <li>
-              <a id="logout" class="btn btn-dark " (click)="handleLogout()" style="height: 40px;">
-                  <p class="fs-5">Logout</p>
-              </a>
-              </li>
+      <div class="btn-group" role="group" aria-label="Button group with nested dropdown">      
+        <div class="btn-group" role="group">
+          <button id="btnGroupDrop1" type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            {{ user.first_name }}
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+            <li><a class="dropdown-item" (click)="handleLogout()">Logout</a></li>
           </ul>
+        </div>
       </div>
     </div>
   </div>
