@@ -7,7 +7,7 @@
             <mat-card-title class="mat-card-title-alt" fxLayout="row" fxLayoutAlign="center">
               <div class="d-flex justify-content-between">
                 <div>
-                  <a class="btn btn-md btn-dark" >Add Applicant</a>
+                  <a class="btn btn-md btn-dark" *ngIf="isConsultant()">Add Applicant</a>
                 </div>
                 <div>
                   <p class="fs-2" style="margin-left: auto;">Applicants</p>
@@ -32,7 +32,8 @@
             <mat-card-title class="mat-card-title-alt" fxLayout="row" fxLayoutAlign="center">
               <div class="d-flex justify-content-between">
                 <div class="d-flex justify-content-between">            
-                  <div class="btn-group" role="group" style="margin-right: 10px;"><a class="btn btn-md btn-dark" >Add Applicant</a></div>
+                  <div class="btn-group" role="group" style="margin-right: 10px;"><a class="btn btn-md btn-dark" *ngIf="isConsultant()">Add Applicant</a></div>
+                  <div class="btn-group" role="group" style="margin-right: 10px;"><a class="btn btn-md btn-dark" (click)="getCVSFile($event)" *ngIf="isParlour()">Download CSV</a></div>
                   <div class="btn-group" role="group">
                     <button id="btnGroupDrop1" type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                       Dropdown
@@ -136,9 +137,11 @@
                 <ng-container matColumnDef="actions">
                   <th style="width: 330px;" mat-header-cell *matHeaderCellDef>Action</th>
                   <td mat-cell *matCellDef="let main_member">
-                    <a class="btn btn-md btn-dark m-2" (click)="navigateToMainMemberView(main_member)">VIEW</a>
                     <a class="btn btn-md btn-dark m-2" (click)="navigateToMainMemberForm(main_member)">EDIT</a>
-                    <button class="btn btn-md btn-dark" (click)="confirmDeleteApplicant(main_member)">DELETE</button>
+                    <a class="btn btn-md btn-dark m-2" (click)="navigateToPaymentForm(main_member)">PAY NOW</a>
+                    <!-- <dialog-elements-example></dialog-elements-example> -->
+                    <button class="btn btn-md btn-dark" data-bs-toggle="modal" data-bs-target="#confirmDeleteApplicantModal">DELETE</button>
+                    <button class="btn btn-md btn-dark" style="display: none;" id="deleteApplicant" (click)="handleDelete(main_member)">DELETE</button>
                   </td>
                 </ng-container>
   
@@ -159,30 +162,29 @@
   ...
 </div>
 
-  <div id="confirmDeleteApplicantModal" class="modal fade">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" *ngIf="main_member">Delete Applicant: {{ main_member.first_name }} {{ main_member.last_name}}</h4>
+<!-- Modal -->
+<div class="modal fade" id="confirmDeleteApplicantModal" tabindex="-1" aria-labelledby="confirmDeleteApplicantModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fs-4" id="confirmDeleteApplicantModalLabel">Delete Applicant</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="">
+          <p class="mb-0 ml-3 fs-5" >
+            Deleting this record will mean that this applicant can no longer be available on the system.
+          </p>
         </div>
-        <div class="modal-body">
-          <div class="text-center">
-            <h5 class="mb-0 ml-3" >
-              Deleting this consultant will mean that this user can no longer access and use the system.
-            </h5>
-          </div>
-          <br />
-          <div class="ml-3">
-            <h5>Do you want to proceed?</h5>
-          </div>
+        <br />
+        <div class="ml-3">
+          <p class="fs-5">Do you want to proceed?</p>
         </div>
-        <div class="modal-footer" style="text-align: center">
-          <button id="confirmDelete" class="btn btn-danger" data-dismiss="modal" (click)="handleDelete(main_member)">Delete
-          </button>
-          <button class="btn btn-default" data-dismiss="modal">Cancel</button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-dark" (click)="confirmDeleteApplicant()">Save changes</button>
       </div>
     </div>
   </div>
-
+</div>

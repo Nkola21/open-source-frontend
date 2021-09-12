@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { OpenService } from 'src/app/shared/services/open.service';
 import { MainMember, newMainMember } from './../main-members.models';
+import { ToastrService } from 'ngx-toastr';
+
 
 export class MainMemberFormBuilder {
   constructor(private formBuilder: FormBuilder) {
@@ -39,7 +41,8 @@ export class MainMemberFormComponent implements OnInit  {
   constructor(public openService: OpenService,
     private route: ActivatedRoute,
     public router: Router,
-    private fb: FormBuilder) {
+    private fb: FormBuilder,
+    private toastr: ToastrService) {
       this.formBuilder = new MainMemberFormBuilder(fb);
      }
 
@@ -67,6 +70,13 @@ export class MainMemberFormComponent implements OnInit  {
         main_member => {
           console.log("Main member: ", main_member);
           this.main_member = main_member;
+          const obj = {
+            'applicant_id': this.main_member.applicant.id,
+            'plan_id': this.main_member.applicant.plan.id,
+            'cover': this.main_member.applicant.plan.cover,
+            'premium': this.main_member.applicant.plan.premium,
+            'date': new Date()
+          }
           this.initForm(this.main_member);
         },
         error => console.log("ERROR"));
@@ -74,7 +84,7 @@ export class MainMemberFormComponent implements OnInit  {
 
   submit() {
     const formValue = this.form.value;
-    console.log(formValue);
+
     if (this.main_member) {
       this.openService.put(`main-members/${this.main_member.id}/update`, formValue)
         .subscribe(
@@ -88,12 +98,16 @@ export class MainMemberFormComponent implements OnInit  {
       this.openService.post(`main-members`, formValue)
         .subscribe(
           (user: any) => {
-
+            this.showError
           },
         error => {
-            console.log(error);
+            this.showError(error);
         });
     }
+  }
+
+  showSuccess() {
+    this.toastr.success('New Applicant saved successfully!', 'Success!!!');
   }
 
   goBack(event) {
@@ -119,4 +133,22 @@ export class MainMemberFormComponent implements OnInit  {
     return null;
   }
 
+  showError(error) {
+    let errors = {};
+    errors = error.json();
+    const description = errors.hasOwnProperty('errors') ? this.getErrorDetails(error) : errors['description'];
+    this.toastr.error(description, errors['title'], {timeOut: 3000});
+    // this.toastr.error('Error', 'Major Error', {
+    //   timeOut: 3000,
+    // });
+  }
+
+  getErrorDetails(error) {
+    const body = error.json();
+    let dets = '';
+    for (const key of Object.keys(body['errors'])) {
+      dets += `${key} - ${body['errors'][key]}\n`;
+    }
+    return dets;
+  }
 }

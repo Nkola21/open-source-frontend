@@ -68,9 +68,10 @@
                     <a class="btn btn-md btn-danger m-2" [routerLink]="['/consultants/consultant.id/form']">VIEW</a>
                     <a class="btn btn-md btn-danger" [routerLink]="['/consultants/consultant.id/form']">EDIT</a>
                     <a class="btn btn-md btn-danger" 
-                    data-toggle="modal" 
-                    data-target="#confirmDeleteConsultantModal"
-                    (click)="confirmDelete(consultant)">DELETE</a>
+                      data-bs-toggle="modal"
+                      data-bs-target="#confirmDeleteConsultantModal"
+                      (click)="confirmDeleteConsultant()">DELETE</a>
+                    <button class="btn btn-md btn-dark" style="display: none;" id="deleteConsultant" (click)="handleDelete(consultant)">DELETE</button>
                   </td>
                 </ng-container>
   
@@ -83,31 +84,30 @@
       </div>
     </div>
   </mat-card>
-
-  <div id="confirmDeleteConsultantModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" *ngIf="consultant">Delete Consultant: {{ consultant.first_name }} {{ consultant.last_name}}</h4>
+  
+  <!-- Modal -->
+<div class="modal fade" id="confirmDeleteConsultantModal" tabindex="-1" aria-labelledby="confirmDeleteConsultantModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fs-4" id="confirmDeleteConsultantModalLabel">Delete Consultant</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="">
+          <p class="mb-0 ml-3 fs-5" >
+            Deleting this consultant will mean that this user can no longer access and use the system.
+          </p>
         </div>
-        <div class="modal-body">
-          <div class="text-center">
-            <h5 class="mb-0 ml-3" >
-              Deleting this consultant will mean that this user can no longer access and use the system.
-            </h5>
-          </div>
-          <br />
-          <div class="ml-3">
-            <h5>Do you want to proceed?</h5>
-          </div>
+        <br />
+        <div class="ml-3">
+          <p class="fs-5">Do you want to proceed?</p>
         </div>
-        <div class="modal-footer" style="text-align: center">
-          <button id="confirmDelete" class="btn btn-danger" data-dismiss="modal" (click)="handleDelete(consultant)">Delete
-          </button>
-          <button class="btn btn-default" data-dismiss="modal">Cancel</button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-dark" (click)="confirmDeleteConsultant()">Delete</button>
       </div>
     </div>
   </div>
-  
+</div>

@@ -122,4 +122,9 @@ export class PlanListComponent implements OnInit {
     console.log("Navigate");
     this.router.navigate(['plans', 'form']);
   }
+
+  isParlour() {
+    return this.permission == 'Parlour';
+  }
+
 }

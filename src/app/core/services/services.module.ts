@@ -19,7 +19,6 @@ const ServicesRouting: ModuleWithProviders<ServicesModule> = RouterModule.forChi
 @NgModule({
   declarations: [
     ServicesComponent,
-
   ], 
   imports: [
     CommonModule,

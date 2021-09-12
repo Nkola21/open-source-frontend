@@ -25,7 +25,7 @@ import { SignupModule } from './core/signup/signup.module';
 import { NavbarModule } from './core/navbar/navbar.module';
 import { NavbuttonsModule } from './core/nav-buttons/nav-buttons.module';
 import { ToastrModule } from 'ngx-toastr';
-//import { ContactComponent } from './core/contact/contact.component';
+import { HomeComponent } from './core/home/home.component';
 
 const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
   { path: '',
@@ -65,5 +65,6 @@ const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
   ],
   providers: [OpenService],
   bootstrap: [AppComponent]
+  // entryComponents: [HomeComponent]
 })
 export class AppModule { }
