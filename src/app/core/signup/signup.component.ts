@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { OpenService } from 'src/app/shared/services/open.service';
 import { Parlour } from './../parlours/parlours.models';
@@ -17,6 +17,7 @@ export class SignupComponent implements OnInit {
   form: FormGroup;
   constructor(public openService: OpenService,
     public router: Router,
+    public route:ActivatedRoute,
     private fb: FormBuilder) {
       this.formBuilder = new ParlourSignupFormBuilder(fb);
      }

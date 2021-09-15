@@ -27,6 +27,12 @@ import { NavbuttonsModule } from './core/nav-buttons/nav-buttons.module';
 import { ToastrModule } from 'ngx-toastr';
 import { HomeComponent } from './core/home/home.component';
 
+
+
+
+import { TermsandConditionsModule} from './core/termsandconditions/termsandconditions.module';
+import { EmailreminderModule } from './core/emailreminder/emailreminder.module';
+
 const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
   { path: '',
     pathMatch: 'full',
@@ -36,6 +42,7 @@ const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
 @NgModule({
   declarations: [
     AppComponent,
+     
    // ContactComponent,
   ],
   imports: [
@@ -60,6 +67,9 @@ const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
     // NavSignInModule,
     NavbarModule,
     NavbuttonsModule,
+    TermsandConditionsModule,
+    EmailreminderModule,
+    
     rootRouting,
     ToastrModule.forRoot()
   ],

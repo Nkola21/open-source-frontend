@@ -1,0 +1,21 @@
+.element{
+  height: 70vh; /* Would mean 50% of Viewport height */
+  width:  80vw; /* Would mean 75% of Viewport width*/
+}
+* {
+    margin: 0px;
+    padding:0px;
+    font-family: 'Arial Narrow';
+    
+    
+
+  }
+  .sub-text {
+
+    
+    color:black;
+   
+    padding: 20px 20px;
+    margin: 1px 80px 30px 150px;
+   
+    }

@@ -24,11 +24,12 @@
 .features img{
   max-width: 77%;
   cursor:pointer;
-  margin: 10px;
+  margin: 10px 50px 10px 50px;
+  padding: 20px 20px 20px 50px;
 }
 .data {
   margin: 80px 0px 80px 0px;
-  
+  padding: 20px 20px 20px 50px;
   
 }
 .title{
