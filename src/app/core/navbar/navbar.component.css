@@ -10,16 +10,22 @@
      
       
     }
-   
-    .nav-item {
+    .nav-item2 {
       margin-left: 1px;
       margin-bottom:2px;
       padding: 1px;
-      margin: 5px 0px 2px 5px;
+      margin: 3px 0px 2px 5px;
     }
+    .nav-item {
+      
+      margin-bottom:2px;
+      padding: 10px;
+      margin: 2px 0px 2px 0px;
+    }
+  
     .btn{
       background-color: black;
-      margin: 0px 0px 2px 0px;
+      margin: 0px 5px 4px 0px;
       width: 70px;
       padding: 0px;
     
@@ -28,13 +34,14 @@
     .nav-link {
       color:white!important;
       font-size: 15px !important;
-      padding: 0 0 5px 0 !important;
+      padding: 1px 0px 0px!important;
       display: unset !important;
       font-weight: 300%!important;
       font-family: serif;
-      padding: 15px;
-      margin-top: 0px 20px;
+      margin: 50px;
+      
     }
+    
     .navbar-brand img {
       width: 100px;
       top:0; 
@@ -55,7 +62,5 @@
     .active-home {
       border-bottom: 2px solid #fff;
     }
-    .nav-link:hover {
-      border-bottom: 2px solid #fff;
-    }
+    
     

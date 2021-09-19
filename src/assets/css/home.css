@@ -15,14 +15,7 @@
     
   }
 
-  .nav-link {
-    color:white!important;
-    font-size: 15px !important;
-    padding: 0 0 5px 0 !important;
-    display: unset !important;
-    font-weight: 300%!important;
-    font-family: serif;
-  }
+  
   .navbar-brand img {
     width: 10%;
     
@@ -38,9 +31,11 @@
   }
   .active-home {
     border-bottom: 2px solid #fff;
+    size: 20px;
   }
   .nav-link:hover {
     border-bottom: 2px solid #fff;
+   
   }
   
   /*-------footer-------*/
