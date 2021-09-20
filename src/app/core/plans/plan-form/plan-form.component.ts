@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, AbstractControl, ValidatorFn } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OpenService } from 'src/app/shared/services/open.service';
 import { Plan } from './../plans.model';
@@ -97,9 +97,6 @@ export class PlanFormComponent implements OnInit {
     errors = error.json();
     const description = errors.hasOwnProperty('errors') ? this.getErrorDetails(error) : errors['description'];
     this.toastr.error(description, errors['title'], {timeOut: 3000});
-    // this.toastr.error('Error', 'Major Error', {
-    //   timeOut: 3000,
-    // });
   }
 
   getErrorDetails(error) {

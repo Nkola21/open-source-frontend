@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { OpenService } from 'src/app/shared/services/open.service';
-import { MainMember, newMainMember } from './../main-members.models';
+import { MainMember, newMainMember, newApplicant } from './../main-members.models';
 import { ToastrService } from 'ngx-toastr';
 
 
@@ -18,13 +18,34 @@ export class MainMemberFormBuilder {
     details = details === undefined ? newMainMember() : details;
     return this.formBuilder.group({
       'id': [details.id],
+      'plan': this.buildPlan(details.plan),
       'first_name': [details.first_name, [Validators.required, Validators.minLength(6)]],
       'last_name': [details.last_name, [Validators.required, Validators.minLength(6)]],
       'id_number': [details.id_number, [Validators.required]],
       'date_joined': [details.date_joined, [Validators.required]],
-      'contact': [details.contact, [Validators.required]]
+      'contact': [details.contact, [Validators.required]],
+      'applicant': this.buildApplicantForm(details.applicant)
     });
   }
+
+  buildPlan(details) {
+    details = details === undefined ? {'id': null, 'name': null} : details;
+    return this.formBuilder.group({
+      'id': [details.id],
+    });
+  }
+
+  buildApplicantForm(details) {
+    details = details === undefined ? newApplicant() : details;
+    return this.formBuilder.group({
+        'id': [details.id],
+        'policy_num': [details.policy_num, [Validators.required, Validators.minLength(6)]],
+        'document': [details.document, [Validators.required, Validators.minLength(6)]],
+        'cancelled': [details.cancelled, [Validators.required]],
+        'status': [details.status, [Validators.required]],
+        'date': [details.date, [Validators.required]]
+    });
+}
 }
 
 
@@ -37,6 +58,9 @@ export class MainMemberFormComponent implements OnInit  {
   main_member: any;
   formBuilder: MainMemberFormBuilder;
   form: FormGroup;
+  parlour_id: any;
+  user: any;
+  plans: Array<any> = [];
 
   constructor(public openService: OpenService,
     private route: ActivatedRoute,
@@ -47,12 +71,15 @@ export class MainMemberFormComponent implements OnInit  {
      }
 
   ngOnInit(): void {
+    this.parlour_id = this.openService.getParlourId();
+    this.user = this.openService.getUser()
     this.route.params.subscribe(
       (params) => {
         const id = +params['id'];
         if (id){
           this.getMainMember(id);
         }else{
+          this.initPlans();
           this.initForm(this.main_member);
         }
       }
@@ -70,13 +97,7 @@ export class MainMemberFormComponent implements OnInit  {
         main_member => {
           console.log("Main member: ", main_member);
           this.main_member = main_member;
-          const obj = {
-            'applicant_id': this.main_member.applicant.id,
-            'plan_id': this.main_member.applicant.plan.id,
-            'cover': this.main_member.applicant.plan.cover,
-            'premium': this.main_member.applicant.plan.premium,
-            'date': new Date()
-          }
+          this.initPlans();
           this.initForm(this.main_member);
         },
         error => console.log("ERROR"));
@@ -84,7 +105,8 @@ export class MainMemberFormComponent implements OnInit  {
 
   submit() {
     const formValue = this.form.value;
-
+    formValue["parlour_id"] = this.parlour_id;
+    console.log(formValue);
     if (this.main_member) {
       this.openService.put(`main-members/${this.main_member.id}/update`, formValue)
         .subscribe(
@@ -95,13 +117,14 @@ export class MainMemberFormComponent implements OnInit  {
             console.log(error);
         });
     }else {
-      this.openService.post(`main-members`, formValue)
+      this.openService.post(`consultants/${this.user.id}/main-members`, formValue)
         .subscribe(
           (user: any) => {
-            this.showError
+            this.showSuccess();
           },
         error => {
-            this.showError(error);
+          const description = error.hasOwnProperty('errors') ? this.getErrorDetails(error) : error['description'];
+          this.toastr.error(description, error['title'], {timeOut: 3000});
         });
     }
   }
@@ -116,19 +139,21 @@ export class MainMemberFormComponent implements OnInit  {
   }
 
   getAge() {
-    const year_digits = this.main_member.id_number ? this.main_member.id_number.substr(0,2) : null;
+    if (this.main_member) {
+      const year_digits = this.main_member.id_number ? this.main_member.id_number.substr(0,2) : null;
 
-    let this_year = new Date().getFullYear().toString().substr(2,3);
-    if (year_digits) {
-        if (parseInt(year_digits) >= 0 && parseInt(year_digits) < 35) {
-          const age = parseInt(this_year) - parseInt(year_digits);
+      let this_year = new Date().getFullYear().toString().substr(2,3);
+      if (year_digits) {
+          if (parseInt(year_digits) >= 0 && parseInt(year_digits) < 35) {
+            const age = parseInt(this_year) - parseInt(year_digits);
+            return age + " years old";
+          }
+          const year_born = "19" + year_digits;
+          this_year = new Date().getFullYear().toString()
+
+          const age = parseInt(this_year) - parseInt(year_born)
           return age + " years old";
-        }
-        const year_born = "19" + year_digits;
-        this_year = new Date().getFullYear().toString()
-
-        const age = parseInt(this_year) - parseInt(year_born)
-        return age + " years old";
+      }
     }
     return null;
   }
@@ -150,5 +175,21 @@ export class MainMemberFormComponent implements OnInit  {
       dets += `${key} - ${body['errors'][key]}\n`;
     }
     return dets;
+  }
+
+  initPlans() {
+    this.openService.getUrl(`parlours/${this.parlour_id}/plans/all`)
+    .subscribe((plans: any) => {
+      console.log(plans);
+      this.plans = plans.map((plan: any) => {
+          return {
+            id: plan.id,
+            name: plan.plan
+          };
+      });
+    },
+    error => {
+      this.showError(error);
+    });
   }
 }

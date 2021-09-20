@@ -31,6 +31,10 @@ const MainMemberRouting: ModuleWithProviders<MainMembersModule> = RouterModule.f
   {
     path: 'main-members/:id/form',
     component: MainMemberFormComponent
+  },
+  {
+    path: 'main-members/form',
+    component: MainMemberFormComponent
   }
 
 ]);

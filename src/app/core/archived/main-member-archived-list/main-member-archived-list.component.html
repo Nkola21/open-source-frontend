@@ -5,29 +5,14 @@
         <div fxFlex="100">
           <mat-card style="margin-top: 30px" class="line-top">
             <mat-card-title class="mat-card-title-alt" fxLayout="row" fxLayoutAlign="center">
-              <div class="d-flex justify-content-between">
+              <div class="d-flex justify-content-center">
                 <div>
-                  <a class="btn btn-md btn-dark" *ngIf="isConsultant()" (click)="navigateToMainMemberAddForm()">Add Applicant</a>
-                </div>
-                <div class="d-flex justify-content-center">
-                  <p class="fs-1" style="margin-left: auto;"><strong>Applicants</strong></p>
-                </div>
-                <div class="d-flex justify-content-between">
-                  <form [formGroup]="form" (ngSubmit)="getBySearchField()" *ngIf="false" class="row row-cols-lg-auto g-3 align-items-center">
-                    <div style="margin-right: 10px;">
-                      <input type="text" class="form-control" id="searchField" formControlName="searchField" placeholder="Search">
-                    </div>
-                    <div>
-                      <button id="btnGroupDrop1" type="button" class="btn btn-dark" (click)="getBySearchField()" >
-                        Search
-                      </button>
-                    </div>
-                  </form>
+                  <p class="fs-1" style="margin-left: auto;"><strong>Archived Applicants</strong></p>
                 </div>
               </div>
             </mat-card-title>
             <mat-card-content>
-              <p style="margin-top: 2rem;"><strong class="fs-4">There are currently no Main Members. </strong></p>
+              <p style="margin-top: 2rem;"><strong class="fs-4">There are currently no Archived Main Members. </strong></p>
             </mat-card-content>
           </mat-card>
         </div>
@@ -41,10 +26,10 @@
             <mat-card-title class="mat-card-title-alt" fxLayout="row" fxLayoutAlign="center">
               <div class="d-flex justify-content-between">
                 <div class="d-flex justify-content-between">            
-                  <div class="btn-group" role="group" style="margin-right: 10px;"><a class="btn btn-md btn-dark" *ngIf="isConsultant()" (click)="navigateToMainMemberAddForm()">Add Applicant</a></div>
-                  <div class="btn-group" role="group" style="margin-right: 10px;"><a class="btn btn-md btn-dark" (click)="getCVSFile($event)">Export to Excel</a></div>
+                  <div class="btn-group" role="group" style="margin-right: 10px;"><a class="btn btn-md btn-dark" *ngIf="false">Add Applicant</a></div>
+                  <div class="btn-group" role="group" style="margin-right: 10px;"><a class="btn btn-md btn-dark" (click)="getCVSFile($event)" *ngIf="false">Export to Excel</a></div>
                   <div class="btn-group" role="group">
-                    <button id="btnGroupDrop1" type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button id="btnGroupDrop1" type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" *ngIf="false">
                       Payment Status
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
@@ -55,11 +40,9 @@
                     </ul>
                   </div>
                 </div>
-
                 <div>
-                  <p class="fs-1" style="margin-left: auto;"><strong>Applicants</strong></p>
+                  <p class="fs-1" style="margin-left: auto;"><strong>Archived Applicants</strong></p>
                 </div>
-
                 <div class="d-flex justify-content-between">
                   <form [formGroup]="form" (ngSubmit)="getBySearchField()" *ngIf="form" class="row row-cols-lg-auto g-3 align-items-center">
                     <div style="margin-right: 10px;">
@@ -146,9 +129,10 @@
                 <ng-container matColumnDef="actions">
                   <th style="width: 330px;" class="fs-6" mat-header-cell *matHeaderCellDef>Action</th>
                   <td mat-cell *matCellDef="let main_member">
-                    <a class="btn btn-md btn-dark m-2" (click)="navigateToMainMemberForm(main_member)">Edit</a>
                     <a class="btn btn-md btn-dark m-2" (click)="navigateToPaymentForm(main_member)">Pay now</a>
                     <!-- <dialog-elements-example></dialog-elements-example> -->
+                    <button class="btn btn-md btn-dark" (click)="confirmRestoreApplicant(main_member)">Restore</button>
+                    <button class="btn btn-md btn-dark" style="display: none;" id="restoreApplicant" data-bs-toggle="modal" data-bs-target="#confirmRestoreApplicantModal"></button>
                     <button class="btn btn-md btn-dark" (click)="confirmDeleteApplicant(main_member)">Delete</button>
                     <button class="btn btn-md btn-dark" style="display: none;" id="deleteApplicant" data-bs-toggle="modal" data-bs-target="#confirmDeleteApplicantModal"></button>
                   </td>
@@ -164,11 +148,37 @@
     </div>
   </mat-card>
   
-  <button id="openModal" class="btn btn-md btn-danger" data-toggle="modal" data-modal="#confirmDeleteApplicantModal" style="display: none;"></button>
-  
 <!-- Scrollable modal -->
 <div class="modal-dialog modal-dialog-scrollable" id="modalShow">
   ...
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="confirmRestoreApplicantModal" tabindex="-1" aria-labelledby="confirmRestoreApplicantModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fs-4" id="confirmRestoreApplicantModalLabel" *ngIf="main_member">Restore Applicant: {{main_member.first_name}} {{main_member.last_name}}</h5>
+        <h5 class="modal-title fs-4" id="confirmRestoreApplicantModalLabel" *ngIf="!main_member">Restore Applicant</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="">
+          <p class="mb-0 ml-3 fs-5" >
+            By restoring this applicant, it will be active on the system.
+          </p>
+        </div>
+        <br />
+        <div class="ml-3">
+          <p class="fs-5">Do you want to proceed?</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="handleRestore(main_member)">Restore</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Modal -->

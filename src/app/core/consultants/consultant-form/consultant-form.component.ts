@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { OpenService } from 'src/app/shared/services/open.service';
-
+import { ToastrService } from 'ngx-toastr';
 import { Consultant, newConsultant } from './../consultants.models'
 
 
@@ -18,8 +18,8 @@ export class ConsultantFormBuilder {
     details = details === undefined ? newConsultant() : details;
     return this.formBuilder.group({
       'id': [details.id],
-      'first_name': [details.first_name, [Validators.required, Validators.minLength(6)]],
-      'last_name': [details.last_name, [Validators.required, Validators.minLength(6)]],
+      'first_name': [details.first_name, [Validators.required]],
+      'last_name': [details.last_name, [Validators.required]],
       'email': [details.email, [Validators.required]],
       'username': [details.username, [Validators.required, Validators.minLength(6)]],
       'branch': [details.branch, [Validators.required]],
@@ -46,6 +46,7 @@ export class ConsultantFormComponent implements OnInit {
   constructor(public openService: OpenService,
     private route: ActivatedRoute,
     public router: Router,
+    private toastr: ToastrService,
     private fb: FormBuilder) {
       this.formBuilder = new ConsultantFormBuilder(fb);
      }
@@ -58,6 +59,7 @@ export class ConsultantFormComponent implements OnInit {
       (params) => {
         const id = +params['id'];
         if (id){
+          console.log("ID is valid")
           this.getConsultant(id);
         }else{
           this.initForm(this.consultant);
@@ -70,6 +72,7 @@ export class ConsultantFormComponent implements OnInit {
     this.openService.getOne(`consultants/${id}`)
       .subscribe(
         consultant => {
+          console.log(consultant);
           this.consultant = consultant
           this.initForm(this.consultant);
         },
@@ -89,19 +92,19 @@ export class ConsultantFormComponent implements OnInit {
       this.openService.put(`consultants/${this.consultant.id}/update`, formValue)
         .subscribe(
           (user: any) => {
-            
+            this.showSuccess();
           },
         error => {
-            console.log(error);
+          this.showError(error);
         });
     }else {
       this.openService.post(`consultants`, formValue)
         .subscribe(
           (user: any) => {
-
+            this.showSuccess();
           },
         error => {
-            console.log(error);
+            this.showError(error);
         });
     }
   }
@@ -111,4 +114,11 @@ export class ConsultantFormComponent implements OnInit {
     window.history.back();
   }
 
+  showSuccess() {
+    this.toastr.success('New Plan saved successfully!', 'Success!!!');
+  }
+
+  showError(error) {
+    this.toastr.error(error["message"], error['statusText'], {timeOut: 3000});
+  }
 }

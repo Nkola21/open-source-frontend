@@ -1,14 +1,17 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataSource } from '@angular/cdk/collections';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Observable, BehaviorSubject, merge } from 'rxjs';
-import { FormBuilder, FormGroup } from '@angular/forms';
+
 import { map } from 'rxjs/operators';
-import { OpenService } from 'src/app/shared/services/open.service';
+import { OpenService } from './../../../shared/services/open.service';
 import { ToastrService } from 'ngx-toastr';
+import { FormBuilder, FormGroup } from '@angular/forms';
+// import { saveAs } from 'file-saver';
+
 
 export class SearchFormBuilder {
   constructor(private formBuilder: FormBuilder) {
@@ -27,7 +30,7 @@ export class SearchFormBuilder {
 }
 
 
-export class ExtendedMemberDataSource extends DataSource<any> {
+export class MainMemberDataSource extends DataSource<any> {
 
   /** Connect function called by the table to retrieve one stream containing the data to render. */
   dataChange: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
@@ -57,30 +60,33 @@ export class ExtendedMemberDataSource extends DataSource<any> {
   disconnect() { }
 }
 
+
 const dialogConfig = new MatDialogConfig();
 
-@Component({
-  selector: 'app-extended-member-list',
-  templateUrl: './extended-member-list.component.html',
-  styleUrls: ['./extended-member-list.component.css']
-})
-export class ExtendedMemberListComponent implements OnInit {
 
-  displayedColumns = ['full_name', 'type', 'relation', 'date', 'contact', 'date_joined', 'actions'];
-  extended_members: Array<any> = [];
+@Component({
+  selector: 'app-main-member-list',
+  templateUrl: './main-member-archived-list.component.html',
+  styleUrls: ['./main-member-archived-list.component.css']
+})
+export class MainMemberArchivedListComponent implements OnInit {
+
+  displayedColumns = ['full_name', 'id_number', 'contact', 'extended_members', 'premium', 'policy_num', 'policy', 'date_joined', 'status', 'actions'];
+  main_members: Array<any> = [];
+  main_member: any;
+  formBuilder: SearchFormBuilder;
+  form: FormGroup;
+  searchField: null;
+  status: null;
   dataSource: any;
   page: any;
   loadingState: any;
   tableSize: number;
   permission: any
+  parlour_id: any
   user: any;
-  searchField: null;
-  status: null;
-  applicant_id: any;
-  extended_member: any;
-  formBuilder: SearchFormBuilder;
-  form: FormGroup;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild("dataBlock") block: ElementRef;
 
   constructor(
     public openService: OpenService,
@@ -95,13 +101,10 @@ export class ExtendedMemberListComponent implements OnInit {
   ngOnInit(): void {
     this.permission = this.openService.getPermissions();
     this.user = this.openService.getUser();
-    this.route.params.subscribe(
-      (params) => {
-        const id = +params['id'];
-        this.applicant_id = id;
-        this.initExtendedMembers(id);
-      }
-    )
+    this.parlour_id = this.openService.getParlourId()
+
+    this.initSearchForm(this.searchField);
+    this.initMainMembers(this.user.id)
   }
 
   isParlour() {
@@ -118,11 +121,15 @@ export class ExtendedMemberListComponent implements OnInit {
 
   onPaginatorChange(event: any) {
     this.page = event;
-    this.dataSource = new ExtendedMemberDataSource(this.extended_members, this.page);
+    this.dataSource = new MainMemberDataSource(this.main_members, this.page);
   }
 
-  initExtendedMembers(id) {
-    this.extended_members = [];
+  initSearchForm(searchField: string) {
+    this.form = this.formBuilder.buildForm(searchField);
+  }
+
+  initMainMembers(id) {
+    this.main_members = [];
     const permission = this.permission;
     this.page = {
       'pageSize': 5,
@@ -130,50 +137,13 @@ export class ExtendedMemberListComponent implements OnInit {
     };
 
     this.loadingState = 'loading';
-    this.dataSource = new ExtendedMemberDataSource([], this.page);
+    this.dataSource = new MainMemberDataSource([], this.page);
 
-    this.openService.getUrl(`applicants/${id}/extended-members/all`)
-      .subscribe(
-        (extended_members: Array<any>) => {
-          console.log(extended_members);
-          this.extended_members = extended_members;
-          this.configureMainMembers(extended_members);
-          this.loadingState = 'complete';
-        },
-        error => {
-          console.log(error);
-        });
-  }
-
-  configureMainMembers(extended_members: Array<any>): void {
-    this.tableSize = this.extended_members.length
-    this.dataSource = new MatTableDataSource(extended_members);
-    this.initializePaginator()
-  }
-
-  navigateToExtendedMemberView(extended_members: any) {
-    this.router.navigate(['applicants', this.applicant_id, 'main-members', extended_members.id,'view']);
-  }
-
-  navigateToExtendedMemberForm(extended_member: any) {
-    console.log(this.applicant_id);
-    console.log(extended_member)
-    this.router.navigate(['applicants', this.applicant_id, 'extended-members', extended_member.id,'form']);
-  }
-
-  navigateToExtendedMemberAddForm() {
-    this.router.navigate(['applicants', this.applicant_id, 'extended-members', 'form']);
-  }
-
-  getBySearchField() {
-    const formValue = this.form.value;
-
-    this.openService.getUrl(`applicants/${this.applicant_id}/extended-members/all?search_string=${formValue["searchField"]}`)
+    this.openService.getUrl(`${permission.toLowerCase()}s/${id}/main-members/archived`)
       .subscribe(
         (main_members: Array<any>) => {
-          this.status = null;
-          this.searchField = formValue["searchField"];
-          this.extended_members = main_members;
+          console.log(main_members);         
+          this.main_members = main_members;
           this.configureMainMembers(main_members);
           this.loadingState = 'complete';
         },
@@ -182,16 +152,54 @@ export class ExtendedMemberListComponent implements OnInit {
         });
   }
 
-  confirmDeleteMember(extended_member: any) {
-    this.extended_member = extended_member;
-    const button = document.getElementById('deleteMember');
+  configureMainMembers(main_members: Array<any>): void {
+    this.tableSize = this.main_members.length
+    this.dataSource = new MatTableDataSource(main_members);
+    this.initializePaginator()
+  }
+
+  navigateToPaymentForm(main_member: any) {
+    'applicants/:id/payment/form'
+    this.router.navigate(['applicants', main_member.id, 'payment', 'form']);
+  }
+
+  navigateToMainMemberForm(main_member: any) {
+    this.router.navigate(['main-members', main_member.id,'form']);
+  }
+
+  navigateToExtendedMembersListView(id: number) {
+    this.router.navigate(['applicants', id,'extended-members', 'all']);
+  }
+
+  confirmRestoreApplicant(main_member: any) {
+    console.log(main_member);
+    this.main_member = main_member;
+    const button = document.getElementById('restoreApplicant');
     button.click();
   }
 
-  handleDelete() {
-    this.openService.delete(`extended-members/${this.extended_member.id}/delete`)
+  handleRestore(main_member) {
+    main_member.state=1;
+    this.openService.put(`main-members/${main_member.id}/restore`, main_member)
       .subscribe(
-        (extended_member: any) => {
+        (main_member: any) => {
+          this.toastr.success('Applicant has been restored!', 'Success');
+        },
+        error => {
+          this.toastr.error(error['message'], error['statusText']);
+        });
+  }
+
+  confirmDeleteApplicant(main_member: any) {
+    this.main_member = main_member;
+    const button = document.getElementById('deleteApplicant');
+    button.click();
+  }
+
+  handleDelete(main_member) {
+    this.openService.delete(`main-members/${main_member.id}/delete`)
+      .subscribe(
+        (main_member: any) => {
           this.toastr.success('Applicant has been deleted!', 'Success');
         },
         error => {
@@ -199,9 +207,60 @@ export class ExtendedMemberListComponent implements OnInit {
         });
   }
 
+  getByPaymentPaid() {
+    this.getByPaymentStatus('paid');  
+  }
+
+  getByPaymentUnpaid() {
+    this.getByPaymentStatus('unpaid');
+  }
+
+  getByPaymentSkipped() {
+    this.getByPaymentStatus('Skipped');
+  }
+  
+  getByPaymentLapsed() {
+    this.getByPaymentStatus('lapsed');
+  }
+
+  getByPaymentStatus(status) {
+    this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/archived?status=${status}`)
+      .subscribe(
+        (main_members: Array<any>) => {
+          this.status = status;
+          this.main_members = main_members;
+          this.configureMainMembers(main_members);
+          this.loadingState = 'complete';
+        },
+        error => {
+          console.log(error);
+        });
+  }
+
+  getBySearchField() {
+    const formValue = this.form.value;
+
+    this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/archived?search_string=${formValue["searchField"]}`)
+      .subscribe(
+        (main_members: Array<any>) => {
+          this.status = null;
+          this.searchField = formValue["searchField"];
+          this.main_members = main_members;
+          this.configureMainMembers(main_members);
+          this.loadingState = 'complete';
+        },
+        error => {
+          console.log(error);
+        });
+  }
+
+  showSuccess() {
+    this.toastr.success('Success', 'Toastr fun!');
+  }
+
   getCVSFile(event) {
     event.preventDefault();
-    this.openService.getUrl(`applicants/${this.applicant_id}/extended-members/file`)
+    this.openService.getUrl(`parlours/${this.parlour_id}/main-members/file`)
       .subscribe(
         (main_members: Array<any>) => {
           console.log("success.");

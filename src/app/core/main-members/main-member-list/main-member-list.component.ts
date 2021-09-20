@@ -82,6 +82,7 @@ export class MainMemberListComponent implements OnInit {
   loadingState: any;
   tableSize: number;
   permission: any
+  parlour_id: any
   user: any;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild("dataBlock") block: ElementRef;
@@ -99,7 +100,8 @@ export class MainMemberListComponent implements OnInit {
   ngOnInit(): void {
     this.permission = this.openService.getPermissions();
     this.user = this.openService.getUser();
-    console.log(this.permission);
+    this.parlour_id = this.openService.getParlourId()
+
     this.initSearchForm(this.searchField);
     this.initMainMembers(this.user.id)
   }
@@ -111,6 +113,7 @@ export class MainMemberListComponent implements OnInit {
   isConsultant() {
     return this.permission == 'Consultant';
   }
+
   initializePaginator() {
     this.dataSource.paginator = this.paginator;
   }
@@ -123,6 +126,7 @@ export class MainMemberListComponent implements OnInit {
   initSearchForm(searchField: string) {
     this.form = this.formBuilder.buildForm(searchField);
   }
+
   initMainMembers(id) {
     this.main_members = [];
     const permission = this.permission;
@@ -136,8 +140,7 @@ export class MainMemberListComponent implements OnInit {
 
     this.openService.getUrl(`${permission.toLowerCase()}s/${id}/main-members/all`)
       .subscribe(
-        (main_members: Array<any>) => {
-          console.log(main_members);         
+        (main_members: Array<any>) => {      
           this.main_members = main_members;
           this.configureMainMembers(main_members);
           this.loadingState = 'complete';
@@ -158,6 +161,10 @@ export class MainMemberListComponent implements OnInit {
     this.router.navigate(['applicants', main_member.id, 'payment', 'form']);
   }
 
+  navigateToMainMemberAddForm() {
+    this.router.navigate(['main-members', 'form']);
+  }
+
   navigateToMainMemberForm(main_member: any) {
     this.router.navigate(['main-members', main_member.id,'form']);
   }
@@ -171,7 +178,8 @@ export class MainMemberListComponent implements OnInit {
     this.router.navigate(['applicants', id,'extended-members', 'all']);
   }
 
-  confirmDeleteApplicant() {
+  confirmDeleteApplicant(main_member: any) {
+    this.main_member = main_member;
     const button = document.getElementById('deleteApplicant');
     button.click();
   }
@@ -240,7 +248,7 @@ export class MainMemberListComponent implements OnInit {
 
   getCVSFile(event) {
     event.preventDefault();
-    this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/file`)
+    this.openService.getUrl(`parlours/${this.parlour_id}/main-members/file`)
       .subscribe(
         (main_members: Array<any>) => {
           console.log("success.");

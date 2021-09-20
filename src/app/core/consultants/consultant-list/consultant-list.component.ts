@@ -9,6 +9,8 @@ import { Observable, BehaviorSubject, merge } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { OpenService } from 'src/app/shared/services/open.service';
 import { ToastrService } from 'ngx-toastr';
+
+
 export class ConsultantDataSource extends DataSource<any> {
 
 
@@ -122,7 +124,8 @@ export class ConsultantListComponent implements OnInit {
     this.router.navigate(['consultants', consultant.id,'form']);
   }
 
-  confirmDeleteConsultant() {
+  confirmDeleteConsultant(consultant: any) {
+    this.consultant = consultant;
     const button = document.getElementById('deleteConsultant');
     button.click();
   }

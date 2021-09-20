@@ -45,7 +45,7 @@ export class OpenService {
   }
 
   isLocal(): boolean {
-    return this.getBaseUrl() === 'http://localhost:8000/open-source';
+    return this.getBaseUrl() === 'http://localhost:8009/open-source';
   }
 
   setUserToken(token: string): void {
@@ -92,6 +92,17 @@ export class OpenService {
     return localStorage.getItem('parlour_id');
   }
 
+  isParlour() {
+    return this.getPermissions() == 'Parlour';
+  }
+
+  isConsultant() {
+    return this.getPermissions() == 'Consultant';
+  }
+
+  isAdmin() {
+    return this.getPermissions() == 'Admin';
+  }
 
   paramsToURLSearchParams(params: any): HttpParams {
     let searchParams = new HttpParams();

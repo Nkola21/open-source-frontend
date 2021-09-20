@@ -1,1 +1,79 @@
-<p>main-member-form works!</p>
+
+<mat-card>
+    <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="20px">
+        <div fxFlex="100">
+            <mat-card style="margin-top: 30px" class="line-top">
+                <mat-card-title class="mat-card-title-alt" fxLayout="row" fxLayoutAlign="center">
+                    <p class="fs-1"><strong>Member Form</strong></p>
+                </mat-card-title>
+            </mat-card>
+        </div>
+    </div>
+
+    <mat-card class="d-flex justify-content-center">
+        <form [formGroup]="form" (ngSubmit)="submit()" class="col-md-6" *ngIf="form">
+            <div class="mb-3">
+                <label for="first_name" class="col-form-label fs-4 d-flex justify-content-center">First Name:</label>
+                <input type="text" placeholder="First Name" mandatory class="form-control" id="first_name" formControlName="first_name">
+            </div>
+
+            <div class="mb-3">
+                <label for="last_name" class="col-form-label fs-4 d-flex justify-content-center">Last Name:</label>
+                <input type="last_name" mandatory class="form-control" placeholder="Last Name" id="last_name" formControlName="last_name">
+            </div>
+
+            <div class="mb-3">
+                <label for="number" class="col-form-label fs-4 d-flex justify-content-center">Number:</label>
+                <input type="text" class="form-control" placeholder="Number" id="number" formControlName="number">
+            </div>
+
+            <fieldset class="mb-3">
+                <div class="form-group row">
+                    <label class="col-xs-3 col-form-label fs-4 d-flex justify-content-center">Type of member:</label>
+                    <div class="col-xs-9">
+                        <select id="form.controls.type" class="form-control" formControlName="type">
+                            <option selected="selected" value="" >Select Member Type</option>
+                            <option [ngValue]="0" >Dependant</option>
+                            <option [ngValue]="1" >Extended Member</option>
+                            <option [ngValue]="2" >Additional Extended Member</option>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="mb-3">
+                <div class="form-group row">
+                    <label class="col-xs-3 col-form-label fs-4 d-flex justify-content-center">Type of member:</label>
+                    <div class="col-xs-9">
+                        <select id="form.controls.relation_to_main_member" class="form-control" formControlName="relation_to_main_member">
+                            <option selected="selected" value="" >Relation to Main Member</option>
+                            <option [ngValue]="0" >Child</option>
+                            <option [ngValue]="1" >Mother</option>
+                            <option [ngValue]="2" >Father</option>
+                            <option [ngValue]="3" >Brother</option>
+                            <option [ngValue]="4" >Sister</option>
+                            <option [ngValue]="5" >Nephew</option>
+                            <option [ngValue]="6" >Niece</option>
+                            <option [ngValue]="7" >Grant Parent</option>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div>
+                <label for="date_joined" class="col-form-label fs-4 d-flex justify-content-center">Date Joined:</label>
+            </div>
+            <mat-form-field appearance="fill">
+                <mat-label>Choose a date</mat-label>
+                <input mandatory class="form-control" id="date_joined" formControlName="date_joined" matInput [matDatepicker]="picker">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <div class="col-12 d-flex justify-content-center">
+                <button class="btn-dark btn-lg w-50 m-2" type="submit" (click)="goBack($event)">Back</button>
+                <button class="btn-dark btn-lg w-50 m-2" type="submit" (click)="submit()">Submit</button>
+            </div>
+        </form>
+    </mat-card>
+  </mat-card>

@@ -34,4 +34,8 @@ export class NavbarComponent implements OnInit, OnChanges {
     const username = this.user.person_name ? this.user.person_name : `${this.user.first_name} ${this.user.last_name}`;
     return username;  
   }
+
+  isParlour() {
+    return this.permission == 'Parlour';
+  }
 }

@@ -8,6 +8,8 @@ import { Observable, BehaviorSubject, merge } from 'rxjs';
 
 import { map } from 'rxjs/operators';
 import { OpenService } from 'src/app/shared/services/open.service';
+import { ToastrService } from 'ngx-toastr';
+
 
 export class PlanDataSource extends DataSource<any> {
 
@@ -56,12 +58,14 @@ export class PlanListComponent implements OnInit {
   tableSize: number;
   user: any;
   parlour_id: any;
-  permission: any
+  permission: any;
+  plan: any;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     public openService: OpenService,
-    public router: Router) { }
+    public router: Router,
+    private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.permission = this.openService.getPermissions();
@@ -127,4 +131,21 @@ export class PlanListComponent implements OnInit {
     return this.permission == 'Parlour';
   }
 
+  confirmDeletePlan(plan: any) {
+    this.plan = plan;
+    const button = document.getElementById('deletePlan');
+    button.click();
+  }
+
+  handleDelete(plan) {
+    this.openService.delete(`plans/${plan.id}/delete`)
+      .subscribe(
+        (new_plan: any) => {
+          this.toastr.success(`Successfully deleted plan.`, "Success")
+        },
+        error => {
+          console.log(error);
+          this.toastr.error(error['message'], error['statusText'])
+        });
+  }
 }

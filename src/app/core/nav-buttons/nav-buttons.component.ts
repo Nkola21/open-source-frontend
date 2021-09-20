@@ -35,22 +35,27 @@ export class NavbuttonsComponent implements OnInit {
   //   }
   // }
 
-  redirectToMainMembersView() {
+  redirectToMainMembersList() {
     const permission = this.permission;
     const view = [`/${this.permission.toLowerCase()}s/${this.user.id}/applicants`];
     this.router.navigate(view);
   }
 
-  redirectToPlansView() {
-    const view = [`/parlours/${this.parlour_id}/plans/all`];
+  redirectToPlansList() {
+    const view = [`/parlours/${this.parlour_id}/plans`];
     this.router.navigate(view);
   }
 
-  redirectToConsultantsView() {
+  redirectToConsultantsList() {
     const view = [`/parlours/${this.user.id}/consultants`];
     this.router.navigate(view);
   }
 
+  redirectToArchivedMainMembersList() {
+    const permission = this.permission;
+    const view = [`/parlours/${this.user.id}/archived-applicants`];
+    this.router.navigate(view);
+  }
   notConsultant(){
     return this.permission != 'Consultant';
   }

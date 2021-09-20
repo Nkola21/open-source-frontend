@@ -22,7 +22,11 @@ const ExtendedMemberRouting: ModuleWithProviders<ExtendedMembersModule> = Router
     canActivate: []
   },
   {
-    path: 'extended-members/:Id/form',
+    path: 'applicants/:applicant_id/extended-members/:id/form',
+    component: ExtendedMemberFormComponent
+  },
+  {
+    path: 'applicants/:applicant_id/extended-members/form',
     component: ExtendedMemberFormComponent
   }
 

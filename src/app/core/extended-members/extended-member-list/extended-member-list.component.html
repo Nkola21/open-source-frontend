@@ -1,26 +1,67 @@
 
 <mat-card>
-    <div *ngIf="loadingState == 'complete' && extended_members.length == 0" class="-y-sm">
-      <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="20px">
-        <div fxFlex="100">
-          <mat-card style="margin-top: 30px">
-            <mat-card-title class="mat-card-title-alt" fxLayout="row" fxLayoutAlign="center">
-              <p class="fs-2"><strong>Extended Members</strong></p>
-            </mat-card-title>
-            <mat-card-content>
-              <p style="margin-top: 2rem;"><strong class="fs-4">There are currently no Extended Members. </strong></p>
-            </mat-card-content>
-          </mat-card>
-        </div>
+  <div *ngIf="loadingState == 'complete' && extended_members.length == 0" class="-y-sm">
+    <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="20px">
+      <div fxFlex="100">
+        <mat-card style="margin-top: 30px" class="line-top">
+          <mat-card-title class="mat-card-title-alt" fxLayout="row" fxLayoutAlign="center">
+            <div class="d-flex justify-content-between">
+              <div>
+                <a class="btn btn-md btn-dark" *ngIf="isConsultant()" (click)="navigateToExtendedMemberAddForm()">Add Member</a>
+              </div>
+              <div class="d-flex justify-content-center">
+                <p class="fs-1" style="margin-left: auto;"><strong>Extended Members</strong></p>
+              </div>
+              <div class="d-flex justify-content-between">
+                <form [formGroup]="form" (ngSubmit)="getBySearchField()" *ngIf="false" class="row row-cols-lg-auto g-3 align-items-center">
+                  <div style="margin-right: 10px;">
+                    <input type="text" class="form-control" id="searchField" formControlName="searchField" placeholder="Search">
+                  </div>
+                  <div>
+                    <button id="btnGroupDrop1" type="button" class="btn btn-dark" (click)="getBySearchField()" >
+                      Search
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </mat-card-title>
+          <mat-card-content>
+            <p style="margin-top: 2rem;"><strong class="fs-4">There are currently no Extended Members. </strong></p>
+          </mat-card-content>
+        </mat-card>
       </div>
     </div>
-  
+  </div>
+
     <div *ngIf="dataSource && extended_members.length > 0" [ngClass]="{'animated fadeIn': dataSource}">
       <div fxLayout="row" fxLayoutAlign="center start">
         <div fxFlex="100">
           <mat-card style="margin-top: 30px">
             <mat-card-title class="mat-card-title-alt" fxLayout="row" fxLayoutAlign="center">
-              <h2 style="margin-left: auto;">Extended Members</h2>
+              <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-between">            
+                  <div class="btn-group" role="group" style="margin-right: 10px;"><a class="btn btn-md btn-dark" *ngIf="isConsultant()" (click)="navigateToExtendedMemberAddForm()">Add Member</a></div>
+                  <div class="btn-group" role="group" style="margin-right: 10px;"><a class="btn btn-md btn-dark" (click)="getCVSFile($event)" *ngIf="false">Export to Excel</a></div>
+                </div>
+
+                <div>
+                  <p class="fs-1" style="margin-left: auto;"><strong>Extended Members</strong></p>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                  <form [formGroup]="form" (ngSubmit)="getBySearchField()" *ngIf="form" class="row row-cols-lg-auto g-3 align-items-center">
+                    <div style="margin-right: 10px;">
+                      <input type="text" class="form-control" id="searchField" formControlName="searchField" placeholder="Search">
+                    </div>
+                    <div>
+                      <button id="btnGroupDrop1" type="button" class="btn btn-dark" (click)="getBySearchField()" >
+                        Search
+                      </button>
+                    </div>
+                  </form>
+                </div>
+            </div>
             </mat-card-title>
   
             <mat-card-content>
@@ -36,6 +77,20 @@
                     <th style="padding-right: 35px;" mat-header-cell *matHeaderCellDef>Full Name</th>
                     <td style="padding-right: 35px;" mat-cell *matCellDef="let extended_member"> {{extended_member.first_name}} {{extended_member.first_name}}
                     </td>
+                </ng-container>
+
+                <ng-container matColumnDef="relation">
+                  <th style="padding-left: 10px;" mat-header-cell *matHeaderCellDef>Relation to Main Member</th>
+                  <td style="padding-left: 10px;" mat-cell *matCellDef="let extended_member">
+                    {{extended_member.relation_to_main_member}}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="type">
+                  <th style="padding-left: 10px;" mat-header-cell *matHeaderCellDef>Member Type</th>
+                  <td style="padding-left: 10px;" mat-cell *matCellDef="let extended_member">
+                    {{extended_member.type}}
+                  </td>
                 </ng-container>
 
                 <ng-container matColumnDef="date">
@@ -61,7 +116,9 @@
                 <ng-container matColumnDef="actions">
                   <th style="width: 330px;" mat-header-cell *matHeaderCellDef></th>
                   <td mat-cell *matCellDef="let extended_member">
-                    <a class="btn btn-md btn-danger m-2" (click)="navigateToExtendedMemberForm(extended_member.id)">VIEW</a>
+                    <a class="btn btn-md btn-dark m-2" (click)="navigateToExtendedMemberForm(extended_member)">Edit</a>
+                    <button class="btn btn-md btn-dark" (click)="confirmDeleteMember(extended_member)">Delete</button>
+                    <button class="btn btn-md btn-dark" style="display: none;" id="deleteMember" data-bs-toggle="modal" data-bs-target="#confirmDeleteMemberModal"></button>
                   </td>
                 </ng-container>
   
@@ -74,3 +131,30 @@
       </div>
     </div>
   </mat-card>
+
+  <div class="modal fade" id="confirmDeleteMemberModal" tabindex="-1" aria-labelledby="confirmDeleteMemberModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fs-4" id="confirmDeleteMemberModalLabel" *ngIf="extended_member">Delete Member: {{ extended_member.first_name }} {{ extended_member.last_name }}</h5>
+          <h5 class="modal-title fs-4" id="confirmDeleteConsultantModalLabel" *ngIf="!extended_member">Delete Member</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="">
+            <p class="mb-0 ml-3 fs-5" >
+              By deleting this member, it wll no longer be availabe on the system.
+            </p>
+          </div>
+          <br />
+          <div class="ml-3">
+            <p class="fs-5">Do you want to proceed?</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="handleDelete()">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>

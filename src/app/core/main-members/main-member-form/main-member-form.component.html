@@ -4,7 +4,7 @@
         <div fxFlex="100">
           <mat-card style="margin-top: 30px" class="line-top">
             <mat-card-title class="mat-card-title-alt" fxLayout="row" fxLayoutAlign="center">
-              <p class="fs-1"><strong>Main Member Form</strong></p>
+              <p class="fs-1"><strong>Applicant Form</strong></p>
             </mat-card-title>
           </mat-card>
         </div>
@@ -12,11 +12,24 @@
 
     <mat-card class="d-flex justify-content-center">
         <form [formGroup]="form" (ngSubmit)="submit()" class="col-md-6" *ngIf="form">
+          <fieldset formGroupName="plan">
+            <div class="form-group row">
+                <label class="col-xs-3 col-form-label fs-4 d-flex justify-content-center">Plan</label>
+                <div class="col-xs-9">
+                    <select id="form.controls.plan.controls.id" class="form-control" formControlName="id">
+                        <option selected="selected" value="" >Select Plan</option>
+                        <option *ngFor="let plan of plans" [ngValue]="plan.id" >{{plan.name}}</option>
+                    </select>
+                </div>
+              </div>
+            </fieldset>
+
+
             <div class="mb-3">
-                <label for="first_name" class="col-form-label fs-4 d-flex justify-content-center">First Name:</label>
-                <input type="text" placeholder="First Name" mandatory class="form-control" id="first_name" formControlName="first_name">
+              <label for="first_name" class="col-form-label fs-4 d-flex justify-content-center">First Name:</label>
+              <input type="text" placeholder="First Name" mandatory class="form-control" id="first_name" formControlName="first_name">
             </div>
-  
+
             <div class="mb-3">
                 <label for="last_name" class="col-form-label fs-4 d-flex justify-content-center">Last Name:</label>
                 <input type="last_name" mandatory class="form-control" placeholder="Last Name" id="last_name" formControlName="last_name">
@@ -28,7 +41,7 @@
                 <input type="text" class="form-control" aria-describedby="basic-addon3" placeholder="ID Number" id="id_number" formControlName="id_number">
             </div>
 
-            <div class="mb-5">
+            <div class="mb-3">
                 <label for="contact" class="col-form-label fs-4 d-flex justify-content-center">Contact Number:</label>
                 <input mandatory class="form-control" type="number"  placeholder="Contact Number" id="contact" formControlName="contact" />
             </div>
@@ -43,9 +56,29 @@
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
 
+
+            <fieldset formGroupName="applicant">
+              <div class="form-group row">
+                  <label class="col-xs-3 col-form-label fs-4 d-flex justify-content-center">Policy Number:</label>
+                  <div class="col-xs-9">
+                    <input mandatory class="form-control" type="text"  placeholder="Policy Number" id="form.controls.applicant.controls.policy_num" formControlName="policy_num" />
+                  </div>
+                </div>
+              </fieldset>
+
+
+              <fieldset formGroupName="applicant" class="mb-3">
+                <div class="form-group row">
+                  <label class="col-xs-3 col-form-label fs-4 d-flex justify-content-center">Policy:</label>
+                  <div class="col-xs-9">
+                    <input mandatory class="form-control" type="file" placeholder="Contact Number" id="form.controls.applicant.controls.document" formControlName="document" />
+                  </div>
+                </div>
+              </fieldset>  
+
             <div class="col-12 d-flex justify-content-center">
-                <button class="btn-danger btn-lg w-50 m-2" type="submit" (click)="goBack($event)">Back</button>
-                <button class="btn-danger btn-lg w-50 m-2" type="submit" (click)="submit()">Submit</button>
+                <button class="btn-dark btn-lg w-50 m-2" type="submit" (click)="goBack($event)">Back</button>
+                <button class="btn-dark btn-lg w-50 m-2" type="submit" (click)="submit()">Submit</button>
             </div>
         </form>
     </mat-card>
