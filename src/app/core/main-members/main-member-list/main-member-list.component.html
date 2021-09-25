@@ -51,7 +51,6 @@
                       <li><a class="dropdown-item" (click)="getByPaymentPaid()">Paid</a></li>
                       <li><a class="dropdown-item" (click)="getByPaymentUnpaid()">Unpaid</a></li>
                       <li><a class="dropdown-item" (click)="getByPaymentSkipped()">Skipped</a></li>
-                      <li><a class="dropdown-item" (click)="getByPaymentLapsed()">Lapsed</a></li>
                     </ul>
                   </div>
                 </div>
@@ -111,7 +110,7 @@
                 <ng-container matColumnDef="premium">
                   <th style="padding-left: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef>Premium</th>
                   <td style="padding-left: 10px;" mat-cell *matCellDef="let main_member">
-                    {{main_member.premium}}
+                    {{main_member.applicant.plan.premium}}
                   </td>
                 </ng-container>
 

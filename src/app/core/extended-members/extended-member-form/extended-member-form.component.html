@@ -33,9 +33,10 @@
                     <div class="col-xs-9">
                         <select id="form.controls.type" class="form-control" formControlName="type">
                             <option selected="selected" value="" >Select Member Type</option>
-                            <option [ngValue]="0" >Dependant</option>
-                            <option [ngValue]="1" >Extended Member</option>
-                            <option [ngValue]="2" >Additional Extended Member</option>
+                            <option [ngValue]="0" >Spouse</option>
+                            <option [ngValue]="1" >Dependant</option>
+                            <option [ngValue]="2" >Extended Member</option>
+                            <option [ngValue]="3" >Additional Extended Member</option>
                         </select>
                     </div>
                 </div>
@@ -48,13 +49,14 @@
                         <select id="form.controls.relation_to_main_member" class="form-control" formControlName="relation_to_main_member">
                             <option selected="selected" value="" >Relation to Main Member</option>
                             <option [ngValue]="0" >Child</option>
-                            <option [ngValue]="1" >Mother</option>
-                            <option [ngValue]="2" >Father</option>
-                            <option [ngValue]="3" >Brother</option>
-                            <option [ngValue]="4" >Sister</option>
-                            <option [ngValue]="5" >Nephew</option>
-                            <option [ngValue]="6" >Niece</option>
-                            <option [ngValue]="7" >Grant Parent</option>
+                            <option [ngValue]="1" >Parent</option>
+                            <option [ngValue]="2" >Brother</option>
+                            <option [ngValue]="3" >Sister</option>
+                            <option [ngValue]="4" >Nephew</option>
+                            <option [ngValue]="5" >Niece</option>
+                            <option [ngValue]="6" >Aunt</option>
+                            <option [ngValue]="7" >Uncle</option>
+                            <option [ngValue]="8" >Grand Parent</option>
                         </select>
                     </div>
                 </div>

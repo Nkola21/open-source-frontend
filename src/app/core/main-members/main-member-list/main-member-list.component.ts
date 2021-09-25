@@ -252,7 +252,11 @@ export class MainMemberListComponent implements OnInit {
       .subscribe(
         (main_members: Array<any>) => {
           console.log("success.");
-          // console.log(main_members);
+          let applicants = [];
+          for (let main of main_members) {
+            applicants.push(main);
+            this.fillExtendedMembers(applicants, main.applicant.id);
+          }
           this.downloadFile(main_members);
           this.loadingState = 'complete';
         },
@@ -261,12 +265,39 @@ export class MainMemberListComponent implements OnInit {
         });
   }
 
+  fillExtendedMembers(applicants, applicant_id) {
+    this.openService.getUrl(`applicants/${applicant_id}}/extended-members/all`)
+      .subscribe(
+        (extended_members: Array<any>) => {
+          for (let main of extended_members) {
+            applicants.push(main);
+          }
+          console.log(applicants);
+        },
+        error => {
+          console.log(error);
+        });
+  }
+
   downloadFile(data: any) {
     const replacer = (key, value) => (value === null ? '' : value); // specify how you want to handle null values here
-    const header = ["First Name", "Last Name", "ID Number", "Contact Number", "Policy Number", "Date Joined", "Status", "Cover", "Premium"]
+    const header = ["First Name", "Last Name", "ID Number", "Contact Number", "Policy Number", "Date Joined", "Status", "Cover", "Premium", "Underwriter Premium", "Relationship"]
 
     const csv = data.map((row) =>
-      [row.first_name, row.first_name, row.id_number, row.contact, row.applicant.policy_num, row.date_joined, row.applicant.status, row.applicant.plan.cover, row.applicant.plan.premium].join(",")
+      [
+        row.first_name,
+        row.last_name,
+        row.id_number == undefined ? row.date_of_birth :row.id_number,
+        row.contact == undefined ? row.number : row.contact,
+        row.applicant.policy_num,
+        row.date_joined == undefined ? null : row.date_joined,
+        row.applicant.status,
+        row.applicant.plan.cover,
+        row.applicant.plan.premium,
+        row.applicant.plan.underwriter_premium,
+        row.relation_to_main_member == undefined ? null : row.relation_to_main_member
+
+      ].join(",")
     );
     csv.unshift(header.join(','));
     const csvArray = csv.join('\r\n');

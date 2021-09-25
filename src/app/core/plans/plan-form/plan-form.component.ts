@@ -17,7 +17,7 @@ export class PlanFormComponent implements OnInit {
   form: FormGroup;
   main_checked = false;
   dependant_checked = false;
-  extra_checked = false;
+  extended_checked = false;
   additional_checked = false;
   benefits_checked = false;
   user: any;
@@ -36,14 +36,12 @@ export class PlanFormComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(
       (params) => {
-        console.log(params);
         const id = +params['id'];
         const parlour_id = +params['parlour_id'];
         if (id) {
         this.openService.getOne(`plans/${id}/get`)
           .subscribe(
             plan => {
-              console.log(plan);
               this.plan = plan as Plan;
               this.initForm(this.plan);
             },
@@ -66,7 +64,6 @@ export class PlanFormComponent implements OnInit {
   submit() {
     let formValue = this.form.value;
     formValue["parlour_id"] = this.parlour_id
-    console.log(formValue);
     if (this.plan) {
       this.openService.put(`plans/${this.plan.id}/update`, formValue)
         .subscribe(
@@ -122,7 +119,7 @@ export class PlanFormComponent implements OnInit {
   }
 
   extraCheck(event) {
-    this.extra_checked = event.target.checked;
+    this.extended_checked = event.target.checked;
   }
 
   additionalCheck(event) {
