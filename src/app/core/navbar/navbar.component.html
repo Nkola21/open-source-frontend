@@ -4,37 +4,6 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarTogglerDemo01">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex justify-content-right" style="margin-left: 35%">
-        <li>
-          <a class="" aria-current="page" href="#"></a>
-        </li>
-        <li class="nav-item">
-          <p class="fs-4" style="color: #fff;" *ngIf="isParlour()"> Welcome to {{ user.parlour_name }}</p>
-        </li>
-        <li class="nav-item">
-          <a class="" href="#"></a>
-        </li>
-      </ul>
-      <div class="btn-group" role="group" aria-label="Button group with nested dropdown">      
-        <div class="btn-group" role="group">
-          <button id="btnGroupDrop1" type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            {{ user.username }}
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-            <li><a class="dropdown-item" (click)="handleLogout()">Logout</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</nav>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light" *ngIf="!user">
-  <div class="container-fluid">
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarTogglerDemo01">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex justify-content-center">
         <li>
           <a class="" aria-current="page" href="#"></a>
@@ -46,20 +15,52 @@
           <a class="" href="#"></a>
         </li>
       </ul>
-      <div class="m-2">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0" >
-          <li>
-            <a id="Logout" class="btn btn-dark" [routerLink]="['/login']" routerLinkActive="active align-content-top" style="height: 40px; margin-right: 10px">
-              <p class="fs-5" style="margin-bottom: 45px;">Login</p>
-            </a>  
-          </li>
-          <li>
-            <a id="signup" class="btn btn-dark " [routerLink]="['/signup']" routerLinkActive="active" style="height: 40px;">
-                <p class="fs-5">SignUp</p>
-            </a>
-            </li>
-        </ul>
+      <div class="btn-group" role="group" aria-label="Button group with nested dropdown">      
+        <div class="btn-group" role="group">
+          <button id="btnGroupDrop1" type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            {{ user.first_name }}
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+            <li><a class="dropdown-item" (click)="handleLogout()">Logout</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
 </nav>
+
+
+<section *ngIf="!user" class="header ">
+  <div class="containers">
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+          <a class="navbar-brand" href="#"><img src="..//..//..//assets/images/open-source-logo.jpg " ></a>
+          <ul class="navbar-nav d-flex justify-content-lg-between">
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/home']" routerLinkActive="active">HOME</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/services']" routerLinkActive="active" >SERVICES</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/contacts']" routerLinkActive="active" >CONTACTS</a>
+            </li>
+            </ul>
+            <ul class="navbar-nav position-absolute top-50 end-0 translate-middle-y" style="width: 15%;">
+              <li class="nav-item2" style="width: 50%">
+                <button type="button" class="btn btn-dark"  [routerLink]="['/login']" routerLinkActive="active align-content-top "style=" height: 40px; margin-right: 10px; width: 100%;">LOGIN</button>
+              </li>
+              <li class="nav-item2" style="width: 50%;margin-left:1% !important">
+                <button type="button" class="btn btn-dark"  [routerLink]="['/signup']" routerLinkActive="active" style="height: 40px; width: 100%;">SIGNUP</button>
+              </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    </div>
+       
+</section>
