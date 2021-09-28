@@ -7,7 +7,7 @@
     .header
     {
       background: red;
-     
+      height: 50px !important;
       
     }
     .nav-item2 {
@@ -46,8 +46,9 @@
       width: 100px;
       top:0; 
       left:1px;
-      height: 60px;
-      position:fixed;                                                                                                                       
+      height: 100px;
+      position:fixed;  
+                                                                                                                           
       
     }
     .fa-bars {
@@ -63,4 +64,6 @@
       border-bottom: 2px solid #fff;
     }
     
-    
+img{
+  color: white;
+}

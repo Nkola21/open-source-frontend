@@ -3,12 +3,12 @@
   <form [formGroup]="form" (ngSubmit)="postSignin()" class="col-md-6">
     <div class="mb-3">
       <label for="username" class="col-form-label fs-6 d-flex justify-content-center">Username:</label>
-      <input type="text" placeholder="Enter Username or Email Address" mandatory class="form-control" id="username" formControlName="username">
+      <input type="text" placeholder="Enter Username or Email Address" mandatory class="form-control" id="username" formControlName="username" required>
     </div>
   
     <div class="mb-3">
       <label for="password" class="col-form-label fs-6 d-flex justify-content-center">Password:</label>
-      <input type="password" mandatory class="form-control" placeholder="Enter Password" id="password" formControlName="password">
+      <input type="password" mandatory class="form-control" placeholder="Enter Password" id="password" formControlName="password" required>
     </div>
           
     <div class="col-12 d-flex justify-content-center">
