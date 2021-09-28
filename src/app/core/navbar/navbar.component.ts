@@ -10,13 +10,14 @@ import { OpenService } from 'src/app/shared/services/open.service';
 export class NavbarComponent implements OnInit, OnChanges {
   @Input() user: any;
   permission: any;
-
+  parlour: any;
   constructor(public openService: OpenService,
     public router: Router) { }
 
   ngOnInit(): void {
     this.user = this.openService.getUser();
     this.permission = this.openService.getPermissions();    
+    this.getParlour();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -37,5 +38,14 @@ export class NavbarComponent implements OnInit, OnChanges {
 
   isParlour() {
     return this.permission == 'Parlour';
+  }
+
+  getParlour() {
+    console.log(this.user);
+    if (this.isParlour()) {
+      this.parlour = this.user
+    }else {
+      this.parlour = this.user.parlour;
+    }
   }
 }

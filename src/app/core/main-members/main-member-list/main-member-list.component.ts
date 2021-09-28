@@ -248,15 +248,9 @@ export class MainMemberListComponent implements OnInit {
 
   getCVSFile(event) {
     event.preventDefault();
-    this.openService.getUrl(`parlours/${this.parlour_id}/main-members/file`)
+    this.openService.getUrl(`consultants/${this.user.id}/export_to_csv`)
       .subscribe(
         (main_members: Array<any>) => {
-          console.log("success.");
-          let applicants = [];
-          for (let main of main_members) {
-            applicants.push(main);
-            this.fillExtendedMembers(applicants, main.applicant.id);
-          }
           this.downloadFile(main_members);
           this.loadingState = 'complete';
         },

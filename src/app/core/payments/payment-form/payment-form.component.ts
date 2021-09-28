@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { OpenService } from 'src/app/shared/services/open.service';
 import { PaymentFormBuilder } from '../payment-form-builder';
 import { ToastrService } from 'ngx-toastr';
-
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-payment-form',
@@ -18,6 +18,7 @@ export class PaymentFormComponent implements OnInit {
   last_payment: any;
   main_member: any;
   parlour_id: any;
+  user: any;
 
   constructor(
     public openService: OpenService,
@@ -30,6 +31,7 @@ export class PaymentFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.parlour_id = this.openService.getParlourId();
+    this.user = this.openService.getUser();
     this.route.params.subscribe(
       (params) => {
         const id = +params['id'];
@@ -72,22 +74,23 @@ export class PaymentFormComponent implements OnInit {
         main_member => {
           console.log("Main member: ", main_member)
           this.main_member = main_member;
-          this.getPreviousPayment(this.main_member);
+          this.getPreviousPayment(main_member);
         },
         error => console.log(error));
   }
 
   getPreviousPayment(main_member) {
-    this.openService.getOne(`applicants/${main_member.id}/payments/last`)
+    this.openService.getOne(`applicants/${main_member.applicant.id}/payments/last`)
       .subscribe(
         last_payment => {
           this.last_payment = last_payment;
+          console.log("Payment", last_payment);
           const payment = {
             "applicant_id": main_member.applicant.id,
             "cover": main_member.applicant.plan.cover,
             "premium": main_member.applicant.plan.premium,
             "date": new Date(),
-            "last_payment": new Date(this.last_payment.created).toLocaleDateString()
+            "last_payment": new Date(this.last_payment.created).toDateString()
           }
           this.initForm(payment);
         },
@@ -96,18 +99,20 @@ export class PaymentFormComponent implements OnInit {
 
   submit() {
     const formValue = this.form.value;
-
-    formValue["date"] = new Date(formValue["date"]).toLocaleDateString();
-
+    formValue['date'] = new Date(formValue['date'])
+    formValue['end_date'] = new Date(formValue['end_date'])
+    formValue["user"] = this.user;
+    console.log(formValue['date'])
     this.openService.post(`parlours/${this.parlour_id}/payments`, formValue)
       .subscribe(
         (payment: any) => {
-          this.showSuccess()
+          this.showSuccess();
         },
       error => {
-          this.showError(error);
+        this.toastr.error(error["description"], error['title'], {timeOut: 3000});
       });
   }
+
   showSuccess() {
     this.toastr.success('New Plan saved successfully!', 'Success!!!');
   }

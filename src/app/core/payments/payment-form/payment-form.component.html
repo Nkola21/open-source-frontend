@@ -16,11 +16,6 @@
                 <label for="applicabt_id" class="col-form-label fs-4 d-flex justify-content-center">Applicant:</label>
                 <input type="text" mandatory class="form-control" id="applicant_id" formControlName="applicant_id" [disabled]="true">
             </div>
-  
-            <div class="mb-3">
-                <label for="cover" class="col-form-label fs-4 d-flex justify-content-center">Cover:</label>
-                <input type="text" mandatory class="form-control" id="cover" formControlName="cover" [disabled]="true">
-            </div>
 
             <div class="mb-3">
                 <label for="premium" class="col-form-label fs-4 d-flex justify-content-center">Premium:</label>
@@ -33,14 +28,20 @@
             </div>
 
             <div>
-                <label for="date_joined" class="col-form-label fs-4 d-flex justify-content-center">Date:</label>
+                <label for="date_joined" class="col-form-label fs-4 d-flex justify-content-center">Payment Date:</label>
             </div>
             <mat-form-field appearance="fill">
-                <mat-label>Choose a date</mat-label>
+                <mat-label>Choose start date</mat-label>
                 <input mandatory class="form-control" id="date" formControlName="date" matInput [matDatepicker]="picker">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
-              </mat-form-field>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Choose end date</mat-label>
+              <input mandatory class="form-control" id="end_date" formControlName="end_date" matInput [matDatepicker]="picker2">
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
 
             <div class="col-12 d-flex justify-content-center">
                 <button class="btn-dark btn-lg w-50 m-2" type="button" (click)="goBack($event)">Back</button>

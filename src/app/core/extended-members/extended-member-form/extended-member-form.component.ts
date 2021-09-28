@@ -78,7 +78,7 @@ export class ExtendedMemberFormComponent implements OnInit {
       console.log(params);
       const id = +params['id'];
       if (params['id'] !== undefined) {
-        this.getMainMember(id);
+        this.getExtendedMember(id);
       }else{
         this.initForm(this.extended_member);
       }
@@ -94,7 +94,11 @@ export class ExtendedMemberFormComponent implements OnInit {
     this.form = this.formBuilder.buildForm(this.extended_member);
   }
 
-  getMainMember(id) {
+  // is_spouse() {
+  //   return 
+  // }
+
+  getExtendedMember(id) {
     this.openService.getOne(`extended-members/${id}/get`)
       .subscribe(
         extended_member => {
@@ -108,7 +112,9 @@ export class ExtendedMemberFormComponent implements OnInit {
   submit() {
     const formValue = this.form.value;
     formValue["applicant_id"] = this.applicant_id;
-
+    if (formValue['type'] == 0 ) {
+      formValue['relation_to_main_member'] = 9;
+    }
     if (this.extended_member) {
       this.openService.put(`extended-members/${this.extended_member.id}/update`, formValue)
         .subscribe(

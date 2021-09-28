@@ -2,7 +2,7 @@
 
   <mat-card class="col-md-6 line-top">
     <mat-card-title class="mat-card-title-alt row" fxLayout="row">
-      <p class="fs-1"><strong>Login Form</strong></p>
+      <p class="fs-1"><strong>Login To Open Source</strong></p>
     </mat-card-title>
     <div class="d-flex justify-content-center">
       <form [formGroup]="form" (ngSubmit)="postSignin()" class="col-md-6">
@@ -14,7 +14,7 @@
         <div class="mb-3">
           <label for="password" class="col-form-label fs-6 d-flex justify-content-center">Password:</label>
           <input type="password" mandatory class="form-control" placeholder="Enter Password" id="password" formControlName="password">
-          <span class="small"><a [routerLink]="['/email-reminder']">Forgot password?</a></span>
+          <span class="small" *ngIf="false"><a [routerLink]="['/email-reminder']">Forgot password?</a></span>
         </div>
               
         <div class="col-12 d-flex justify-content-center">

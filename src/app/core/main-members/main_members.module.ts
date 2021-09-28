@@ -8,7 +8,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MainMemberFormComponent } from './main-member-form/main-member-form.component';
-
+import { SharedModule } from './../../shared/shared.module';
+ 
 
 const MainMemberRouting: ModuleWithProviders<MainMembersModule> = RouterModule.forChild([
   {
@@ -46,7 +47,8 @@ const MainMemberRouting: ModuleWithProviders<MainMembersModule> = RouterModule.f
     MaterialModule,
     MatListModule,
     // MatTooltipModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ],
   declarations: [
     MainMemberListComponent,

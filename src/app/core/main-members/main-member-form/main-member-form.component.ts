@@ -43,7 +43,8 @@ export class MainMemberFormBuilder {
         'document': [details.document, [Validators.required, Validators.minLength(6)]],
         'cancelled': [details.cancelled, [Validators.required]],
         'status': [details.status, [Validators.required]],
-        'date': [details.date, [Validators.required]]
+        'date': [details.date, [Validators.required]],
+        'address': [details.address, [Validators.required]]
     });
 }
 }
@@ -56,6 +57,7 @@ export class MainMemberFormBuilder {
 })
 export class MainMemberFormComponent implements OnInit  {
   main_member: any;
+  submitted = false;
   formBuilder: MainMemberFormBuilder;
   form: FormGroup;
   parlour_id: any;
@@ -111,20 +113,23 @@ export class MainMemberFormComponent implements OnInit  {
       this.openService.put(`main-members/${this.main_member.id}/update`, formValue)
         .subscribe(
           (user: any) => {
-            
+            this.submitted = true;
+            this.showSuccess();
           },
         error => {
             console.log(error);
+            this.toastr.error(error['message'], error['statusText'], {timeOut: 3000});
         });
     }else {
       this.openService.post(`consultants/${this.user.id}/main-members`, formValue)
         .subscribe(
           (user: any) => {
             this.showSuccess();
+            this.submitted = true;
           },
         error => {
           const description = error.hasOwnProperty('errors') ? this.getErrorDetails(error) : error['description'];
-          this.toastr.error(description, error['title'], {timeOut: 3000});
+          this.toastr.error(error['message'], error['statusText'], {timeOut: 3000});
         });
     }
   }

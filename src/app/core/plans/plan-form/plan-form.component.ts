@@ -47,7 +47,6 @@ export class PlanFormComponent implements OnInit {
             },
             error => console.log(error));
         }else{
-          console.log("Plan")
           this.initForm(this.plan);
         }
     });

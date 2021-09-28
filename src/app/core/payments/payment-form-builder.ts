@@ -14,6 +14,7 @@ export class PaymentFormBuilder {
         details = details === undefined ? newPayment() : details;
         return this.formBuilder.group({
             'date': [details.date, [Validators.required]],
+            'end_date': [details.date, [Validators.required]],
             'applicant_id': [details.applicant_id, [Validators.required]],
             'cover': [details.cover, [Validators.required]],
             'premium': [details.premium, [Validators.required]],

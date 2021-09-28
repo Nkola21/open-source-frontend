@@ -29,7 +29,7 @@
 
             <fieldset class="mb-3">
                 <div class="form-group row">
-                    <label class="col-xs-3 col-form-label fs-4 d-flex justify-content-center">Type of member:</label>
+                    <label class="col-xs-3 col-form-label fs-4 d-flex justify-content-center">Type of Member:</label>
                     <div class="col-xs-9">
                         <select id="form.controls.type" class="form-control" formControlName="type">
                             <option selected="selected" value="" >Select Member Type</option>
@@ -44,7 +44,7 @@
 
             <fieldset class="mb-3">
                 <div class="form-group row">
-                    <label class="col-xs-3 col-form-label fs-4 d-flex justify-content-center">Type of member:</label>
+                    <label class="col-xs-3 col-form-label fs-4 d-flex justify-content-center">Relationship to Main Member:</label>
                     <div class="col-xs-9">
                         <select id="form.controls.relation_to_main_member" class="form-control" formControlName="relation_to_main_member">
                             <option selected="selected" value="" >Relation to Main Member</option>
@@ -57,6 +57,8 @@
                             <option [ngValue]="6" >Aunt</option>
                             <option [ngValue]="7" >Uncle</option>
                             <option [ngValue]="8" >Grand Parent</option>
+                            <option [ngValue]="9" >Wife</option>
+                            <option [ngValue]="10" >Husband</option>
                         </select>
                     </div>
                 </div>
