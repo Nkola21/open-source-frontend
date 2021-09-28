@@ -1,0 +1,36 @@
+<div class="alert alert-danger" *ngIf="!control.valid && (control.value || control.dirty)">
+  <div *ngIf="control.errors.required"> Field is required</div>
+  <div *ngIf="control.errors.maxlength"> Max length of {{control.errors.maxlength.requiredLength}} exceeded</div>
+  <div *ngIf="control.errors.minlength"> Min length of {{control.errors.minlength.requiredLength}} </div>
+  <div *ngIf="control.errors.validateEmail"> Not a valid email</div>
+  <div *ngIf="control.errors.validatePostalCode"> Not a postal code. May not exceed 4 numeric characters.</div>
+  <div *ngIf="control.errors.validateDate"> Enter a valid date</div>
+  <div *ngIf="control.errors.validateConfirmPassword"> Does not match password.</div>
+  <div *ngIf="control.errors.validateClientMargin">Client margin exceeds the maximum set for this principal</div>
+  <div *ngIf="control.errors.validateBranchCode">Not a valid branch code. Must be 6 numeric characters</div>
+  <div *ngIf="control.errors.validateUniversalBankCode">Not a valid universal bank code.</div>
+  <div *ngIf="control.errors.validateAccountHolder">Account holder minimum 4 characters, maximum 30.</div>
+  <div *ngIf="control.errors.validateStatementReference">Statement reference minimum 4 characters, maximum 20.</div>
+  <div *ngIf="control.errors.validateMeterNumber">Please enter a valid meter number.</div>
+  <div *ngIf="control.errors.validateLuhn">Not a valid meter number.</div>
+  <div *ngIf="control.errors.validateMSISDN">Please enter a valid telephone number.</div>
+  <div *ngIf="control.errors.validateOtherphone">Cell number and other phone number must not match</div>
+  <div *ngIf="control.errors.maxClientIssue">Cannot exceed R 50,000.</div>
+  <div *ngIf="control.errors.confirm_password">Passwords do not match</div>
+  <div *ngIf="control.errors.validateAccountRef">Please enter a valid account reference or payment id</div>
+  <div *ngIf="control.errors.min">Value may not be less than 0</div>
+  <div *ngIf="control.errors.max">Value may not exceed 100</div>
+  <div *ngIf="control.errors.client_margin">Client Margin cannot be higher than this building's Principal Client Margin Max</div>
+  <div *ngIf="control.errors.validateMaxPrincipalClientMargin">Cannot Exceed 50</div>
+  <div *ngIf="control.errors.validatePrincipalDefaultClientMargin">Cannot be higher than the Client Margin Max</div>
+  <div *ngIf="control.errors.validateCkNumber">Format is YYYY/NNNNNN/NN. Eg.. 2009/222222/23</div>
+  <div *ngIf="control.errors.custom">{{control.errors.custom.message}}</div>
+  <div *ngIf="control.errors.validateMaxCollectionAmount">Collection amount can't be more than the Total Amount</div>
+  <div *ngIf="control.errors.uniqueBankAccountNumber"> <div>This bank account is already associated with the following principal(s):</div><div *ngFor="let p of control.errors.principals">{{p.name}}</div></div>
+  <div *ngIf="control.errors.water_restriction"> There are no applicable blocks for this water restriction level</div>
+  <div *ngIf="control.errors.account_number">Do not include spaces or dashes</div>
+  <div *ngIf="control.errors.validateHasAtLeastOneLetter">Value must have at least one letter</div>
+  <div *ngIf="control.errors.validateHasAtLeastOneNumber">Value must have at least one number</div>
+</div>
+
+

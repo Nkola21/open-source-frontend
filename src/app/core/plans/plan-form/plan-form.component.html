@@ -1,0 +1,217 @@
+
+<mat-card>
+    <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="20px">
+        <div fxFlex="100">
+          <mat-card style="margin-top: 30px" class="line-top">
+            <mat-card-title class="mat-card-title-alt" fxLayout="row" fxLayoutAlign="center">
+              <p class="fs-1"><strong>Plan Form</strong></p>
+            </mat-card-title>
+          </mat-card>
+        </div>
+      </div>
+
+    <mat-card class="d-flex justify-content-center">
+        <form [formGroup]="form" (ngSubmit)="submit()" class="col-md-6" *ngIf="form">
+            <div class="mb-3">
+                <label for="plan" class="col-form-label fs-4 d-flex justify-content-center">Plan Name:</label>
+                <input type="text" placeholder="Plan Name" mandatory class="form-control" id="plan" formControlName="plan">
+            </div>
+  
+            <label for="cover" class="col-form-label fs-4 d-flex justify-content-center">Cover Amount:</label>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon3">R</span>
+                <input type="number" class="form-control" aria-describedby="basic-addon3" placeholder="Cover Amount" id="cover" formControlName="cover">
+            </div>
+
+            <label for="premium" class="col-form-label fs-4 d-flex justify-content-center">Premium Amount:</label>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon3">R</span>
+                <input type="number" class="form-control" aria-describedby="basic-addon3" placeholder="Premium Amount" id="premium" formControlName="premium">
+            </div>
+
+            <label for="underwriter_premium" class="col-form-label fs-4 d-flex justify-content-center">Underwriter Premium Amount:</label>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon3">R</span>
+                <input type="number" class="form-control" aria-describedby="basic-addon3" placeholder="Underwriter Premium Amount" id="underwriter_premium" formControlName="underwriter_premium">
+            </div>
+            <hr />
+    
+            <!-- ============================================================  MAIN MEMBERS ================================================================================== -->
+
+            <label for="contact" class="col-form-label fs-3">Main Members</label>
+            <br>
+            <label for="main_members" class="col-form-label m-2 fs-6">How many main members can be included in this plan?</label>
+            <div class="mb-5">
+                <label for="main_members" class="col-form-label m-2 fs-6">Number of main members: </label>
+                <input class="form-control-sm col-sm-2" type="number" id="main_members" formControlName="main_members" style="border: 1px solid #ced4da;" />
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="member_age_restriction" formControlName="member_age_restriction" (change)="mainMemberCheck($event)">
+                <label class="form-check-label" for="member_age_restriction">
+                    Consider age restriction of main members
+                </label>
+              </div>
+
+            <div *ngIf="main_checked">
+                <label for="date_joined" class="col-form-label fs-5">Main Member age range:</label>
+
+                <div class="mb-2">
+                    <label for="member_minimum_age" class="col-form-label m-2 fs-6">Minimum age:</label>
+                    <input class="form-control-sm col-sm-2" type="number" id="member_minimum_age" formControlName="member_minimum_age" style="border: 1px solid #ced4da;" />
+                </div>
+                <div class="mb-5">
+                    <label for="member_maximum_age" class="col-form-label m-2 fs-6">Maximum age:</label>
+                    <input class="form-control-sm col-sm-2" type="number" id="member_maximum_age" formControlName="member_maximum_age" style="border: 1px solid #ced4da;" />
+                </div>
+            </div>
+
+            <hr />
+    
+            <!-- ============================================================  SPOUSE ================================================================================== -->
+
+            <label for="contact" class="col-form-label fs-3">Spouse(s)</label>
+            <br>
+            <label for="main_members" class="col-form-label m-2 fs-6">How many spouses can be included in this plan?</label>
+            <div class="mb-5">
+                <label for="spouses" class="col-form-label m-2 fs-6">Number of spouses: </label>
+                <input class="form-control-sm col-sm-2" type="number" id="spouses" formControlName="spouses" style="border: 1px solid #ced4da;" />
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="spouse_age_restriction" formControlName="spouse_age_restriction" (change)="mainMemberCheck($event)">
+                <label class="form-check-label" for="spouse_age_restriction">
+                    Consider age restriction of spouse
+                </label>
+              </div>
+
+            <div *ngIf="main_checked">
+                <label for="date_joined" class="col-form-label fs-5">Spouse age range:</label>
+
+                <div class="mb-2">
+                    <label for="spouse_minimum_age" class="col-form-label m-2 fs-6">Minimum age:</label>
+                    <input class="form-control-sm col-sm-2" type="number" id="spouse_minimum_age" formControlName="spouse_minimum_age" style="border: 1px solid #ced4da;" />
+                </div>
+                <div class="mb-5">
+                    <label for="spouse_maximum_age" class="col-form-label m-2 fs-6">Maximum age:</label>
+                    <input class="form-control-sm col-sm-2" type="number" id="spouse_maximum_age" formControlName="spouse_maximum_age" style="border: 1px solid #ced4da;" />
+                </div>
+            </div>
+
+            <hr />
+
+            <!-- ============================================================  DEPENDANTS ================================================================================== -->
+
+            <label for="contact" class="col-form-label fs-3">Dependants</label>
+            <br>
+            <label for="dependants" class="col-form-label m-2 fs-6">Does this plan include dependants? If yes, how many does it consider?.<br> If it doesn't, leave it at 0</label>
+            <div class="mb-5">
+                <label for="dependants" class="col-form-label m-2 fs-6">Number of dependants:</label>
+                <input class="form-control-sm col-sm-2" type="number" id="dependants" formControlName="dependants" style="border: 1px solid #ced4da;" />
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="consider_age" formControlName="consider_age" (change)="dependantCheck($event)">
+                <label class="form-check-label" for="consider_age">
+                    Consider age restriction of dependants
+                </label>
+              </div>
+
+            <div *ngIf="dependant_checked">
+                <label for="dependant_minimum_age" class="col-form-label fs-5">Dependants age range:</label>
+
+                <div class="mb-2">
+                    <label for="dependant_minimum_age" class="col-form-label m-2 fs-6">Minimum age:</label>
+                    <input class="form-control-sm col-sm-2" type="number" id="dependant_minimum_age" formControlName="dependant_minimum_age" style="border: 1px solid #ced4da;" />
+                </div>
+                <div class="mb-5">
+                    <label for="dependant_maximum_age" class="col-form-label m-2 fs-6">Maximum age:</label>
+                    <input class="form-control-sm col-sm-2" type="number" id="dependant_maximum_age" formControlName="dependant_maximum_age" style="border: 1px solid #ced4da;" />
+                </div>
+            </div>
+
+            <hr />
+        
+            <!-- ============================================================  EXTENDED MEMBERS ================================================================================== -->
+
+            <label for="extended_members" class="col-form-label fs-3">Extended Members</label>
+            <br>
+            <label for="extended_members" class="col-form-label m-2 fs-6">Does this plan include extended members? If yes, <br>how many does it consider?. If none, leave it at 0,
+            </label>
+            <div class="mb-5">
+                <label for="extended_members" class="col-form-label m-2 fs-6">Number of extended members:</label>
+                <input class="form-control-sm col-sm-2" type="number" id="extended_members" formControlName="extended_members" style="border: 1px solid #ced4da;" />
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="extended_age_restriction" formControlName="extended_age_restriction" (change)="extraCheck($event)">
+                <label class="form-check-label" for="extended_age_restriction">
+                    Consider age restriction of extended members?
+                </label>
+              </div>
+
+            <div *ngIf="extended_checked">
+                <label for="extended_minimum_age" class="col-form-label fs-5">Extended members age range:</label>
+
+                <div class="mb-2">
+                    <label for="extended_minimum_age" class="col-form-label m-2 fs-6">Minimum age:</label>
+                    <input class="form-control-sm col-sm-2" type="number" id="extended_minimum_age" formControlName="extended_minimum_age" style="border: 1px solid #ced4da;" />
+                </div>
+                <div class="mb-5">
+                    <label for="extended_maximum_age" class="col-form-label m-2 fs-6">Maximum age:</label>
+                    <input class="form-control-sm col-sm-2" type="number" id="extended_maximum_age" formControlName="extended_maximum_age" style="border: 1px solid #ced4da;" />
+                </div>
+            </div>
+
+            <hr />
+    
+            <!-- ============================================================  ADDITIONAL EXTENDED MEMBERS ================================================================================== -->
+
+            <label for="additional_extended_members" class="col-form-label fs-3">Additional Extended Members</label>
+            <br>
+            <label for="additional_extended_members" class="col-form-label m-2 fs-6">Does this plan include additional extended members? If yes, <br>how many does it consider?. If none, leave it at 0,
+            </label>
+            <div class="mb-5">
+                <label for="additional_extended_members" class="col-form-label m-2 fs-6">Number of additional extended members:</label>
+                <input class="form-control-sm col-sm-2" type="number" id="additional_extended_members" formControlName="additional_extended_members" style="border: 1px solid #ced4da;" />
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="additional_extended_consider_age" formControlName="additional_extended_consider_age" (change)="additionalCheck($event)">
+                <label class="form-check-label" for="additional_extended_consider_age">
+                    Consider age restriction of extended members?
+                </label>
+              </div>
+
+            <div *ngIf="additional_checked">
+                <label for="extended_minimum_age" class="col-form-label fs-5">Additional Extended members age range:</label>
+
+                <div class="mb-2">
+                    <label for="additional_extended_minimum_age" class="col-form-label m-2 fs-6">Minimum age:</label>
+                    <input class="form-control-sm col-sm-2" type="number" id="additional_extended_minimum_age" formControlName="additional_extended_minimum_age" style="border: 1px solid #ced4da;" />
+                </div>
+                <div class="mb-5">
+                    <label for="additional_extended_maximum_age" class="col-form-label m-2 fs-6">Maximum age:</label>
+                    <input class="form-control-sm col-sm-2" type="number" id="additional_extended_maximum_age" formControlName="additional_extended_maximum_age" style="border: 1px solid #ced4da;" />
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="form-check mb-5">
+                <input mandatory class="form-check-input" type="checkbox" id="has_benefits" formControlName="has_benefits" (change)="benefitsCheck($event)" />
+                <label for="has_benefits" class="form-check-label">Does this plan have benefits?</label>
+            </div>
+
+            <div class="mb-5" *ngIf="benefits_checked">
+                <label for="benefits" class="col-form-label fs-4">Benefits:</label>
+                <textarea class="form-control" rows="5" type="number" id="benefits" formControlName="benefits" ></textarea>
+            </div>
+
+            <div class="col-12 d-flex justify-content-center">
+                <button class="btn-dark btn-lg w-50 m-2" type="submit" (click)="goBack($event)">Back</button>
+                <button class="btn-dark btn-lg w-50 m-2" type="submit" (click)="submit()">Submit</button>
+            </div>
+        </form>
+    </mat-card>
+  </mat-card>

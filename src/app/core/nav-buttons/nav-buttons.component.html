@@ -1,0 +1,17 @@
+<ul class="nav nav-pills nav-fill" style="height: 70px;align-content: center;" *ngIf="user">
+  <li class="nav-item inner">
+    <a class="nav-link btn btn-md fs-4" aria-current="page" style="width: 235px;" (click)="redirectToMainMembersList()">Applicants</a>
+  </li>
+  <li class="nav-item inner" *ngIf="notConsultant()">
+    <a class="nav-link btn btn-md fs-4" style="width: 235px;" (click)="redirectToConsultantsList()">Consultant</a>
+  </li>
+  <li class="nav-item inner" *ngIf="parlour_id">
+    <a class="nav-link btn btn-md fs-4" style="width: 235px;" (click)="redirectToPlansList()">Plans</a>
+  </li>
+  <li class="nav-item inner">
+    <a class="nav-link btn btn-md fs-4" style="width: 235px;" >Payments</a>
+  </li>
+  <li class="nav-item" style="align-content: center;">
+    <a class="nav-link btn btn-md fs-4" style="width: 235px;" (click)="redirectToArchivedMainMembersList()">Archives</a>
+  </li>
+</ul>

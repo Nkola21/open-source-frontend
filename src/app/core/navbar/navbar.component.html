@@ -1,0 +1,83 @@
+<section *ngIf="user" class="header">
+  <div class="containers">
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/home']" routerLinkActive="active"></a>
+            </li>
+            <li class="nav-item">
+              <p style="font-size: 26px;color: #fff"><span>{{parlour.parlour_name}}</span></p>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/contacts']" routerLinkActive="active" ></a>
+            </li>
+            </ul>
+            <div class="btn-group " role="group" aria-label="Button group with nested dropdown" style="margin-left: 38%;">      
+              <div class="btn-group" role="group" style="background-color: black; border-radius: 5%;">
+                <button id="btnGroupDrop1" type="button" class="btn btn-lg btn-dark dropdown-toggle" style="width: max-content;padding: 2%;" data-bs-toggle="dropdown" aria-expanded="false">
+                  {{ user.first_name }}
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                  <li><a class="dropdown-item" (click)="handleLogout()">Logout</a></li>
+                </ul>
+              </div>
+            </div>
+        </div>
+      </div>
+    </nav>
+    </div>
+       
+</section>
+
+
+
+<!-- <div class="btn-group" role="group" aria-label="Button group with nested dropdown">      
+  <div class="btn-group" role="group">
+    <button id="btnGroupDrop1" type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+      {{ user.first_name }}
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+      <li><a class="dropdown-item" (click)="handleLogout()">Logout</a></li>
+    </ul>
+  </div>
+</div> -->
+
+<section *ngIf="!user" class="header">
+  <div class="containers">
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+          <a class="navbar-brand" href="#"><img src="..//..//..//assets/images/open-source-logo.jpg " ></a>
+          <ul class="navbar-nav d-flex justify-content-lg-between">
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/home']" routerLinkActive="active">HOME</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/services']" routerLinkActive="active" >SERVICES</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/contacts']" routerLinkActive="active" >CONTACTS</a>
+            </li>
+            </ul>
+            <ul class="navbar-nav position-absolute top-50 end-0 translate-middle-y" style="width: 15%;">
+              <li class="nav-item2" style="width: 50%">
+                <button type="button" class="btn btn-dark"  [routerLink]="['/login']" routerLinkActive="active align-content-top "style=" height: 40px; margin-right: 10px; width: 100%;">LOGIN</button>
+              </li>
+              <li class="nav-item2" style="width: 50%;margin-left:1% !important">
+                <button type="button" class="btn btn-dark"  [routerLink]="['/signup']" routerLinkActive="active" style="height: 40px; width: 100%;">SIGNUP</button>
+              </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    </div>
+       
+</section>

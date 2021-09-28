@@ -1,0 +1,52 @@
+
+<mat-card>
+    <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="20px">
+        <div fxFlex="100">
+          <mat-card style="margin-top: 30px" class="line-top">
+            <mat-card-title class="mat-card-title-alt" fxLayout="row" fxLayoutAlign="center">
+              <p class="fs-1"><strong>Make Payment</strong></p>
+            </mat-card-title>
+          </mat-card>
+        </div>
+      </div>
+
+    <mat-card class="d-flex justify-content-center">
+        <form [formGroup]="form" (ngSubmit)="submit()" class="col-md-6" *ngIf="form">
+            <div class="mb-3">
+                <label for="applicabt_id" class="col-form-label fs-4 d-flex justify-content-center">Applicant:</label>
+                <input type="text" mandatory class="form-control" id="applicant_id" formControlName="applicant_id" [disabled]="true">
+            </div>
+
+            <div class="mb-3">
+                <label for="premium" class="col-form-label fs-4 d-flex justify-content-center">Premium:</label>
+                <input type="text" class="form-control" aria-describedby="basic-addon3" id="premium" formControlName="premium" [disabled]="true">
+            </div>
+
+            <div class="mb-3">
+                <label for="last_payment" class="col-form-label fs-4 d-flex justify-content-center">Last Payment:</label>
+                <input type="text" class="form-control" aria-describedby="basic-addon3" id="last_payment" formControlName="last_payment" [disabled]="true">
+            </div>
+
+            <div>
+                <label for="date_joined" class="col-form-label fs-4 d-flex justify-content-center">Payment Date:</label>
+            </div>
+            <mat-form-field appearance="fill">
+                <mat-label>Choose start date</mat-label>
+                <input mandatory class="form-control" id="date" formControlName="date" matInput [matDatepicker]="picker">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Choose end date</mat-label>
+              <input mandatory class="form-control" id="end_date" formControlName="end_date" matInput [matDatepicker]="picker2">
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+
+            <div class="col-12 d-flex justify-content-center">
+                <button class="btn-dark btn-lg w-50 m-2" type="button" (click)="goBack($event)">Back</button>
+                <button class="btn-dark btn-lg w-50 m-2" type="submit" (click)="submit()">Pay</button>
+            </div>
+        </form>
+    </mat-card>
+  </mat-card>

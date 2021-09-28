@@ -1,0 +1,112 @@
+
+<mat-card>
+    <div *ngIf="consultants.length == 0" class="-y-sm">
+      <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="20px">
+        <div fxFlex="100">
+          <mat-card style="margin-top: 30px" class="line-top">
+            <mat-card-title class="mat-card-title-alt" fxLayout="row" fxLayoutAlign="center">
+              <div style="margin-right: 90%; margin-bottom: -30px;">
+                <a class="btn btn-md btn-dark">Add Consultant</a>
+              </div>
+              <p class="fs-1"><strong>Consultants</strong></p>
+            </mat-card-title>
+            <mat-card-content>
+              <p style="margin-top: 2rem;"><strong class="fs-4">There are currently no registered consultants. </strong></p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  
+    <div *ngIf="dataSource && consultants.length > 0" [ngClass]="{'animated fadeIn': dataSource}">
+      <div fxLayout="row" fxLayoutAlign="center start">
+        <div fxFlex="100">
+          <mat-card style="margin-top: 30px" class="line-top">
+            <mat-card-title class="mat-card-title-alt" fxLayout="row" fxLayoutAlign="center">
+              <div style="margin-right: 90%; margin-bottom: -30px;">
+                <a class="btn btn-md btn-dark" [routerLink]="['/consultants/form']">Add Consultant</a>
+              </div>
+              <p class="fs-1"><strong>Consultants</strong></p>
+            </mat-card-title>
+  
+            <mat-card-content>
+              <mat-paginator
+                  [length]="tableSize"
+                  [pageSize]="15"
+                  [pageSizeOptions]="[15, 30, 50, 100]"
+                  (page)="onPaginatorChange($event)"
+                  showFirstLastButtons
+                  ></mat-paginator>
+              <table mat-table #table [dataSource]="dataSource" class="table" style="width: 100%">
+                <ng-container matColumnDef="full_name">
+                    <th style="padding-right: 35px;" class="fs-5" mat-header-cell *matHeaderCellDef>Full Name</th>
+                    <td style="padding-right: 35px;" mat-cell *matCellDef="let consultant"> {{consultant.first_name}} {{ consultant.last_name}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="number">
+                  <th style="padding-right: 35px;" class="fs-5" mat-header-cell *matHeaderCellDef>Consultant</th>
+                  <td style="padding-right: 35px;" mat-cell *matCellDef="let consultant"> {{consultant.number}}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="branch">
+                  <th style="padding-left: 40px; padding-right: 10px;" class="fs-5" mat-header-cell *matHeaderCellDef>Branch</th>
+                  <td style="padding-left: 40px; padding-right: 10px;" mat-cell *matCellDef="let consultant">
+                    {{consultant.branch}} </td>
+                </ng-container>
+  
+                <ng-container matColumnDef="email">
+                  <th style="padding-left: 10px;" class="fs-5" mat-header-cell *matHeaderCellDef>Email</th>
+                  <td style="padding-left: 10px;" mat-cell *matCellDef="let consultant">
+                    {{consultant.email}}
+                  </td>
+                </ng-container>
+  
+                <ng-container matColumnDef="actions">
+                  <th style="width: 330px;" class="fs-5" mat-header-cell *matHeaderCellDef>Actions</th>
+                  <td mat-cell *matCellDef="let consultant">
+                    <a class="btn btn-md btn-dark m-2" (click)="navigateToConsultantForm(consultant)">Edit</a>
+                    <a class="btn btn-md btn-dark"
+                      (click)="confirmDeleteConsultant(consultant)">Delete</a>
+                    <button class="btn btn-md btn-dark" style="display: none;" id="deleteConsultant" data-bs-toggle="modal"
+                    data-bs-target="#confirmDeleteConsultantModal"></button>
+                  </td>
+                </ng-container>
+  
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+  
+  <!-- Modal -->
+<div class="modal fade" id="confirmDeleteConsultantModal" tabindex="-1" aria-labelledby="confirmDeleteConsultantModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fs-4" id="confirmDeleteConsultantModalLabel" *ngIf="consultant">Delete Consultant: {{ consultant.first_name }} {{ consultant.last_name }}</h5>
+        <h5 class="modal-title fs-4" id="confirmDeleteConsultantModalLabel" *ngIf="!consultant">Delete Consultant</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="">
+          <p class="mb-0 ml-3 fs-5" >
+            Deleting this consultant will mean that this user can no longer have access to the system.
+          </p>
+        </div>
+        <br />
+        <div class="ml-3">
+          <p class="fs-5">Do you want to proceed?</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="handleDelete(consultant)">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
