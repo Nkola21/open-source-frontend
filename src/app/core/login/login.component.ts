@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
     let parlour_id = null;
     this.openservice.setUserToken(event.token);
     this.openservice.setUser(event.user);
-    console.log(event.permission);
+    this.openservice.setLoggedIn();
     
     this.openservice.setPermissions(event.permission);
     this.user = event.user;
@@ -72,7 +72,7 @@ export class LoginComponent implements OnInit {
       this.redirectToParlourView(user_id);
     }else if (permission == 'Consultant') {
       this.redirectToConsultantView(user_id);
-    }else if (permission == 'Admin') {
+    }else if (permission == 'admin') {
       this.redirectToAdminView(user_id);
     }
   }
@@ -88,7 +88,8 @@ export class LoginComponent implements OnInit {
   }
 
   redirectToAdminView(user_id) {
-    const view = [`/parlours/${user_id}/consultants`];
+    const view = [`/parlours`];
+    console.log("parlours");
     this.router.navigate(view);
   }
 
@@ -97,7 +98,6 @@ export class LoginComponent implements OnInit {
     this.openservice.post(`parlours/signin`,formValue)
       .subscribe(
         result => {
-          console.log(result);
           this.handleSignIn(result)
         },
         error => console.log(error));

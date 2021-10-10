@@ -123,7 +123,6 @@ export class PlanListComponent implements OnInit {
 
   navigateToPlainForm(event) {
     event.preventDefault();
-    console.log("Navigate");
     this.router.navigate(['plans', 'form']);
   }
 

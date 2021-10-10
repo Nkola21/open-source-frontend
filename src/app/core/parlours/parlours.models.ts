@@ -4,6 +4,7 @@ export interface Parlour {
     person_name: string;
     number: string;
     email: string;
+    address: string;
     created: string;
 }
 

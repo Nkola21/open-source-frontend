@@ -9,7 +9,9 @@ import { Observable, BehaviorSubject, merge } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { OpenService } from 'src/app/shared/services/open.service';
 import { ToastrService } from 'ngx-toastr';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+
+import { MainMember } from '../main-members.models';
 // import { saveAs } from 'file-saver';
 
 
@@ -25,6 +27,27 @@ export class SearchFormBuilder {
     details = details === undefined ? {'searchField': null} : details;
     return this.formBuilder.group({
       'searchField': [details.search]
+    });
+  }
+}
+
+
+export class SMSFormBuilder {
+  constructor(private formBuilder: FormBuilder, parlour?: any) {
+  }
+
+  buildForm(smsFields, parlour?: any) {
+    return this.buildSMSForm(smsFields, parlour);
+  }
+
+  buildSMSForm(details, parlour?: any) {
+    const from = parlour.parlour_name
+    // console.log(parlour);
+    details = details === undefined ? {'message': null, 'from': null, 'to': null} : details;
+    return this.formBuilder.group({
+      'message': [details.message, [Validators.required, Validators.minLength(2)]],
+      'from': [{value: from, disabled: true}, [Validators.required]],
+      'to': [details.to, [Validators.required]]
     });
   }
 }
@@ -74,16 +97,24 @@ export class MainMemberListComponent implements OnInit {
   main_members: Array<any> = [];
   main_member: any;
   formBuilder: SearchFormBuilder;
+  smsFormBuilder: SMSFormBuilder;
   form: FormGroup;
+  smsForm: FormGroup;
   searchField: null;
+  smsFields: null;
   status: null;
   dataSource: any;
   page: any;
   loadingState: any;
   tableSize: number;
-  permission: any
-  parlour_id: any
+  permission: any;
+  parlour_id: any;
+  parlour: any;
+  ageLimitExceeded = false;
   user: any;
+  message_parts: number;
+  message_length: number;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild("dataBlock") block: ElementRef;
 
@@ -93,16 +124,23 @@ export class MainMemberListComponent implements OnInit {
     private route: ActivatedRoute,
     public router: Router,
     private fb: FormBuilder,
+    private fc: FormBuilder,
     private toastr: ToastrService) { 
       this.formBuilder = new SearchFormBuilder(fb);
+      this.smsFormBuilder = new SMSFormBuilder(fc);
     }
 
   ngOnInit(): void {
     this.permission = this.openService.getPermissions();
     this.user = this.openService.getUser();
+    if (this.permission == "Consultant") {
+      this.parlour = this.user.parlour;
+    }
     this.parlour_id = this.openService.getParlourId()
-
+    this.initParlour(this.parlour_id);
     this.initSearchForm(this.searchField);
+
+    this.initSMSForm(this.smsFields, this.parlour);
     this.initMainMembers(this.user.id)
   }
 
@@ -123,6 +161,10 @@ export class MainMemberListComponent implements OnInit {
     this.dataSource = new MainMemberDataSource(this.main_members, this.page);
   }
 
+  initSMSForm(smsFields, parlour?: any) {
+    this.smsForm = this.smsFormBuilder.buildForm(smsFields, parlour);
+  }
+
   initSearchForm(searchField: string) {
     this.form = this.formBuilder.buildForm(searchField);
   }
@@ -140,16 +182,50 @@ export class MainMemberListComponent implements OnInit {
 
     this.openService.getUrl(`${permission.toLowerCase()}s/${id}/main-members/all`)
       .subscribe(
-        (main_members: Array<any>) => {      
+        (main_members: Array<any>) => { 
+          this.status = null;
+          this.searchField = null;
           this.main_members = main_members;
+          this.isAgeLimitExceeded(main_members);
           this.configureMainMembers(main_members);
           this.loadingState = 'complete';
         },
         error => {
-          console.log(error);
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
         });
   }
 
+  ageLimitException(main_member?: MainMember) {
+    this.openService.put(`main-members/${main_member.id}/exception`, {"age_limit_exception": true})
+      .subscribe(
+        (main: any) => {
+          main_member = main;
+          this.dataSource.data = this.dataSource.data.map((main) => {
+            
+            main !== main_member})
+          this.showExceptSuccess();
+        },
+      error => {
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
+      });
+  }
+
+  showExceptSuccess() {
+    this.toastr.success('', 'Success!!!');
+  }
+
+  initParlour(parlour_id) {
+    this.openService.getOne(`parlours/${parlour_id}`)
+      .subscribe(
+        (parlour: any) => {
+          this.parlour = parlour;
+        },
+        error => {
+          console.log("error occured.");
+        });
+  }
   configureMainMembers(main_members: Array<any>): void {
     this.tableSize = this.main_members.length
     this.dataSource = new MatTableDataSource(main_members);
@@ -188,11 +264,24 @@ export class MainMemberListComponent implements OnInit {
     this.openService.delete(`main-members/${main_member.id}/delete`)
       .subscribe(
         (main_member: any) => {
+          // this.dataSource.data = this.dataSource.data.filter(i => i !== main_member)
+          let mains = this.main_members.filter(i => i !== main_member)
+          this.configureMainMembers(mains);
+          this.initializePaginator()
           this.toastr.success('Applicant has been deleted!', 'Success');
         },
         error => {
           console.log(error);
         });
+  }
+
+  isAgeLimitExceeded(members) {
+    for (let member of members) {
+      if(member.age_limit_exceeded) {
+        this.ageLimitExceeded = true;
+        break;
+      }
+    }
   }
 
   getByPaymentPaid() {
@@ -216,9 +305,25 @@ export class MainMemberListComponent implements OnInit {
       .subscribe(
         (main_members: Array<any>) => {
           this.status = status;
+          this.searchField = null;
           this.main_members = main_members;
           this.configureMainMembers(main_members);
           this.loadingState = 'complete';
+        },
+        error => {
+          console.log(error);
+        });
+  }
+
+  getAgeLimitNotice() {
+    this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?notice=1`)
+      .subscribe(
+        (main_members: Array<any>) => {
+          if (main_members) {
+            this.main_members = main_members;
+            this.configureMainMembers(main_members);
+            this.loadingState = 'complete';
+          }
         },
         error => {
           console.log(error);
@@ -246,6 +351,11 @@ export class MainMemberListComponent implements OnInit {
     this.toastr.success('Success', 'Toastr fun!');
   }
 
+  counter(value: number) {
+    this.message_parts = Math.ceil(value/160);
+    return 160 * this.message_parts; 
+  }
+
   getCVSFile(event) {
     event.preventDefault();
     this.openService.getUrl(`consultants/${this.user.id}/export_to_csv`)
@@ -253,20 +363,6 @@ export class MainMemberListComponent implements OnInit {
         (main_members: Array<any>) => {
           this.downloadFile(main_members);
           this.loadingState = 'complete';
-        },
-        error => {
-          console.log(error);
-        });
-  }
-
-  fillExtendedMembers(applicants, applicant_id) {
-    this.openService.getUrl(`applicants/${applicant_id}}/extended-members/all`)
-      .subscribe(
-        (extended_members: Array<any>) => {
-          for (let main of extended_members) {
-            applicants.push(main);
-          }
-          console.log(applicants);
         },
         error => {
           console.log(error);
@@ -305,5 +401,22 @@ export class MainMemberListComponent implements OnInit {
     a.click();
     window.URL.revokeObjectURL(url);
     a.remove();
+  }
+
+  sendSMS() {
+    let formValues = this.smsForm.value;
+    formValues['state'] = this.status;
+    formValues['search_string'] = this.searchField;
+    formValues['parlour_id'] = this.parlour_id;
+
+    this.openService.post(`main-members/send-sms`, formValues)
+      .subscribe(
+        (result: Array<any>) => {
+          this.toastr.success('SMSes sent successfully!', '');
+          this.parlour = result['parlour'];
+        },
+        error => {
+          console.log(error);
+        });
   }
 }

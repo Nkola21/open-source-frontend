@@ -1,6 +1,6 @@
-<ul class="nav nav-pills nav-fill" style="height: 70px;align-content: center;" *ngIf="user">
+<ul class="nav nav-pills nav-fill" style="height: 70px;align-content: center;" *ngIf="user && !isAdmin()">
   <li class="nav-item inner">
-    <a class="nav-link btn btn-md fs-4" aria-current="page" style="width: 235px;" (click)="redirectToMainMembersList()">Applicants</a>
+    <a class="nav-link btn btn-md fs-4" aria-current="page" style="width: 235px;" (click)="redirectToMainMembersList()">Members</a>
   </li>
   <li class="nav-item inner" *ngIf="notConsultant()">
     <a class="nav-link btn btn-md fs-4" style="width: 235px;" (click)="redirectToConsultantsList()">Consultant</a>

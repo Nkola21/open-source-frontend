@@ -11,24 +11,6 @@ import { OpenService } from 'src/app/shared/services/open.service';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
-
-export class SMSFormBuilder {
-  constructor(private formBuilder: FormBuilder) {
-  }
-
-  buildForm(search) {
-    return this.buildSMSForm(search);
-  }
-
-  buildSMSForm(details) {
-    details = details === undefined ? {'number_of_sms': null} : details;
-    return this.formBuilder.group({
-      'number_of_sms': [details.search]
-    });
-  }
-}
-
-
 export class ParlourDataSource extends DataSource<any> {
 
   /** Connect function called by the table to retrieve one stream containing the data to render. */
@@ -62,11 +44,11 @@ export class ParlourDataSource extends DataSource<any> {
 const dialogConfig = new MatDialogConfig();
 
 @Component({
-  selector: 'app-parlour-list',
-  templateUrl: './parlour-list.component.html',
-  styleUrls: ['./parlour-list.component.css']
+  selector: 'app-archived-parlour-list',
+  templateUrl: './archived-parlour-list.component.html',
+  styleUrls: ['./archived-parlour-list.component.css']
 })
-export class ParlourListComponent implements OnInit {
+export class ArchivedParlourListComponent implements OnInit {
 
   displayedColumns = ['id', 'parlour_name', 'person_name', 'number', 'actions'];
   parlours: Array<any> = [];
@@ -75,9 +57,7 @@ export class ParlourListComponent implements OnInit {
   page: any;
   loadingState: any;
   tableSize: number;
-  formBuilder: SMSFormBuilder;
-  form: FormGroup;
-  numberOfSms: null;
+
   searchField: null;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -85,19 +65,12 @@ export class ParlourListComponent implements OnInit {
   constructor(
     public openService: OpenService,
     public dialog: MatDialog,
-    private fb: FormBuilder,
     private toastr: ToastrService,
     public router: Router) {
-      this.formBuilder = new SMSFormBuilder(fb);
      }
 
   ngOnInit(): void {
     this.initParlours();
-    this.initSMSForm(this.numberOfSms);
-  }
-
-  initSMSForm(numberOfSms: string) {
-    this.form = this.formBuilder.buildForm(numberOfSms);
   }
 
   initializePaginator() {
@@ -119,7 +92,7 @@ export class ParlourListComponent implements OnInit {
     this.loadingState = 'loading';
     this.dataSource = new ParlourDataSource([], this.page);
 
-    this.openService.getUrl(`parlours/active`)
+    this.openService.getUrl(`parlours/archived`)
       .subscribe(
         (parlours: Array<any>) => {
           this.parlours = parlours;
@@ -127,7 +100,8 @@ export class ParlourListComponent implements OnInit {
           this.loadingState = 'complete';
         },
         error => {
-          console.log("error occured.");
+          const err = error["error"];
+          this.toastr.error(err["description"], err['title']);
         });
   }
 
@@ -146,43 +120,26 @@ export class ParlourListComponent implements OnInit {
     this.router.navigate(view);
   }
 
-  redirectArchivedParlourList() {
-    const view = [`/parlours/archived-parlours`];
-    this.router.navigate(view);
-  }
-
-  redirectPendingParlourList() {
-    const view = [`/parlours/pending-parlours`];
-    this.router.navigate(view);
-  }
-
   navigateToPalourAddForm() {
     this.router.navigate(['signup']);
+  }
+
+  navigateToPalourActiveParlours() {
+    this.router.navigate(['parlours']);
   }
 
   navigateToPalourForm(parlour: any) {
     this.router.navigate(['parlours', parlour.id,'form']);
   }
 
-  confirmSuspendParlour(parlour: any) {
+  confirmUnSuspendParlour(parlour: any) {
     this.parlour = parlour;
-    const button = document.getElementById('openSuspendModal');
+    const button = document.getElementById('openUnSuspendModal');
     button.click();
-  }
-
-  suspendParlour(parlour: any) {
-    this.openService.put(`parlours/${parlour.id}/suspend`, {'state': 3})
-    .subscribe((result) => {
-      this.toastr.success('Parlour was suspended successfully', '');
-    },
-    error => {
-      const err = error["error"];
-      this.toastr.error(err["description"], err['title']);
-    });
   }
 
   unsuspendParlour(parlour: any) {
-    this.openService.put(`parlours/${parlour.id}/active`, {'state': 1})
+    this.openService.put(`parlours/${parlour.id}/activate`, {'state': 1})
     .subscribe((result) => {
       this.toastr.success('Parlour was unsuspended successfully', '');
     },
@@ -192,17 +149,16 @@ export class ParlourListComponent implements OnInit {
     });
   }
 
-  openSMSModal(parlour: any) {
+  confirmDeleteParlour(parlour: any) {
     this.parlour = parlour;
-    const button = document.getElementById('openAddSMSModal');
+    const button = document.getElementById('openDeleteModal');
     button.click();
   }
 
-  addParlourSMS() {
-    const formValue = this.form.value;
-    this.openService.put(`parlours/${this.parlour.id}/action/sms`, formValue)
+  deleteParlour(parlour: any) {
+    this.openService.delete(`parlours/${parlour.id}/delete`)
     .subscribe((result) => {
-      this.toastr.success('Parlour was unsuspended successfully', '');
+      this.toastr.success('Parlour was deleted successfully', '');
     },
     error => {
       const err = error["error"];

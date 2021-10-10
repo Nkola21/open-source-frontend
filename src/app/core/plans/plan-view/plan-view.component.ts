@@ -27,7 +27,6 @@ export class PlanViewComponent implements OnInit {
     this.openService.getUrl(`plans/${plan_id}`)
     .subscribe(
       (plan: Plan) => {
-        console.log(plan);
         this.plan = plan;
       },
       error => {
