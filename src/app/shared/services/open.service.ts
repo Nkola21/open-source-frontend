@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
-import { Observable, of, throwError } from 'rxjs';
-// import {trimWhiteSpace} from './../../shared/';
-
+import { Observable, of, throwError, Subject } from 'rxjs';
+// import { BehaviorSubject } from 'rxjs';
+// import { Subject } from 'rxjs/Subject';  
 
 export function trimWhiteSpace(obj) {
   for (let prop in obj) {
@@ -48,6 +48,11 @@ export class OpenService {
     return this.getBaseUrl() === 'http://localhost:8009/open-source';
   }
 
+  logout() {
+    localStorage.clear();
+    window.location.href = this.getClientUrl();
+    window.localStorage.setItem('logged_out', 'true');
+  }
   setUserToken(token: string): void {
     localStorage.setItem('token', token);
   }
@@ -68,6 +73,14 @@ export class OpenService {
     return headers;
   }
 
+  setLoggedIn() {
+    localStorage.setItem('logged_out', 'false');
+  }
+
+  isLoggedIn() {
+    const loggedIn = localStorage.getItem('logged_out');
+    return loggedIn == "false";
+  }
   setUser(user) {
     localStorage.setItem('user', JSON.stringify(user));
   }
@@ -195,5 +208,20 @@ export class OpenService {
 
     return this.http.post(url, JSON.stringify(obj), { headers: headers })
       .pipe(catchError(this.handleError));
+  }
+}
+ 
+
+@Injectable()
+export class CurrentUserService {
+  userValue$: Observable<any>;
+  private userValueSubject = new Subject<string>();
+
+  constructor() {
+    this.userValue$ = this.userValueSubject.asObservable();
+  }
+
+  getUserValue(data) {
+    this.userValueSubject.next(data);
   }
 }

@@ -11,7 +11,7 @@
     </div>
 
     <mat-card class="d-flex justify-content-center">
-        <form [formGroup]="form" (ngSubmit)="submit()" class="col-md-6" *ngIf="form">
+        <form [formGroup]="form" class="col-md-6" *ngIf="form">
             <div class="mb-3">
                 <label for="first_name" class="col-form-label fs-4 d-flex justify-content-center">First Name:</label>
                 <input type="text" placeholder="First Name" mandatory class="form-control" id="first_name" formControlName="first_name">
@@ -23,7 +23,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="number" class="col-form-label fs-4 d-flex justify-content-center">Number:</label>
+                <label for="number" class="col-form-label fs-4 d-flex justify-content-center">Contact Number:</label>
                 <input type="text" class="form-control" placeholder="Number" id="number" formControlName="number">
             </div>
 

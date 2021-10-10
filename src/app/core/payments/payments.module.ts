@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { PaymentListComponent } from './payment-list/payment-list.component';
 import { RouterModule } from '@angular/router';
 import { PaymentViewComponent } from './payment-view/payment-view.component';
+import { MAT_DATE_LOCALE } from '@angular/material/core'
 import { MaterialModule } from '../../material/material.module';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -51,6 +52,9 @@ const PaymentRouting: ModuleWithProviders<PaymentModule> = RouterModule.forChild
     PaymentFormComponent,
     MatListModule,
     MatTooltipModule
+  ],
+  providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
   ],
   entryComponents: [PaymentListComponent]
 })

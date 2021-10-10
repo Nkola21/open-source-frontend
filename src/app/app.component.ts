@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Subject } from "rxjs";
 import { OpenService } from 'src/app/shared/services/open.service';
 
 @Component({
@@ -12,10 +13,10 @@ export class AppComponent implements OnInit {
   user: any = null;
   authId: any;
   fullPath: any;
+  resetUserSubject: Subject<boolean> = new Subject<boolean>();
 
   constructor(private openservice: OpenService) {}
   ngOnInit() {
-    console.log(window.location.href);
 
   }
 
@@ -41,11 +42,16 @@ export class AppComponent implements OnInit {
     this.authId = this.getCookieValue('user');
   }
 
+  resetUser() {
+    this.resetUserSubject.next(true);
+ }
+ 
   handleSignIn(event) {
     this.openservice.setUserToken(event.token);
     this.openservice.setUser(event.user);
     this.user = event.user;
     this.initPermissions();
-    // this.initLookups();
+    this.resetUser();
+
   }
 }

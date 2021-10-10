@@ -1,6 +1,9 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
-import { OpenService } from 'src/app/shared/services/open.service';
+import { Observable } from 'rxjs';
+import { OpenService, CurrentUserService } from 'src/app/shared/services/open.service';
+import { Subject } from "rxjs";
+
 
 @Component({
   selector: 'app-navbar',
@@ -9,25 +12,42 @@ import { OpenService } from 'src/app/shared/services/open.service';
 })
 export class NavbarComponent implements OnInit, OnChanges {
   @Input() user: any;
+  @Input() resetFormSubject: Subject<boolean> = new Subject<boolean>();
   permission: any;
   parlour: any;
+  isLoggedIn$: Observable<boolean>;
+
   constructor(public openService: OpenService,
-    public router: Router) { }
+    private currentUserService: CurrentUserService,
+    public router: Router) { 
+      currentUserService.userValue$.subscribe(currentUser => {
+        console.log(currentUser);
+        this.user = JSON.parse(currentUser);
+       });
+    }
 
   ngOnInit(): void {
+    // this.isLoggedIn$ = this.openService.isLoggedIn;
+    this.resetFormSubject.subscribe(response => {
+      if(response){
+        console.log('=')
+       console.log(response);
+      // Or do whatever operations you need.
+      }
+    });
     this.user = this.openService.getUser();
     this.permission = this.openService.getPermissions();    
     this.getParlour();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.user = changes.user;
+    console.log(changes)
+    console.log(changes.user.firstChange)
+    this.user = changes.user.firstChange;
   }
 
   handleLogout() {
-    localStorage.clear();
-    window.location.href = this.openService.getClientUrl();
-    window.localStorage.setItem('logged_out', 'true');
+    this.openService.logout();
 
   }
 
@@ -40,11 +60,21 @@ export class NavbarComponent implements OnInit, OnChanges {
     return this.permission == 'Parlour';
   }
 
+  isConsultant() {
+    return this.permission == 'Consultant';
+  }
+
+  parlourName() {
+    return this.parlour !== undefined ? this.parlour.parlour_name : null
+  }
+
+  hasParlourName() {
+    return this.parlour == undefined
+  }
   getParlour() {
-    console.log(this.user);
     if (this.isParlour()) {
       this.parlour = this.user
-    }else {
+    }else if (this.isConsultant()) {
       this.parlour = this.user.parlour;
     }
   }

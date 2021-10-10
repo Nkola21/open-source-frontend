@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../material/material.module';
 import { NavbarComponent } from './navbar.component';
+import { OpenService, CurrentUserService } from 'src/app/shared/services/open.service';
 
 // const NavbarComponentRouting: ModuleWithProviders<NavbarModule> = RouterModule.forChild([
 //   {
@@ -33,7 +34,7 @@ import { NavbarComponent } from './navbar.component';
   exports:[
     NavbarComponent,
   ],
-  providers: [],
+  providers: [OpenService, CurrentUserService],
   bootstrap: []
 })
 export class NavbarModule { }

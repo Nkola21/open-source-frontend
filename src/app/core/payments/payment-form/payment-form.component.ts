@@ -6,6 +6,7 @@ import { PaymentFormBuilder } from '../payment-form-builder';
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
 
+
 @Component({
   selector: 'app-payment-form',
   templateUrl: './payment-form.component.html',
@@ -18,6 +19,7 @@ export class PaymentFormComponent implements OnInit {
   last_payment: any;
   main_member: any;
   parlour_id: any;
+  applicant_id: any;
   user: any;
 
   constructor(
@@ -36,6 +38,7 @@ export class PaymentFormComponent implements OnInit {
       (params) => {
         const id = +params['id'];
         const applicant_id = +params['applicant_id'];
+        this.applicant_id = applicant_id;
         if (id){
           // this.getMainMember(id);
         }else if (applicant_id){
@@ -58,25 +61,17 @@ export class PaymentFormComponent implements OnInit {
     window.history.back();
   }
 
-  // initPayment(id) {
-  //   this.openService.getOne(`payments`)
-  //     .subscribe(
-  //       payment => {
-  //         this.last_payment = payment
-  //         this.initForm(this.payment);
-  //       },
-  //       error => console.log(error));
-  // }
-
   getMainMember(id) {
     this.openService.getOne(`main-members/${id}/get`)
       .subscribe(
         main_member => {
-          console.log("Main member: ", main_member)
           this.main_member = main_member;
           this.getPreviousPayment(main_member);
         },
-        error => console.log(error));
+        error => {
+          const err = error["error"]
+          this.toastr.error(err["description"], err['title'], {timeOut: 3000});
+        });
   }
 
   getPreviousPayment(main_member) {
@@ -84,7 +79,6 @@ export class PaymentFormComponent implements OnInit {
       .subscribe(
         last_payment => {
           this.last_payment = last_payment;
-          console.log("Payment", last_payment);
           const payment = {
             "applicant_id": main_member.applicant.id,
             "cover": main_member.applicant.plan.cover,
@@ -94,45 +88,33 @@ export class PaymentFormComponent implements OnInit {
           }
           this.initForm(payment);
         },
-        error => console.log(error));
+        error =>  {
+          const err = error["error"]
+          this.toastr.error(err["description"], err['title'], {timeOut: 3000});
+        });
   }
 
   submit() {
     const formValue = this.form.value;
-    formValue['date'] = new Date(formValue['date'])
-    formValue['end_date'] = new Date(formValue['end_date'])
+    const start_date = new Date(formValue['date'])
+    const end_date = new Date(formValue['end_date'])
+
+    formValue['date'] = moment(start_date).format('DD/MM/YYYY');
+    formValue['end_date'] = moment(end_date).format('DD/MM/YYYY');
     formValue["user"] = this.user;
-    console.log(formValue['date'])
+
     this.openService.post(`parlours/${this.parlour_id}/payments`, formValue)
       .subscribe(
         (payment: any) => {
           this.showSuccess();
         },
       error => {
-        this.toastr.error(error["description"], error['title'], {timeOut: 3000});
+        const err = error["error"]
+        this.toastr.error(err["description"], err['title'], {timeOut: 3000});
       });
   }
 
   showSuccess() {
     this.toastr.success('New Plan saved successfully!', 'Success!!!');
-  }
-
-  showError(error) {
-    let errors = {};
-    errors = error.json();
-    const description = errors.hasOwnProperty('errors') ? this.getErrorDetails(error) : errors['description'];
-    this.toastr.error(description, errors['title'], {timeOut: 3000});
-    // this.toastr.error('Error', 'Major Error', {
-    //   timeOut: 3000,
-    // });
-  }
-
-  getErrorDetails(error) {
-    const body = error.json();
-    let dets = '';
-    for (const key of Object.keys(body['errors'])) {
-      dets += `${key} - ${body['errors'][key]}\n`;
-    }
-    return dets;
   }
 }

@@ -23,6 +23,7 @@
     "@angular/router": "~12.2.0",
     "bootstrap": "^5.1.0",
     "file-saver": "^2.0.5",
+    "font-awesome": "^4.7.0",
     "moment": "^2.29.1",
     "ngx-toastr": "^14.1.0",
     "rxjs": "~6.6.0",

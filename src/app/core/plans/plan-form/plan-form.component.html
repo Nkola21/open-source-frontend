@@ -11,7 +11,7 @@
       </div>
 
     <mat-card class="d-flex justify-content-center">
-        <form [formGroup]="form" (ngSubmit)="submit()" class="col-md-6" *ngIf="form">
+        <form [formGroup]="form" class="col-md-6" *ngIf="form">
             <div class="mb-3">
                 <label for="plan" class="col-form-label fs-4 d-flex justify-content-center">Plan Name:</label>
                 <input type="text" placeholder="Plan Name" mandatory class="form-control" id="plan" formControlName="plan">
