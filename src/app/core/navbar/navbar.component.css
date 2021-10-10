@@ -6,7 +6,8 @@
     .header
     {
       background: red;
-      min-height: 18%;
+      height: 100%;
+     
     }
     .nav-item2 {
       margin-left: 1px;
@@ -21,9 +22,9 @@
     }
     .btn{
       background-color: black;
-      margin: 0px 5px 4px 0px;
-      width: 70px;
-      padding: 0px;
+      margin-left:3px 3px 0px 0px;
+      width: 60px;
+      padding:2px 4px;
     }
     .nav-link {
       color:white!important;
