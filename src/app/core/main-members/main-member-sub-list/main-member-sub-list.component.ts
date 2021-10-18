@@ -182,4 +182,9 @@ export class MainMemberSubListComponent implements OnInit {
   showSuccess() {
     this.toastr.success('Success', 'Toastr fun!');
   }
+
+  goBack(event) {
+    event.preventDefault();
+    window.history.back();
+  }
 }

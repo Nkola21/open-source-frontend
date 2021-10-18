@@ -28,7 +28,7 @@ export class OpenService {
   constructor(private http: HttpClient) { }
 
   setBaseUrl(): void {
-    localStorage.setItem('baseUrl', 'http://localhost:8009/open-source');
+    localStorage.setItem('baseUrl', 'https://nocorpgroup.herokuapp.com/open-source');
     localStorage.setItem('clientUrl', 'http://localhost:4300');
   }
 

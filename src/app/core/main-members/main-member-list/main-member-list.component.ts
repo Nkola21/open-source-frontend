@@ -41,7 +41,7 @@ export class SMSFormBuilder {
   }
 
   buildSMSForm(details, parlour?: any) {
-    const from = parlour.parlour_name
+    const from = parlour !== undefined ? parlour.parlour_name : null
     // console.log(parlour);
     details = details === undefined ? {'message': null, 'from': null, 'to': null} : details;
     return this.formBuilder.group({
@@ -416,7 +416,8 @@ export class MainMemberListComponent implements OnInit {
           this.parlour = result['parlour'];
         },
         error => {
-          console.log(error);
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
         });
   }
 }
