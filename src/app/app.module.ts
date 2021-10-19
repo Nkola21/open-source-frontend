@@ -26,6 +26,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { HomeComponent } from './core/home/home.component';
 import { MainMembersArchivedModule } from './core/archived/main-members-archived.module';
 
+
 const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
   { path: '',
     pathMatch: 'full',
@@ -35,6 +36,7 @@ const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
 @NgModule({
   declarations: [
     AppComponent,
+    
   ],
   imports: [
     BrowserModule,
