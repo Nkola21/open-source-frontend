@@ -37,7 +37,7 @@ export class OpenService {
   }
 
   getClientUrl(): any {
-    return 'https://nocorpgroup.herokuapp.com/open-source-frontend/home';
+    return 'https://nkosana-citiq.github.io/open-source-frontend/home';
   }
 
   isProduction(): boolean {
