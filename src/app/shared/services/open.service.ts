@@ -37,11 +37,7 @@ export class OpenService {
   }
 
   getClientUrl(): any {
-<<<<<<< HEAD
     return 'https://nocorpgroup.herokuapp.com/open-source-frontend/home';
-=======
-    return 'https://nocorpgroup.herokuapp.com/home';
->>>>>>> b5c9a56647da0d9144de0f16c6bbc2976b454339
   }
 
   isProduction(): boolean {
