@@ -72,7 +72,6 @@ export class ConsultantFormComponent implements OnInit {
     this.openService.getOne(`consultants/${id}`)
       .subscribe(
         consultant => {
-          console.log(consultant);
           this.consultant = consultant
           this.initForm(this.consultant);
         },
@@ -84,10 +83,15 @@ export class ConsultantFormComponent implements OnInit {
     this.form = this.formBuilder.buildForm(this.consultant);
   }
 
+  confirmConsultant() {
+    const button = document.getElementById('openModal');
+    button.click();
+  }
+
   submit() {
     let formValue = this.form.value;
     formValue["parlour_id"] = this.parlour_id
-    console.log(formValue);
+
     if (this.consultant) {
       this.openService.put(`consultants/${this.consultant.id}/update`, formValue)
         .subscribe(
@@ -101,6 +105,8 @@ export class ConsultantFormComponent implements OnInit {
       this.openService.post(`consultants`, formValue)
         .subscribe(
           (user: any) => {
+            this.consultant = user;
+            this.confirmConsultant();
             this.showSuccess();
           },
         error => {

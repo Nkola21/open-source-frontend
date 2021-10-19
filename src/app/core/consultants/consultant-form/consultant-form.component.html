@@ -48,3 +48,38 @@
         </form>
     </mat-card>
   </mat-card>
+
+  <button id="openModal" class="btn btn-md btn-danger" data-bs-toggle="modal" data-bs-target="#confirmConsultantModal" style="display: none;"></button>
+
+  <!-- Modal -->
+<div class="modal fade" id="confirmConsultantModal" tabindex="-1" aria-labelledby="confirmConsultantModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fs-4" id="confirmConsultantModalLabel">Consultant Details:</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <dl class="row">
+          <dt class="col-sm-3">First Name:</dt>
+          <dd class="col-sm-9" *ngIf="consultant">{{ consultant.first_name }}</dd>
+
+          <dt class="col-sm-3">Last Name:</dt>
+          <dd class="col-sm-9" *ngIf="consultant">{{ consultant.last_name }}</dd>
+
+          <dt class="col-sm-3">Username:</dt>
+          <dd class="col-sm-9" *ngIf="consultant">{{ consultant.username }}</dd>
+
+          <dt class="col-sm-3">Email: </dt>
+          <dd class="col-sm-9" *ngIf="consultant">{{ consultant.email }}</dd>
+
+          <dt class="col-sm-3">Password:</dt>
+          <dd class="col-sm-9" *ngIf="consultant">{{ consultant.temp_password }}</dd>
+        </dl>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

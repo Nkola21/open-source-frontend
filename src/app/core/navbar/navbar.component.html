@@ -26,6 +26,7 @@
                   {{ user.first_name }}
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                  <li><a class="dropdown-item" [routerLink]="['/change-password']" *ngIf="isConsultant()">Change Password</a></li>
                   <li><a class="dropdown-item" (click)="handleLogout()">Logout</a></li>
                 </ul>
               </div>
