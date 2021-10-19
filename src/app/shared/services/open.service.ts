@@ -29,7 +29,6 @@ export class OpenService {
 
   setBaseUrl(): void {
     localStorage.setItem('baseUrl', 'https://nocorpgroup.herokuapp.com/open-source');
-    localStorage.setItem('clientUrl', 'http://localhost:4300');
   }
 
   getBaseUrl(): any {
@@ -37,7 +36,7 @@ export class OpenService {
   }
 
   getClientUrl(): any {
-    return 'https://nkosana-citiq.github.io/open-source-frontend/home';
+    return 'https://nkosana-citiq.github.io/open-source-frontend/';
   }
 
   isProduction(): boolean {
