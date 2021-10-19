@@ -83,7 +83,7 @@ export class LoginComponent implements OnInit {
   }
 
   redirectToConsultantView(user_id) {
-    const view = [`/consultants/user_id/applicants`];
+    const view = [`/consultants/${user_id}/applicants`];
     this.router.navigate(view);
   }
 
