@@ -6,6 +6,7 @@ export interface Consultant {
     number: string;
     email: string;
     branch: string;
+    temp_password: string
 }
 
 export function newConsultant() {
@@ -15,6 +16,7 @@ export function newConsultant() {
         username: '',
         number: '',
         email: '',
-        branch: ''
+        branch: '',
+        temp_password: ''
     }
 }

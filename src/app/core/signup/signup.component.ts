@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { OpenService } from 'src/app/shared/services/open.service';
 import { Parlour } from './../parlours/parlours.models';
 import { ParlourSignupFormBuilder } from './parlour-signup-form';
-
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-signup',
@@ -17,6 +17,7 @@ export class SignupComponent implements OnInit {
   form: FormGroup;
   constructor(public openService: OpenService,
     public router: Router,
+    private toastr: ToastrService,
     private fb: FormBuilder) {
       this.formBuilder = new ParlourSignupFormBuilder(fb);
      }
@@ -32,14 +33,14 @@ export class SignupComponent implements OnInit {
 
   postSignUp() {
     const formValue = this.form.value;
-    console.log(formValue);
     this.openService.post(`parlours/signup`, formValue)
       .subscribe(
         (user: any) => {
-
+          this.toastr.success('Parlour was created successfully', '');
         },
         error => {
-          console.log(error);
+          const err = {"description": error["description"], "title": error["title"]};
+          this.toastr.error(err['description'], err['title']);
         });
   }
 

@@ -39,8 +39,8 @@ export class MainMemberFormBuilder {
     details = details === undefined ? newApplicant() : details;
     return this.formBuilder.group({
         'id': [details.id],
-        'policy_num': [details.policy_num, [Validators.required, Validators.minLength(6)]],
-        'document': [details.document, [Validators.required, Validators.minLength(6)]],
+        'policy_num': [details.policy_num, [Validators.required]],
+        'document': [details.document, [Validators.required]],
         'cancelled': [details.cancelled, [Validators.required]],
         'status': [details.status, [Validators.required]],
         'date': [details.date, [Validators.required]],
@@ -185,7 +185,6 @@ export class MainMemberFormComponent implements OnInit  {
   initPlans() {
     this.openService.getUrl(`parlours/${this.parlour_id}/plans/all`)
     .subscribe((plans: any) => {
-      console.log(plans);
       this.plans = plans.map((plan: any) => {
           return {
             id: plan.id,

@@ -4,14 +4,14 @@
         <div fxFlex="100">
           <mat-card style="margin-top: 30px" class="line-top">
             <mat-card-title class="mat-card-title-alt" fxLayout="row" fxLayoutAlign="center">
-              <p class="fs-1"><strong>Applicant Form</strong></p>
+              <p class="fs-1"><strong>Member Form</strong></p>
             </mat-card-title>
           </mat-card>
         </div>
       </div>
 
     <mat-card class="d-flex justify-content-center">
-        <form [formGroup]="form" (ngSubmit)="submit()" class="col-md-6" *ngIf="form">
+        <form [formGroup]="form" class="col-md-6" *ngIf="form">
           <fieldset formGroupName="plan">
             <div class="form-group row">
                 <label class="col-xs-3 col-form-label fs-4 d-flex justify-content-center">Plan</label>
@@ -25,6 +25,7 @@
             </fieldset>
 
             <div class="mb-3">
+              <i class="fas fa-bell"></i>
               <label for="first_name" class="col-form-label fs-4 d-flex justify-content-center">First Name:</label>
               <input type="text" placeholder="First Name" mandatory class="form-control" id="first_name" formControlName="first_name">
               <app-input-error [control]="form.controls.first_name"></app-input-error>

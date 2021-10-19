@@ -56,8 +56,19 @@ export class NavbuttonsComponent implements OnInit {
     const view = [`/parlours/${this.user.id}/archived-applicants`];
     this.router.navigate(view);
   }
+
+  redirectToArchivedParloursList() {
+    const permission = this.permission;
+    const view = [`/parlours/archived-parlours`];
+    this.router.navigate(view);
+  }
+
   notConsultant(){
     return this.permission != 'Consultant';
+  }
+
+  isAdmin() {
+    return this.permission == 'admin';
   }
   getEntity() {
     return `${this.permission.toLowerCase()}s` 

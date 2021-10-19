@@ -1,6 +1,8 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ParlourListComponent } from './parlour-list/parlour-list.component';
+import { ArchivedParlourListComponent } from './archved-parlour-list/archived-parlour-list.component';
+import { PendingParlourListComponent } from './pending-parlour-list/pending-parlour-list.component';
 import { RouterModule } from '@angular/router';
 import { ParlourViewComponent } from './parlour-view/parlour-view.component';
 import { MaterialModule } from '../../material/material.module';
@@ -23,9 +25,22 @@ const ParlourRouting: ModuleWithProviders<ParloursModule> = RouterModule.forChil
     component: ParlourViewComponent,
     canActivate: []
   },
+
   {
-    path: 'parlours/:Id/form',
+    path: 'parlours/form',
     component: ParlourFormComponent
+  },
+  {
+    path: 'parlours/:id/form',
+    component: ParlourFormComponent
+  },
+  {
+    path: 'parlours/archived-parlours',
+    component: ArchivedParlourListComponent
+  },
+  {
+    path: 'parlours/pending-parlours',
+    component: PendingParlourListComponent
   }
 
 ]);
@@ -42,11 +57,15 @@ const ParlourRouting: ModuleWithProviders<ParloursModule> = RouterModule.forChil
   ],
   declarations: [
     ParlourListComponent,
+    ArchivedParlourListComponent,
+    PendingParlourListComponent,
     ParlourViewComponent,
     ParlourFormComponent
   ],
   exports: [
     ParlourListComponent,
+    ArchivedParlourListComponent,
+    PendingParlourListComponent,
     ParlourViewComponent,
     ParlourFormComponent,
     MatListModule,

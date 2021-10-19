@@ -79,6 +79,7 @@ export class ExtendedMemberListComponent implements OnInit {
   applicant_id: any;
   extended_member: any;
   formBuilder: SearchFormBuilder;
+  ageLimitExceeded = true;
   form: FormGroup;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -176,6 +177,38 @@ export class ExtendedMemberListComponent implements OnInit {
           this.extended_members = main_members;
           this.configureMainMembers(main_members);
           this.loadingState = 'complete';
+        },
+        error => {
+          console.log(error);
+        });
+  }
+
+  ageLimitException(extended_member) {
+    this.openService.put(`extended-members/${extended_member.id}/exception`, {"age_limit_exception": true})
+      .subscribe(
+        (main: any) => {
+          extended_member = main;
+          this.toastr.success('', 'Success!!!');
+          // this.dataSource.data = this.dataSource.data.map((main) => {
+  
+          //   main !== main_member})
+          // this.showExceptSuccess();
+        },
+      error => {
+
+          this.toastr.error(error['message'], error['statusText'], {timeOut: 3000});
+      });
+  }
+
+  getAgeLimitNotice() {
+    this.openService.getUrl(`applicants/${this.applicant_id}/extended-members/all?notice=1`)
+      .subscribe(
+        (extended_members: Array<any>) => {
+          if (extended_members) {
+            this.extended_members = extended_members;
+            this.configureMainMembers(extended_members);
+            this.loadingState = 'complete';
+          }
         },
         error => {
           console.log(error);

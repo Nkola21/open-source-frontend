@@ -23,8 +23,8 @@ import { SignupModule } from './core/signup/signup.module';
 import { NavbarModule } from './core/navbar/navbar.module';
 import { NavbuttonsModule } from './core/nav-buttons/nav-buttons.module';
 import { ToastrModule } from 'ngx-toastr';
-import { HomeComponent } from './core/home/home.component';
 import { MainMembersArchivedModule } from './core/archived/main-members-archived.module';
+import { ChangePasswordModule } from './core/change-password/change-password.module'
 
 
 const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
@@ -60,6 +60,7 @@ const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
     NavbarModule,
     NavbuttonsModule,
     MainMembersArchivedModule,
+    ChangePasswordModule,
     rootRouting,
     ToastrModule.forRoot()
   ],

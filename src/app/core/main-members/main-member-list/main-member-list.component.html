@@ -7,10 +7,10 @@
             <mat-card-title class="mat-card-title-alt" fxLayout="row" fxLayoutAlign="center">
               <div class="d-flex justify-content-between">
                 <div>
-                  <a class="btn btn-md btn-dark" *ngIf="isConsultant()" (click)="navigateToMainMemberAddForm()">Add Applicant</a>
+                  <a class="btn btn-md btn-dark" *ngIf="isConsultant()" (click)="navigateToMainMemberAddForm()">Add Member</a>
                 </div>
                 <div class="d-flex justify-content-center">
-                  <p class="fs-1" style="margin-left: auto;"><strong>Applicants</strong></p>
+                  <p class="fs-1" style="margin-left: auto;"><strong>Members</strong></p>
                 </div>
                 <div class="d-flex justify-content-between">
                   <form [formGroup]="form" (ngSubmit)="getBySearchField()" *ngIf="false" class="row row-cols-lg-auto g-3 align-items-center">
@@ -41,8 +41,15 @@
             <mat-card-title class="mat-card-title-alt" fxLayout="row" fxLayoutAlign="center">
               <div class="d-flex justify-content-between">
                 <div class="d-flex justify-content-between">            
-                  <div class="btn-group" role="group" style="margin-right: 10px;"><a class="btn btn-md btn-dark" *ngIf="isConsultant()" (click)="navigateToMainMemberAddForm()">Add Applicant</a></div>
+                  <div class="btn-group" role="group" style="margin-right: 10px;"><a class="btn btn-md btn-dark" *ngIf="isConsultant()" (click)="navigateToMainMemberAddForm()">Add Member</a></div>
                   <div class="btn-group" role="group" style="margin-right: 10px;"><a class="btn btn-md btn-dark" (click)="getCVSFile($event)">Export to Excel</a></div>
+                  <div class="btn-group" role="group" style="margin-right: 10px;" *ngIf="!parlour.number_of_sms">
+                    <button class="btn btn-md btn-dark" data-bs-toggle="modal" data-bs-target="#sendSMSModal" matTooltip="You do not have any SMSes left"
+                    aria-label="You do not have any SMSes left" disabled>Send SMS</button>
+                  </div>
+                  <div class="btn-group" role="group" style="margin-right: 10px;" *ngIf="parlour.number_of_sms > 0">
+                    <button class="btn btn-md btn-dark" data-bs-toggle="modal" data-bs-target="#sendSMSModal">Send SMS</button>
+                  </div>
                   <div class="btn-group" role="group">
                     <button id="btnGroupDrop1" type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                       Payment Status
@@ -56,7 +63,7 @@
                 </div>
 
                 <div>
-                  <p class="fs-1" style="margin-left: auto;"><strong>Applicants</strong></p>
+                  <p class="fs-1" style="margin-left: auto;"><strong>Members</strong></p>
                 </div>
 
                 <div class="d-flex justify-content-between">
@@ -73,8 +80,13 @@
                 </div>
             </div>
             </mat-card-title>
-
+            
             <mat-card-content>
+              <div *ngIf="ageLimitExceeded">
+              <button style="background-color: #fff; border: none;" (click)="getAgeLimitNotice()"><span class="material-icons"  style="font-size:48px;color:red;">
+                notifications
+                </span></button>
+              </div>
               <mat-paginator
                   [length]="tableSize"
                   [pageSize]="15"
@@ -150,6 +162,9 @@
                     <!-- <dialog-elements-example></dialog-elements-example> -->
                     <button class="btn btn-md btn-dark" (click)="confirmDeleteApplicant(main_member)">Delete</button>
                     <button class="btn btn-md btn-dark" style="display: none;" id="deleteApplicant" data-bs-toggle="modal" data-bs-target="#confirmDeleteApplicantModal"></button>
+                    <button class="m-2" style="background-color: #fff; border: none;" *ngIf="main_member.age_limit_exceeded && !main_member.age_limit_exception" class="tooltip-test" title="This member exceeds the age limit set on current plan" (click)="ageLimitException(main_member)"><span class="material-icons"  style="font-size:30px;color:red;">
+                      notifications
+                      </span></button>
                   </td>
                 </ng-container>
   
@@ -175,13 +190,13 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title fs-4" id="confirmDeleteApplicantModalLabel">Delete Applicant</h5>
+        <h5 class="modal-title fs-4" id="confirmDeleteApplicantModalLabel">Delete Member</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="">
           <p class="mb-0 ml-3 fs-5" >
-            By deleting this applicant, it wll be moved to the archives.
+            By deleting this member, it wll be moved to the archives.
           </p>
         </div>
         <br />
@@ -192,6 +207,49 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="handleDelete(main_member)">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="sendSMSModal" tabindex="-1" aria-labelledby="sendSMSModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fs-4" id="sendSMSModalLabel">Send SMS</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="smsForm" *ngIf="smsForm">
+          <div class="mb-3">
+            <label for="from" class="col-form-label fs-4 d-flex justify-content-center">From:</label>
+            <input type="text" class="form-control" id="from" formControlName="from" >
+        </div>
+        <div class="mb-3">
+          <label for="to" class="col-form-label fs-4 d-flex justify-content-center">To:</label>
+          <input type="text" class="form-control" id="to" formControlName="to" >
+        </div>
+          <div class="mb-3">
+              <label for="message" class="col-form-label fs-4 d-flex justify-content-center">Message:</label>
+              <textarea type="text" class="form-control col-md-6" id="message" formControlName="message" rows=4></textarea>
+              <div class="row">
+              <div class="d-flex justify-content-start col-md-6" style="margin-top: 1%">
+                <mat-hint *ngIf="smsForm.controls.message.value">{{smsForm.controls.message.value.length}} / {{counter(smsForm.controls.message.value.length)}}</mat-hint>
+              </div>
+              <div class="d-flex justify-content-end col-md-6" *ngIf="message_parts > 1"  style="margin-top: 1%">
+                <span class="fa fa-info-circle" style="color:orange;">
+                  <mat-hint *ngIf="smsForm.controls.message.value" style="color:orange;"> Number of smses {{message_parts}} </mat-hint>
+                </span>
+            </div>
+              </div>
+          </div>
+      </form>
+      </div>
+      <div class="modal-footer">
+        <span style="margin-right: auto;" >Number of smses left: {{getNumberOfSMS()}}</span>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="sendSMS()" >Send</button>
       </div>
     </div>
   </div>

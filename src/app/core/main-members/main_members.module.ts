@@ -1,6 +1,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MainMemberListComponent } from './main-member-list/main-member-list.component';
+import { MainMemberSubListComponent } from './main-member-sub-list/main-member-sub-list.component';
 import { RouterModule } from '@angular/router';
 import { MainMemberViewComponent } from './main-member-view/main-member-view.component';
 import { MaterialModule } from '../../material/material.module';
@@ -16,6 +17,12 @@ const MainMemberRouting: ModuleWithProviders<MainMembersModule> = RouterModule.f
     path: 'consultants/:id/applicants',
     pathMatch: 'full',
     component: MainMemberListComponent,
+    canActivate: []
+  },
+  {
+    path: 'parlours/:id/members',
+    pathMatch: 'full',
+    component: MainMemberSubListComponent,
     canActivate: []
   },
   {
@@ -52,6 +59,7 @@ const MainMemberRouting: ModuleWithProviders<MainMembersModule> = RouterModule.f
   ],
   declarations: [
     MainMemberListComponent,
+    MainMemberSubListComponent,
     MainMemberViewComponent,
     MainMemberFormComponent
   ],

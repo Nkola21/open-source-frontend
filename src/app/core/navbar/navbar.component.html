@@ -10,8 +10,11 @@
             <li class="nav-item">
               <a class="nav-link" [routerLink]="['/home']" routerLinkActive="active"></a>
             </li>
-            <li class="nav-item">
-              <p style="font-size: 26px;color: #fff"><span>{{parlour.parlour_name}}</span></p>
+            <li class="nav-item" *ngIf="true">
+              <p style="font-size: 26px;color: #fff"><span>{{parlourName()}}</span></p>
+            </li>
+            <li class="nav-item" *ngIf="hasParlourName()">
+              <p style="font-size: 26px;opacity: 0;"><span>Parlour name fill</span></p>
             </li>
             <li class="nav-item">
               <a class="nav-link" [routerLink]="['/contacts']" routerLinkActive="active" ></a>
@@ -23,6 +26,7 @@
                   {{ user.first_name }}
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                  <li><a class="dropdown-item" [routerLink]="['/change-password']" *ngIf="isConsultant()">Change Password</a></li>
                   <li><a class="dropdown-item" (click)="handleLogout()">Logout</a></li>
                 </ul>
               </div>
@@ -55,7 +59,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-          <a class="navbar-brand" href="#"><img src="..//..//..//assets/images/open-source-logo.jpg " ></a>
+          
           <ul class="navbar-nav d-flex justify-content-lg-between">
             <li class="nav-item">
               <a class="nav-link" [routerLink]="['/home']" routerLinkActive="active">HOME</a>
@@ -69,7 +73,7 @@
             </ul>
             <ul class="navbar-nav position-absolute top-50 end-0 translate-middle-y" style="width: 15%;">
               <li class="nav-item2" style="width: 50%">
-                <button type="button" class="btn btn-dark"  [routerLink]="['/login']" routerLinkActive="active align-content-top "style=" height: 40px; margin-right: 10px; width: 100%;">LOGIN</button>
+                <button type="button" class="btn btn-dark"  [routerLink]="['/login']" routerLinkActive="active align-content-top "style=" height: 40px; : 10px; width: 100%;">LOGIN</button>
               </li>
               <li class="nav-item2" style="width: 50%;margin-left:1% !important">
                 <button type="button" class="btn btn-dark"  [routerLink]="['/signup']" routerLinkActive="active" style="height: 40px; width: 100%;">SIGNUP</button>
