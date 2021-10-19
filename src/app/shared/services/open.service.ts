@@ -37,7 +37,7 @@ export class OpenService {
   }
 
   getClientUrl(): any {
-    return 'http://localhost:4200/home';
+    return 'https://nocorpgroup.herokuapp.com/home';
   }
 
   isProduction(): boolean {
