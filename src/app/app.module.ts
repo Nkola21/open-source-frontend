@@ -25,6 +25,8 @@ import { NavbuttonsModule } from './core/nav-buttons/nav-buttons.module';
 import { ToastrModule } from 'ngx-toastr';
 import { HomeComponent } from './core/home/home.component';
 import { MainMembersArchivedModule } from './core/archived/main-members-archived.module';
+import { ContactsComponent } from './core/contacts/contacts.component';
+import { ContactsModule } from './core/contacts/contacts.module';
 
 const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
   { path: '',
@@ -35,6 +37,7 @@ const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
 @NgModule({
   declarations: [
     AppComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -54,6 +57,7 @@ const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
     HomeModule,
     LoginModule,
     SignupModule,
+    ContactsModule,
     // NavSignInModule,
     NavbarModule,
     NavbuttonsModule,
