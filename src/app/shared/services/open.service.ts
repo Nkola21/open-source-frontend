@@ -33,7 +33,7 @@ export class OpenService {
   }
 
   getBaseUrl(): any {
-    return 'http://localhost:8009/open-source';
+    return 'https://nocorpgroup.herokuapp.com/open-source';
   }
 
   getClientUrl(): any {
