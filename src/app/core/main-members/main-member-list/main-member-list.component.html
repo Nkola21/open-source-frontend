@@ -247,7 +247,7 @@
       </form>
       </div>
       <div class="modal-footer">
-        <span style="margin-right: auto;" >Number of smses left: {{parlour.number_of_sms}}</span>
+        <span style="margin-right: auto;" >Number of smses left: {{getNumberOfSMS()}}</span>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="sendSMS()" >Send</button>
       </div>

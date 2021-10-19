@@ -420,4 +420,9 @@ export class MainMemberListComponent implements OnInit {
           this.toastr.error(err['description'], error['title'], {timeOut: 3000});
         });
   }
+
+  getNumberOfSMS() {
+    return this.parlour !== undefined && this.parlour.number_of_sms !== undefined ? this.parlour.number_of_sms : 0;
+  }
+
 }
