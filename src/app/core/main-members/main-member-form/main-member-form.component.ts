@@ -108,7 +108,7 @@ export class MainMemberFormComponent implements OnInit  {
   submit() {
     const formValue = this.form.value;
     formValue["parlour_id"] = this.parlour_id;
-    console.log(formValue);
+
     if (this.main_member) {
       this.openService.put(`main-members/${this.main_member.id}/update`, formValue)
         .subscribe(
@@ -117,8 +117,8 @@ export class MainMemberFormComponent implements OnInit  {
             this.showSuccess();
           },
         error => {
-            console.log(error);
-            this.toastr.error(error['message'], error['statusText'], {timeOut: 3000});
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
         });
     }else {
       this.openService.post(`consultants/${this.user.id}/main-members`, formValue)
@@ -128,8 +128,8 @@ export class MainMemberFormComponent implements OnInit  {
             this.submitted = true;
           },
         error => {
-          const description = error.hasOwnProperty('errors') ? this.getErrorDetails(error) : error['description'];
-          this.toastr.error(error['message'], error['statusText'], {timeOut: 3000});
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
         });
     }
   }
