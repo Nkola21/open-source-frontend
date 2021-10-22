@@ -201,9 +201,7 @@ export class MainMemberListComponent implements OnInit {
       .subscribe(
         (main: any) => {
           main_member = main;
-          this.dataSource.data = this.dataSource.data.map((main) => {
-            
-            main !== main_member})
+          this.initMainMembers(this.user.id);
           this.showExceptSuccess();
         },
       error => {

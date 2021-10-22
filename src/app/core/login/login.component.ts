@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {ActivatedRoute, Router, Params} from '@angular/router';
 import { OpenService } from 'src/app/shared/services/open.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 class SignInFormBuilder {
@@ -36,7 +37,8 @@ export class LoginComponent implements OnInit {
     private openservice: OpenService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
     ) { 
       this.formBuilder = new SignInFormBuilder(fb);
     }
@@ -100,7 +102,10 @@ export class LoginComponent implements OnInit {
         result => {
           this.handleSignIn(result)
         },
-        error => console.log(error));
+        error => {
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
+        });
   }
 
   postSigninConsutant(user) {

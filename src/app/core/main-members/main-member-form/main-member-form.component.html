@@ -12,12 +12,12 @@
 
     <mat-card class="d-flex justify-content-center">
         <form [formGroup]="form" class="col-md-6" *ngIf="form">
-          <fieldset formGroupName="plan">
+          <fieldset formGroupName="applicant">
             <div class="form-group row">
                 <label class="col-xs-3 col-form-label fs-4 d-flex justify-content-center">Plan</label>
                 <div class="col-xs-9">
-                    <select id="form.controls.plan.controls.id" class="form-control" formControlName="id">
-                        <option selected="selected" value="" >Select Plan</option>
+                    <select id="form.controls.applicant.controls.plan.controls.id" class="form-control" formControlName="id">
+                        <option selected value="" disabled>-- Select Plan -- </option>
                         <option *ngFor="let plan of plans" [ngValue]="plan.id" >{{plan.name}}</option>
                     </select>
                 </div>
