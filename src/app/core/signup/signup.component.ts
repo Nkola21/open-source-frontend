@@ -39,8 +39,8 @@ export class SignupComponent implements OnInit {
           this.toastr.success('Parlour was created successfully', '');
         },
         error => {
-          const err = {"description": error["description"], "title": error["title"]};
-          this.toastr.error(err['description'], err['title']);
+          const err = error["error"];
+          this.toastr.error(err["description"], err['title']);
         });
   }
 
