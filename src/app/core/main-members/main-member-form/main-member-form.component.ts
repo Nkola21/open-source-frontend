@@ -97,7 +97,6 @@ export class MainMemberFormComponent implements OnInit  {
     this.openService.getOne(`main-members/${id}/get`)
       .subscribe(
         main_member => {
-          console.log("Main member: ", main_member);
           this.main_member = main_member;
           this.initPlans();
           this.initForm(this.main_member);
