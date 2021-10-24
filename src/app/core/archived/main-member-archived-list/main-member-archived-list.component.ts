@@ -172,7 +172,6 @@ export class MainMemberArchivedListComponent implements OnInit {
   }
 
   confirmRestoreApplicant(main_member: any) {
-    console.log(main_member);
     this.main_member = main_member;
     const button = document.getElementById('restoreApplicant');
     button.click();
@@ -224,18 +223,18 @@ export class MainMemberArchivedListComponent implements OnInit {
   }
 
   getByPaymentStatus(status) {
-    console.log("called")
     this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/archived?status=${status}`)
       .subscribe(
         (main_members: Array<any>) => {
+          console.log(main_members);
           this.status = status;
           this.main_members = main_members;
-          console.log(main_members)
           this.configureMainMembers(main_members);
           this.loadingState = 'complete';
         },
         error => {
-          console.log(error);
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
         });
   }
 
@@ -252,7 +251,8 @@ export class MainMemberArchivedListComponent implements OnInit {
           this.loadingState = 'complete';
         },
         error => {
-          console.log(error);
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
         });
   }
 

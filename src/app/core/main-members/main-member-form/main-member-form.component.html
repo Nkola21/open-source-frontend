@@ -27,17 +27,20 @@
             <div class="mb-3">
               <i class="fas fa-bell"></i>
               <label for="first_name" class="col-form-label fs-4 d-flex justify-content-center">First Name:</label>
+              <span style="color: red;position:relative; top: 30px; right: 20px">*</span>
               <input type="text" placeholder="First Name" mandatory class="form-control" id="first_name" formControlName="first_name">
               <app-input-error [control]="form.controls.first_name"></app-input-error>
             </div>
 
             <div class="mb-3">
                 <label for="last_name" class="col-form-label fs-4 d-flex justify-content-center">Last Name:</label>
+                <span style="color: red;position:relative; top: 30px; right: 20px">*</span>
                 <input type="last_name" mandatory class="form-control" placeholder="Last Name" id="last_name" formControlName="last_name">
                 <app-input-error [control]="form.controls.last_name"></app-input-error>
             </div>
 
             <label for="id_number" class="col-form-label fs-4 d-flex justify-content-center">ID Number:</label>
+            <span style="color: red;position:relative; top: 30px; right: 20px">*</span>
             <div class="input-group mb-3">
                 <span class="input-group-text" id="basic-addon3">{{ getAge() }}</span>
                 <input type="text" class="form-control" aria-describedby="basic-addon3" placeholder="ID Number" id="id_number" formControlName="id_number">
@@ -62,6 +65,7 @@
             <div>
                 <label for="date_joined" class="col-form-label fs-4 d-flex justify-content-center">Date Joined:</label>
             </div>
+            <span style="color: red;position:relative; top: 30px; right: 20px">*</span>
             <mat-form-field appearance="fill">
                 <mat-label>Choose a date</mat-label>
                 <input mandatory class="form-control" id="date_joined" formControlName="date_joined" matInput [matDatepicker]="picker">
@@ -73,6 +77,7 @@
             <fieldset formGroupName="applicant">
               <div class="form-group row">
                   <label class="col-xs-3 col-form-label fs-4 d-flex justify-content-center">Policy Number:</label>
+                  <span style="color: red;position:relative; top: 30px; right: 20px">*</span>
                   <div class="col-xs-9">
                     <input mandatory class="form-control" type="text" placeholder="Policy Number" id="form.controls.applicant.controls.policy_num" formControlName="policy_num" />
                   </div>
