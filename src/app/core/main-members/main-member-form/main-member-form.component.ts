@@ -18,9 +18,8 @@ export class MainMemberFormBuilder {
     details = details === undefined ? newMainMember() : details;
     return this.formBuilder.group({
       'id': [details.id],
-      'plan': this.buildPlan(details.plan),
-      'first_name': [details.first_name, [Validators.required, Validators.minLength(6)]],
-      'last_name': [details.last_name, [Validators.required, Validators.minLength(6)]],
+      'first_name': [details.first_name, [Validators.required]],
+      'last_name': [details.last_name, [Validators.required]],
       'id_number': [details.id_number, [Validators.required]],
       'date_joined': [details.date_joined, [Validators.required]],
       'contact': [details.contact, [Validators.required]],
@@ -44,9 +43,10 @@ export class MainMemberFormBuilder {
         'cancelled': [details.cancelled, [Validators.required]],
         'status': [details.status, [Validators.required]],
         'date': [details.date, [Validators.required]],
-        'address': [details.address, [Validators.required]]
+        'address': [details.address, [Validators.required]],
+        'plan': this.buildPlan(details.plan)
     });
-}
+  }
 }
 
 
@@ -97,7 +97,6 @@ export class MainMemberFormComponent implements OnInit  {
     this.openService.getOne(`main-members/${id}/get`)
       .subscribe(
         main_member => {
-          console.log("Main member: ", main_member);
           this.main_member = main_member;
           this.initPlans();
           this.initForm(this.main_member);

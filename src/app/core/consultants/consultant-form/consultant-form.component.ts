@@ -121,10 +121,11 @@ export class ConsultantFormComponent implements OnInit {
   }
 
   showSuccess() {
-    this.toastr.success('New Plan saved successfully!', 'Success!!!');
+    this.toastr.success('New Consultant saved successfully!', 'Success!!!');
   }
 
   showError(error) {
-    this.toastr.error(error["message"], error['statusText'], {timeOut: 3000});
+    let err = error['error'];
+      this.toastr.error(err['description'], error['title'], {timeOut: 3000});
   }
 }

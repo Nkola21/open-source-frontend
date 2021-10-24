@@ -115,6 +115,7 @@ export class ExtendedMemberFormComponent implements OnInit {
     if (formValue['type'] == 0 ) {
       formValue['relation_to_main_member'] = 9;
     }
+    console.log(formValue);
     if (this.extended_member) {
       this.openService.put(`extended-members/${this.extended_member.id}/update`, formValue)
         .subscribe(

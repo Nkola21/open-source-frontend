@@ -201,9 +201,7 @@ export class MainMemberListComponent implements OnInit {
       .subscribe(
         (main: any) => {
           main_member = main;
-          this.dataSource.data = this.dataSource.data.map((main) => {
-            
-            main !== main_member})
+          this.initMainMembers(this.user.id);
           this.showExceptSuccess();
         },
       error => {
@@ -393,11 +391,11 @@ export class MainMemberListComponent implements OnInit {
     const csvArray = csv.join('\r\n');
   
     const a = document.createElement('a');
-    const blob = new Blob([csvArray], { type: 'text/csv' });
+    const blob = new Blob([csvArray], { type: 'text/xlsx' });
     const url = window.URL.createObjectURL(blob);
   
     a.href = url;
-    a.download = 'Applicants.csv';
+    a.download = 'Applicants.xlsx';
     a.click();
     window.URL.revokeObjectURL(url);
     a.remove();
