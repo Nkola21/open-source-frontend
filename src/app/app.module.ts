@@ -26,6 +26,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { MainMembersArchivedModule } from './core/archived/main-members-archived.module';
 //import { ChangePasswordModule } from './core/change-password/change-password.module'
 import { ContactsModule } from './core/contacts/contacts.module';
+import { TermsandconditionsComponent } from './termsandconditions/termsandconditions.component';
+import { TermsandconditionsModule } from './termsandconditions/termsandconditions.module';
 
 const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
   { path: '',
@@ -35,7 +37,8 @@ const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
+   
     
   ],
   imports: [
@@ -58,6 +61,7 @@ const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
     HomeModule,
     LoginModule,
     SignupModule,
+    TermsandconditionsModule,
     // NavSignInModule,
     NavbarModule,
     NavbuttonsModule,
