@@ -4,7 +4,8 @@
         <div fxFlex="100">
             <mat-card style="margin-top: 30px" class="line-top">
                 <mat-card-title class="mat-card-title-alt" fxLayout="row" fxLayoutAlign="center">
-                    <p class="fs-1"><strong>Member Form</strong></p>
+                    <p class="fs-1"><strong>
+                        Extended Members Form</strong></p>
                 </mat-card-title>
             </mat-card>
         </div>
@@ -33,7 +34,7 @@
             <mat-form-field appearance="fill">
                 <mat-label>Choose a date</mat-label>
                 <input class="form-control" id="date_of_birth" formControlName="date_of_birth" matInput [matDatepicker]="picker2">
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                 <mat-datepicker #picker2></mat-datepicker>
             </mat-form-field>
 
