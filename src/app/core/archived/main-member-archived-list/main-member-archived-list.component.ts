@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataSource } from '@angular/cdk/collections';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -94,7 +94,8 @@ export class MainMemberArchivedListComponent implements OnInit {
     private route: ActivatedRoute,
     public router: Router,
     private fb: FormBuilder,
-    private toastr: ToastrService) { 
+    private toastr: ToastrService,
+    private changeDetectorRefs: ChangeDetectorRef) { 
       this.formBuilder = new SearchFormBuilder(fb);
     }
 
@@ -141,8 +142,7 @@ export class MainMemberArchivedListComponent implements OnInit {
 
     this.openService.getUrl(`${permission.toLowerCase()}s/${id}/main-members/archived`)
       .subscribe(
-        (main_members: Array<any>) => {
-          console.log(main_members);         
+        (main_members: Array<any>) => {        
           this.main_members = main_members;
           this.configureMainMembers(main_members);
           this.loadingState = 'complete';
@@ -182,7 +182,14 @@ export class MainMemberArchivedListComponent implements OnInit {
     this.openService.put(`main-members/${main_member.id}/restore`, main_member)
       .subscribe(
         (main_member: any) => {
+          this.main_members = this.main_members.filter(val => { 
+            if (val.id != main_member.id) {
+              return val;
+            }
+          });
+          this.configureMainMembers(this.main_members);
           this.toastr.success('Applicant has been restored!', 'Success');
+          this.changeDetectorRefs.detectChanges();
         },
         error => {
           this.toastr.error(error['message'], error['statusText']);

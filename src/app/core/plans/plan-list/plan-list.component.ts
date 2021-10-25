@@ -141,6 +141,13 @@ export class PlanListComponent implements OnInit {
       .subscribe(
         (new_plan: any) => {
           this.toastr.success(`Successfully deleted plan.`, "Success")
+          this.plans = this.plans.filter(val => { 
+            if (val.id != plan.id) {
+              return val;
+            }
+          });
+          this.configurePlans(this.plans);
+          this.initializePaginator()
         },
         error => {
           console.log(error);

@@ -174,6 +174,13 @@ export class ParlourListComponent implements OnInit {
     this.openService.put(`parlours/${parlour.id}/suspend`, {'state': 3})
     .subscribe((result) => {
       this.toastr.success('Parlour was suspended successfully', '');
+      this.parlours = this.parlours.filter(val => {
+        if (val.id != parlour.id) {
+          return val;
+        }
+      });
+      this.configureParlours(this.parlours);
+      this.initializePaginator()
     },
     error => {
       const err = error["error"];
@@ -185,6 +192,13 @@ export class ParlourListComponent implements OnInit {
     this.openService.put(`parlours/${parlour.id}/active`, {'state': 1})
     .subscribe((result) => {
       this.toastr.success('Parlour was unsuspended successfully', '');
+      this.parlours = this.parlours.filter(val => { 
+        if (val.id != parlour.id) {
+          return val;
+        }
+      });
+      this.configureParlours(this.parlours);
+      this.initializePaginator()
     },
     error => {
       const err = error["error"];

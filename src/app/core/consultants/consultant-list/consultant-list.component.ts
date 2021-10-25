@@ -135,6 +135,13 @@ export class ConsultantListComponent implements OnInit {
       .subscribe(
         (consultant: any) => {
           this.toastr.success("Successfully deleted consultant.", "Success")
+          this.consultants = this.consultants.filter(val => { 
+            if (val.id != consultant.id) {
+              return val;
+            }
+          });
+          this.configureConsultants(this.consultants);
+          this.initializePaginator()
         },
         error => {
           console.log(error);

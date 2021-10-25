@@ -68,7 +68,7 @@
             <span style="color: red;position:relative; top: 30px; right: 20px">*</span>
             <mat-form-field appearance="fill">
                 <mat-label>Choose a date</mat-label>
-                <input mandatory class="form-control" id="date_joined" formControlName="date_joined" matInput [matDatepicker]="picker">
+                <input mandatory class="form-control" id="form.controls.date_joined" formControlName="date_joined" matInput [matDatepicker]="picker">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
                 <app-input-error [control]="form.controls.date_joined"></app-input-error>
@@ -80,6 +80,7 @@
                   <span style="color: red;position:relative; top: 30px; right: 20px">*</span>
                   <div class="col-xs-9">
                     <input mandatory class="form-control" type="text" placeholder="Policy Number" id="form.controls.applicant.controls.policy_num" formControlName="policy_num" />
+                    <app-input-error [control]="form.controls.applicant.controls.policy_num"></app-input-error>
                   </div>
                 </div>
               </fieldset>

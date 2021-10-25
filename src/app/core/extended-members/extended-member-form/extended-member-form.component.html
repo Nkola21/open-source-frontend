@@ -17,18 +17,21 @@
                 <label for="first_name" class="col-form-label fs-4 d-flex justify-content-center">First Name:</label>
                 <span style="color: red;position:relative; top: 30px; right: 20px">*</span>
                 <input type="text" placeholder="First Name" mandatory class="form-control" id="first_name" formControlName="first_name">
+                <app-input-error [control]="first_name"></app-input-error>
             </div>
 
             <div class="mb-3">
                 <label for="last_name" class="col-form-label fs-4 d-flex justify-content-center">Last Name:</label>
                 <span style="color: red;position:relative; top: 30px; right: 20px">*</span>
                 <input type="last_name" mandatory class="form-control" placeholder="Last Name" id="last_name" formControlName="last_name">
+                <app-input-error [control]="last_name"></app-input-error>
             </div>
 
             <label for="id_number" class="col-form-label fs-4 d-flex justify-content-center">ID Number:</label>
             <div class="input-group mb-3">
                 <span class="input-group-text" id="basic-addon3">{{ getAge() }}</span>
                 <input type="text" class="form-control" aria-describedby="basic-addon3" placeholder="ID Number" id="id_number" formControlName="id_number">
+                <app-input-error [control]="id_number"></app-input-error>
             </div>
 
             <mat-form-field appearance="fill">
@@ -55,6 +58,7 @@
                             <option [ngValue]="2" >Extended Member</option>
                             <option [ngValue]="3" >Additional Extended Member</option>
                         </select>
+                        <app-input-error [control]="form.controls.type"></app-input-error>
                     </div>
                 </div>
             </fieldset>
@@ -65,7 +69,7 @@
                     <span style="color: red;position:relative; top: 30px; right: 20px">*</span>
                     <div class="col-xs-9">
                         <select id="form.controls.relation_to_main_member" class="form-control" formControlName="relation_to_main_member">
-                            <option selected="selected" value="" >Relation to Main Member</option>
+                            <option selected="selected" value="" >Relationship to Main Member</option>
                             <option [ngValue]="0" >Child</option>
                             <option [ngValue]="1" >Parent</option>
                             <option [ngValue]="2" >Brother</option>
@@ -78,6 +82,7 @@
                             <option [ngValue]="9" >Wife</option>
                             <option [ngValue]="10" >Husband</option>
                         </select>
+                        <app-input-error [control]="form.controls.relation_to_main_member"></app-input-error>
                     </div>
                 </div>
             </fieldset>
@@ -91,6 +96,7 @@
                 <input mandatory class="form-control" id="date_joined" formControlName="date_joined" matInput [matDatepicker]="picker">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
+                <app-input-error [control]="date_joined"></app-input-error>
             </mat-form-field>
 
             <div class="col-12 d-flex justify-content-center">

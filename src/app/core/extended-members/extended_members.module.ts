@@ -7,6 +7,7 @@ import { MatListModule } from '@angular/material/list';
 import { ExtendedMemberListComponent } from './extended-member-list/extended-member-list.component';
 import { ExtendedMemberFormComponent } from './extended-member-form/extended-member-form.component';
 import { ExtendedMemberViewComponent } from './extended-member-view/extended-member-view.component';
+import { SharedModule } from './../../shared/shared.module';
 
 
 const ExtendedMemberRouting: ModuleWithProviders<ExtendedMembersModule> = RouterModule.forChild([
@@ -38,7 +39,8 @@ const ExtendedMemberRouting: ModuleWithProviders<ExtendedMembersModule> = Router
     ExtendedMemberRouting,
     MaterialModule,
     MatListModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ],
   declarations: [
     ExtendedMemberListComponent,
