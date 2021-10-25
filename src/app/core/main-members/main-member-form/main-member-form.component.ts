@@ -23,7 +23,8 @@ export class MainMemberFormBuilder {
       'id_number': [details.id_number, [Validators.required]],
       'date_joined': [details.date_joined, [Validators.required]],
       'contact': [details.contact, [Validators.required]],
-      'applicant': this.buildApplicantForm(details.applicant)
+      'applicant': this.buildApplicantForm(details.applicant),
+      'plan_id': [details.plan_id]
     });
   }
 
