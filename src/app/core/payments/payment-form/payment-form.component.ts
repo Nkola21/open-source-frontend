@@ -121,7 +121,7 @@ export class PaymentFormComponent implements OnInit {
   }
 
   getReceipt(id) {
-    const base_url = this.openService.getBaseUrl() 
+    const base_url = this.openService.getBaseUrl()
     const anchor = <HTMLAnchorElement>document.getElementById('printInvoice');
     anchor.href = `${base_url}/invoices/${id}`;
     anchor.click();

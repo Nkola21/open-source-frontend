@@ -49,7 +49,7 @@ const dialogConfig = new MatDialogConfig();
 })
 export class InvoiceListComponent implements OnInit {
 
-  displayedColumns = ['invoice_number', 'amount', 'number_of_months', 'contact', 'document'];
+  displayedColumns = ['invoice_number', 'amount', 'number_of_months', 'date', 'contact', 'document'];
   invoices: Array<any> = [];
   dataSource: any;
   page: any;
