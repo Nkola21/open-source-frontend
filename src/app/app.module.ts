@@ -28,6 +28,7 @@ import { ChangePasswordModule } from './core/change-password/change-password.mod
 import { ContactsModule } from './core/contacts/contacts.module';
 import { TermsandconditionsComponent } from './termsandconditions/termsandconditions.component';
 import { TermsandconditionsModule } from './termsandconditions/termsandconditions.module';
+import { InvoiceModule } from './core/invoices/invoices.module';
 
 const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
   { path: '',
@@ -66,7 +67,8 @@ const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
     NavbarModule,
     NavbuttonsModule,
     MainMembersArchivedModule,
-   ChangePasswordModule,
+    ChangePasswordModule,
+    InvoiceModule,
     rootRouting,
     ToastrModule.forRoot()
   ],

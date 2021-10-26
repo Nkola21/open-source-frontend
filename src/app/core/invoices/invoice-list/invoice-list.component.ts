@@ -8,8 +8,9 @@ import { Observable, BehaviorSubject, merge } from 'rxjs';
 
 import { map } from 'rxjs/operators';
 import { OpenService } from 'src/app/shared/services/open.service';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
-export class AdditionalExtendedMemberDataSource extends DataSource<any> {
+export class InvoiceDataSource extends DataSource<any> {
 
   /** Connect function called by the table to retrieve one stream containing the data to render. */
   dataChange: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
@@ -42,20 +43,19 @@ export class AdditionalExtendedMemberDataSource extends DataSource<any> {
 const dialogConfig = new MatDialogConfig();
 
 @Component({
-  selector: 'app-add-extended-member-list',
-  templateUrl: './additional-extended-member-list.component.html',
-  styleUrls: ['./additional-extended-member-list.component.css']
+  selector: 'app-invoice-list',
+  templateUrl: './invoice-list.component.html',
+  styleUrls: ['./invoice-list.component.css']
 })
-export class AdditionalExtendedMemberListComponent implements OnInit {
+export class InvoiceListComponent implements OnInit {
 
-  displayedColumns = ['full_name', 'date', 'contact', 'date_joined', 'actions'];
-  extended_members: Array<any> = [];
+  displayedColumns = ['invoice_number', 'amount', 'number_of_months', 'contact', 'document'];
+  invoices: Array<any> = [];
   dataSource: any;
   page: any;
   loadingState: any;
   tableSize: number;
-  permission: any
-  user: any;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
@@ -65,41 +65,45 @@ export class AdditionalExtendedMemberListComponent implements OnInit {
     public router: Router) { }
 
   ngOnInit(): void {
-    this.permission = this.openService.getPermissions();
-    this.user = this.openService.getUser();
     this.route.params.subscribe(
       (params) => {
-        const id = +params['id'];
-        this.initExtendedMembers(id);
-      }
-    )
+        const id = +params['applicant_id'];
+
+        if (id) {
+          this.initInvoices(id);
+        }
+      });
   }
 
+  getUrl(invoice) {
+    const base_url = this.openService.getBaseUrl()
+    return `${base_url}/${invoice.path}`
+  }
   initializePaginator() {
     this.dataSource.paginator = this.paginator;
   }
 
   onPaginatorChange(event: any) {
     this.page = event;
-    this.dataSource = new AdditionalExtendedMemberDataSource(this.extended_members, this.page);
+    this.dataSource = new InvoiceDataSource(this.invoices, this.page);
   }
 
-  initExtendedMembers(id) {
-    this.extended_members = [];
-    const permission = this.permission;
+  initInvoices(id) {
+    this.invoices = [];
     this.page = {
       'pageSize': 5,
       'pageIndex': 0,
     };
 
     this.loadingState = 'loading';
-    this.dataSource = new AdditionalExtendedMemberDataSource([], this.page);
+    this.dataSource = new InvoiceDataSource([], this.page);
 
-    this.openService.getUrl(`applicants/${id}/extended-members/all`)
+    this.openService.getUrl(`applicants/${id}/invoices/all`)
       .subscribe(
-        (extended_members: Array<any>) => {
-          this.extended_members = extended_members;
-          this.configureMainMembers(extended_members);
+        (invoices: Array<any>) => {
+          this.invoices = invoices;
+          console.log(invoices)
+          this.configureInvoices(invoices);
           this.loadingState = 'complete';
         },
         error => {
@@ -107,22 +111,17 @@ export class AdditionalExtendedMemberListComponent implements OnInit {
         });
   }
 
-  configureMainMembers(extended_members: Array<any>): void {
-    this.tableSize = this.extended_members.length
-    this.dataSource = new MatTableDataSource(extended_members);
+  configureInvoices(payments: Array<any>): void {
+    this.tableSize = this.invoices.length
+    this.dataSource = new MatTableDataSource(payments);
     this.initializePaginator()
   }
 
-  navigateToExtendedMemberView(extended_members: any) {
-    this.router.navigate(['main_members', extended_members.id,'view']);
+  navigateToPalourView(payment: any) {
+    this.router.navigate(['payments', payment.id,'view']);
   }
 
-  navigateToExtendedMemberForm(extended_members: any) {
-    this.router.navigate(['main_members', extended_members.id,'form']);
-  }
-
-  navigateToExtendedMembersListView(id: any) {
-    console.log(id)
-    this.router.navigate(['extended_members', id,'all']);
+  navigateToPalourForm(payment: any) {
+    this.router.navigate(['payments', payment.id,'form']);
   }
 }

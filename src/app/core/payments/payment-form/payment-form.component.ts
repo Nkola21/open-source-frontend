@@ -102,11 +102,13 @@ export class PaymentFormComponent implements OnInit {
     formValue['date'] = moment(start_date).format('DD/MM/YYYY');
     formValue['end_date'] = moment(end_date).format('DD/MM/YYYY');
     formValue["user"] = this.user;
-
+    console.log(formValue)
     this.openService.post(`parlours/${this.parlour_id}/payments`, formValue)
       .subscribe(
-        (payment: any) => {
+        (invoice: any) => {
           this.showSuccess();
+          console.log(invoice);
+          this.getReceipt(invoice.id);
         },
       error => {
         const err = error["error"]
@@ -115,6 +117,13 @@ export class PaymentFormComponent implements OnInit {
   }
 
   showSuccess() {
-    this.toastr.success('New Plan saved successfully!', 'Success!!!');
+    this.toastr.success('Payment saved successfully!', 'Success!!!');
+  }
+
+  getReceipt(id) {
+    const base_url = this.openService.getBaseUrl() 
+    const anchor = <HTMLAnchorElement>document.getElementById('printInvoice');
+    anchor.href = `${base_url}/invoices/${id}`;
+    anchor.click();
   }
 }

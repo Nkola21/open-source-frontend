@@ -247,9 +247,13 @@ export class MainMemberListComponent implements OnInit {
     this.router.navigate(['applicants', id,'extended-members', 'all']);
   }
 
-  
   navigateToPaymentsForm(id: number) {
     this.router.navigate(['applicants', id,'extended-members', 'all']);
+  }
+
+  navigateToInvoiceList(main_member) {
+    const id = main_member.applicant.id;
+    this.router.navigate(['applicants', id,'invoices']);
   }
 
   confirmDeleteApplicant(main_member: any) {
