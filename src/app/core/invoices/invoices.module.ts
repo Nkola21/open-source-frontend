@@ -6,18 +6,12 @@ import { MAT_DATE_LOCALE } from '@angular/material/core'
 import { MaterialModule } from '../../material/material.module';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import  { PdfViewerModule }  from  'ng2-pdf-viewer';
-import { PdfViewerComponent } from './pdf-viewer/pdf-viewer.component';
 
 
 const InvoiceRouting: ModuleWithProviders<InvoiceModule> = RouterModule.forChild([
   {
     path: 'applicants/:applicant_id/invoices',
     component: InvoiceListComponent
-  },
-  {
-    path: 'invoice',
-    component: PdfViewerComponent
   }
 
 ]);
@@ -28,12 +22,10 @@ const InvoiceRouting: ModuleWithProviders<InvoiceModule> = RouterModule.forChild
     InvoiceRouting,
     MaterialModule,
     MatListModule,
-    MatTooltipModule,
-    PdfViewerModule
+    MatTooltipModule
   ],
   declarations: [
-    InvoiceListComponent,
-    PdfViewerComponent
+    InvoiceListComponent
   ],
   exports: [
     InvoiceListComponent,

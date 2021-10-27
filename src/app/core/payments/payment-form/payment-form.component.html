@@ -28,6 +28,10 @@
             </div>
 
             <div class="mb-3">
+              <button class="btn-dark btn-lg w-100 m-2" type="button" [routerLink]="['/applicants', main_member.applicant.id, 'invoices']">Invoices</button>
+          </div>
+
+            <div class="mb-3">
                 <select id="form.controls.payment_type" class="form-control" formControlName="payment_type">
                     <option value="">Type of Payment</option>
                     <option value="Cash" >Cash</option>

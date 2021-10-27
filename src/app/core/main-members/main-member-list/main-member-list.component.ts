@@ -214,6 +214,13 @@ export class MainMemberListComponent implements OnInit {
     this.toastr.success('', 'Success!!!');
   }
 
+  getDocUrl(main_member) {
+    const id = main_member.id;
+    const base_url = this.openService.getBaseUrl();
+
+    return `${base_url}/main-members/${id}/document`;
+  }
+
   initParlour(parlour_id) {
     this.openService.getOne(`parlours/${parlour_id}`)
       .subscribe(

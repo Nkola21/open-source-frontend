@@ -8,7 +8,7 @@ import { Observable, BehaviorSubject, merge } from 'rxjs';
 
 import { map } from 'rxjs/operators';
 import { OpenService } from 'src/app/shared/services/open.service';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { ToastrService } from 'ngx-toastr';
 
 export class InvoiceDataSource extends DataSource<any> {
 
@@ -62,7 +62,8 @@ export class InvoiceListComponent implements OnInit {
     public openService: OpenService,
     public dialog: MatDialog,
     private route: ActivatedRoute,
-    public router: Router) { }
+    public router: Router,
+    private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(
@@ -79,6 +80,7 @@ export class InvoiceListComponent implements OnInit {
     const base_url = this.openService.getBaseUrl()
     return `${base_url}/${invoice.path}`
   }
+
   initializePaginator() {
     this.dataSource.paginator = this.paginator;
   }
@@ -102,12 +104,13 @@ export class InvoiceListComponent implements OnInit {
       .subscribe(
         (invoices: Array<any>) => {
           this.invoices = invoices;
-          console.log(invoices)
           this.configureInvoices(invoices);
           this.loadingState = 'complete';
         },
         error => {
-          console.log(error);
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
+
         });
   }
 
