@@ -156,7 +156,7 @@
                 <ng-container matColumnDef="policy">
                   <th style="padding-left: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef>Policy</th>
                   <td style="padding-left: 10px;" mat-cell *matCellDef="let main_member">
-                    <a class="btn btn-md btn-dark" href="{{main_member.applicant.document}}" target="_blank" style="margin-top: 5px;">Document</a>
+                    <a class="btn btn-md btn-dark" href="{{getDocUrl(main_member)}}" target="_blank" style="margin-top: 5px;">Document</a>
                   </td>
                 </ng-container>
 

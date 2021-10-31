@@ -142,6 +142,13 @@ export class ArchivedParlourListComponent implements OnInit {
     this.openService.put(`parlours/${parlour.id}/activate`, {'state': 1})
     .subscribe((result) => {
       this.toastr.success('Parlour was unsuspended successfully', '');
+      this.parlours = this.parlours.filter(val => { 
+        if (val.id != parlour.id) {
+          return val;
+        }
+      });
+      this.configureParlours(this.parlours);
+      this.initializePaginator()
     },
     error => {
       const err = error["error"];
@@ -159,6 +166,13 @@ export class ArchivedParlourListComponent implements OnInit {
     this.openService.delete(`parlours/${parlour.id}/delete`)
     .subscribe((result) => {
       this.toastr.success('Parlour was deleted successfully', '');
+      this.parlours = this.parlours.filter(val => { 
+        if (val.id != parlour.id) {
+          return val;
+        }
+      });
+      this.configureParlours(this.parlours);
+      this.initializePaginator()
     },
     error => {
       const err = error["error"];

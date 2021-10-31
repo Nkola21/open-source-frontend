@@ -4,7 +4,8 @@
         <div fxFlex="100">
             <mat-card style="margin-top: 30px" class="line-top">
                 <mat-card-title class="mat-card-title-alt" fxLayout="row" fxLayoutAlign="center">
-                    <p class="fs-1"><strong>Member Form</strong></p>
+                    <p class="fs-1"><strong>
+                        Extended Members Form</strong></p>
                 </mat-card-title>
             </mat-card>
         </div>
@@ -14,13 +15,28 @@
         <form [formGroup]="form" class="col-md-6" *ngIf="form">
             <div class="mb-3">
                 <label for="first_name" class="col-form-label fs-4 d-flex justify-content-center">First Name:</label>
+                <span style="color: red;position:relative; top: 30px; right: 20px">*</span>
                 <input type="text" placeholder="First Name" mandatory class="form-control" id="first_name" formControlName="first_name">
             </div>
 
             <div class="mb-3">
                 <label for="last_name" class="col-form-label fs-4 d-flex justify-content-center">Last Name:</label>
+                <span style="color: red;position:relative; top: 30px; right: 20px">*</span>
                 <input type="last_name" mandatory class="form-control" placeholder="Last Name" id="last_name" formControlName="last_name">
             </div>
+
+            <label for="id_number" class="col-form-label fs-4 d-flex justify-content-center">ID Number:</label>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon3">{{ getAge() }}</span>
+                <input type="text" class="form-control" aria-describedby="basic-addon3" placeholder="ID Number" id="id_number" formControlName="id_number">
+            </div>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Choose a date</mat-label>
+                <input class="form-control" id="date_of_birth" formControlName="date_of_birth" matInput [matDatepicker]="picker2">
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
 
             <div class="mb-3">
                 <label for="number" class="col-form-label fs-4 d-flex justify-content-center">Contact Number:</label>
@@ -30,14 +46,16 @@
             <fieldset class="mb-3">
                 <div class="form-group row">
                     <label class="col-xs-3 col-form-label fs-4 d-flex justify-content-center">Type of Member:</label>
+                    <span style="color: red;position:relative; top: 30px; right: 20px">*</span>
                     <div class="col-xs-9">
-                        <select id="form.controls.type" class="form-control" formControlName="type">
+                        <select id="form.controls.type" class="form-control" formControlName="type" >
                             <option selected="selected" value="" >Select Member Type</option>
                             <option [ngValue]="0" >Spouse</option>
                             <option [ngValue]="1" >Dependant</option>
                             <option [ngValue]="2" >Extended Member</option>
                             <option [ngValue]="3" >Additional Extended Member</option>
                         </select>
+                        <app-input-error [control]="form.controls.type"></app-input-error>
                     </div>
                 </div>
             </fieldset>
@@ -45,9 +63,10 @@
             <fieldset class="mb-3">
                 <div class="form-group row">
                     <label class="col-xs-3 col-form-label fs-4 d-flex justify-content-center">Relationship to Main Member:</label>
+                    <span style="color: red;position:relative; top: 30px; right: 20px">*</span>
                     <div class="col-xs-9">
                         <select id="form.controls.relation_to_main_member" class="form-control" formControlName="relation_to_main_member">
-                            <option selected="selected" value="" >Relation to Main Member</option>
+                            <option selected="selected" value="" >Relationship to Main Member</option>
                             <option [ngValue]="0" >Child</option>
                             <option [ngValue]="1" >Parent</option>
                             <option [ngValue]="2" >Brother</option>
@@ -60,6 +79,7 @@
                             <option [ngValue]="9" >Wife</option>
                             <option [ngValue]="10" >Husband</option>
                         </select>
+                        <app-input-error [control]="form.controls.relation_to_main_member"></app-input-error>
                     </div>
                 </div>
             </fieldset>
@@ -67,6 +87,7 @@
             <div>
                 <label for="date_joined" class="col-form-label fs-4 d-flex justify-content-center">Date Joined:</label>
             </div>
+            <span style="color: red;position:relative; top: 30px; right: 20px">*</span>
             <mat-form-field appearance="fill">
                 <mat-label>Choose a date</mat-label>
                 <input mandatory class="form-control" id="date_joined" formControlName="date_joined" matInput [matDatepicker]="picker">

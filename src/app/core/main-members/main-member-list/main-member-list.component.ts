@@ -214,6 +214,13 @@ export class MainMemberListComponent implements OnInit {
     this.toastr.success('', 'Success!!!');
   }
 
+  getDocUrl(main_member) {
+    const id = main_member.id;
+    const base_url = this.openService.getBaseUrl();
+
+    return `${base_url}/main-members/${id}/document`;
+  }
+
   initParlour(parlour_id) {
     this.openService.getOne(`parlours/${parlour_id}`)
       .subscribe(
@@ -247,9 +254,13 @@ export class MainMemberListComponent implements OnInit {
     this.router.navigate(['applicants', id,'extended-members', 'all']);
   }
 
-  
   navigateToPaymentsForm(id: number) {
     this.router.navigate(['applicants', id,'extended-members', 'all']);
+  }
+
+  navigateToInvoiceList(main_member) {
+    const id = main_member.applicant.id;
+    this.router.navigate(['applicants', id,'invoices']);
   }
 
   confirmDeleteApplicant(main_member: any) {
@@ -261,12 +272,15 @@ export class MainMemberListComponent implements OnInit {
   handleDelete(main_member) {
     this.openService.delete(`main-members/${main_member.id}/delete`)
       .subscribe(
-        (main_member: any) => {
-          // this.dataSource.data = this.dataSource.data.filter(i => i !== main_member)
-          let mains = this.main_members.filter(i => i !== main_member)
-          this.configureMainMembers(mains);
+        (main: any) => {
+          this.main_members = this.main_members.filter(val => { 
+            if (val.id != main_member.id) {
+              return val;
+            }
+          });
+          this.configureMainMembers(this.main_members);
           this.initializePaginator()
-          this.toastr.success('Applicant has been deleted!', 'Success');
+          this.toastr.success('Main member has been deleted!', 'Success');
         },
         error => {
           console.log(error);

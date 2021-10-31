@@ -10,10 +10,7 @@ import { map } from 'rxjs/operators';
 import { OpenService } from 'src/app/shared/services/open.service';
 import { ToastrService } from 'ngx-toastr';
 
-
-export class ConsultantDataSource extends DataSource<any> {
-
-
+export class InvoiceDataSource extends DataSource<any> {
 
   /** Connect function called by the table to retrieve one stream containing the data to render. */
   dataChange: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
@@ -46,19 +43,18 @@ export class ConsultantDataSource extends DataSource<any> {
 const dialogConfig = new MatDialogConfig();
 
 @Component({
-  selector: 'app-consultant-list',
-  templateUrl: './consultant-list.component.html',
-  styleUrls: ['./consultant-list.component.css']
+  selector: 'app-invoice-list',
+  templateUrl: './invoice-list.component.html',
+  styleUrls: ['./invoice-list.component.css']
 })
-export class ConsultantListComponent implements OnInit {
+export class InvoiceListComponent implements OnInit {
 
-  displayedColumns = ['full_name', 'number', 'branch', 'email', 'actions'];
-  consultants: Array<any> = [];
+  displayedColumns = ['invoice_number', 'amount', 'number_of_months', 'date', 'contact', 'document'];
+  invoices: Array<any> = [];
   dataSource: any;
   page: any;
   loadingState: any;
   tableSize: number;
-  consultant: any;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -72,10 +68,17 @@ export class ConsultantListComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(
       (params) => {
-        const id = +params['parlour_id'];
-        this.initConsultants(id);
-      }
-    )
+        const id = +params['applicant_id'];
+
+        if (id) {
+          this.initInvoices(id);
+        }
+      });
+  }
+
+  getUrl(invoice) {
+    const base_url = this.openService.getBaseUrl()
+    return `${base_url}/${invoice.path}`
   }
 
   initializePaginator() {
@@ -84,67 +87,44 @@ export class ConsultantListComponent implements OnInit {
 
   onPaginatorChange(event: any) {
     this.page = event;
-    this.dataSource = new ConsultantDataSource(this.consultants, this.page);
+    this.dataSource = new InvoiceDataSource(this.invoices, this.page);
   }
 
-  initConsultants(id) {
-    this.consultants = [];
+  initInvoices(id) {
+    this.invoices = [];
     this.page = {
       'pageSize': 5,
       'pageIndex': 0,
     };
 
     this.loadingState = 'loading';
-    this.dataSource = new ConsultantDataSource([], this.page);
+    this.dataSource = new InvoiceDataSource([], this.page);
 
-    this.openService.getUrl(`parlours/${id}/consultants/`)
+    this.openService.getUrl(`applicants/${id}/invoices/all`)
       .subscribe(
-        (consultants: Array<any>) => {
-          console.log(consultants);
-          this.consultants = consultants;
-          this.configureConsultants(consultants);
+        (invoices: Array<any>) => {
+          this.invoices = invoices;
+          this.configureInvoices(invoices);
           this.loadingState = 'complete';
         },
         error => {
-          console.log(error);
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
+
         });
   }
 
-  configureConsultants(consultants: Array<any>): void {
-    this.tableSize = this.consultants.length
-    this.dataSource = new MatTableDataSource(consultants);
+  configureInvoices(payments: Array<any>): void {
+    this.tableSize = this.invoices.length
+    this.dataSource = new MatTableDataSource(payments);
     this.initializePaginator()
   }
 
-  navigateToConsultantView(consultant: any) {
-    this.router.navigate(['consultants', consultant.id,'view']);
+  navigateToPalourView(payment: any) {
+    this.router.navigate(['payments', payment.id,'view']);
   }
 
-  navigateToConsultantForm(consultant: any) {
-    this.router.navigate(['consultants', consultant.id,'form']);
-  }
-
-  confirmDeleteConsultant(consultant: any) {
-    this.consultant = consultant;
-    const button = document.getElementById('deleteConsultant');
-    button.click();
-  }
-
-  handleDelete(consultant) {
-    this.openService.delete(`consultants/${consultant.id}/delete`)
-      .subscribe(
-        (consultant: any) => {
-          this.toastr.success("Successfully deleted consultant.", "Success")
-          this.consultants = this.consultants.filter(val => { 
-            if (val.id != consultant.id) {
-              return val;
-            }
-          });
-          this.configureConsultants(this.consultants);
-          this.initializePaginator()
-        },
-        error => {
-          console.log(error);
-        });
+  navigateToPalourForm(payment: any) {
+    this.router.navigate(['payments', payment.id,'form']);
   }
 }

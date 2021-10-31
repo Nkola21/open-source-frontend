@@ -70,7 +70,6 @@ export class AdditionalExtendedMemberListComponent implements OnInit {
     this.route.params.subscribe(
       (params) => {
         const id = +params['id'];
-        console.log("ID: ", id);
         this.initExtendedMembers(id);
       }
     )

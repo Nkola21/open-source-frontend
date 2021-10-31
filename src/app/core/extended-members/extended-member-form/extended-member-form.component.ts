@@ -20,10 +20,11 @@ export class MainMemberFormBuilder {
       'id': [details.id],
       'first_name': [details.first_name, [Validators.required, Validators.minLength(6)]],
       'last_name': [details.last_name, [Validators.required, Validators.minLength(6)]],
-      'number': [details.number, [Validators.required]],
+      'number': [details.number],
+      'id_number': [details.id_number],
       'type': [details.type, [Validators.required]],
       'date_joined': [details.date_joined, [Validators.required]],
-      'date_of_birth': [details.date_of_birth, [Validators.required]],
+      'date_of_birth': [details.date_of_birth],
       'relation_to_main_member': [details.relation_to_main_member, [Validators.required]]
     });
   }
@@ -75,7 +76,6 @@ export class ExtendedMemberFormComponent implements OnInit {
     this.parlour_id = this.openService.getParlourId();
     this.user = this.openService.getUser()
     this.route.params.forEach((params: Params) => {
-      console.log(params);
       const id = +params['id'];
       if (params['id'] !== undefined) {
         this.getExtendedMember(id);
@@ -94,15 +94,10 @@ export class ExtendedMemberFormComponent implements OnInit {
     this.form = this.formBuilder.buildForm(this.extended_member);
   }
 
-  // is_spouse() {
-  //   return 
-  // }
-
   getExtendedMember(id) {
     this.openService.getOne(`extended-members/${id}/get`)
       .subscribe(
         extended_member => {
-          console.log("Extended member: ", extended_member);
           this.extended_member = extended_member;
           this.initForm(this.extended_member);
         },
@@ -155,5 +150,25 @@ export class ExtendedMemberFormComponent implements OnInit {
       dets += `${key} - ${body['errors'][key]}\n`;
     }
     return dets;
+  }
+
+  getAge() {
+    if (this.extended_member && this.extended_member.id_number) {
+      const year_digits = this.extended_member.id_number.substr(0,2);
+
+      let this_year = new Date().getFullYear().toString().substr(2,3);
+      if (year_digits) {
+          if (parseInt(year_digits) >= 0 && parseInt(year_digits) < 35) {
+            const age = parseInt(this_year) - parseInt(year_digits);
+            return age + " years old";
+          }
+          const year_born = "19" + year_digits;
+          this_year = new Date().getFullYear().toString()
+
+          const age = parseInt(this_year) - parseInt(year_born)
+          return age + " years old";
+      }
+    }
+    return null;
   }
 }

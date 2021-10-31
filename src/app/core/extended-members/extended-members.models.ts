@@ -6,6 +6,7 @@ export interface ExtendedMember {
     number: string;
     relation_to_main_member: string
     date_joined: Date;
+    id_number: string;
     applicant_id: number,
 }
 
@@ -19,6 +20,7 @@ export function newExtendedMember() {
         applicant_id: null,
         date_joined: null,
         state: null,
+        id_number: null,
         relation_to_main_member: null
     }
 }
