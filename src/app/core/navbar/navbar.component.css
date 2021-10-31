@@ -6,7 +6,7 @@
     .header
     {
       background: red;
-      height: 100%;
+      height: 130% !important;
      
     }
     .nav-item2 {
@@ -22,7 +22,7 @@
     }
     .btn{
       background-color: black;
-      margin-left:3px 3px 0px 0px;
+      margin-right:10px 3px 0px 0px !important;
       width: 60px;
       padding:2px 4px;
     }
