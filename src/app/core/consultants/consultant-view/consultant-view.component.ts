@@ -10,7 +10,7 @@ import { Consultant } from './../consultants.models';
 })
 export class ConsultantViewComponent implements OnInit {
   consultant: Consultant;
-
+  consultant_info: any;
   constructor(
     public openService: OpenService,
     private route: ActivatedRoute) { }
@@ -29,6 +29,17 @@ export class ConsultantViewComponent implements OnInit {
     .subscribe(
       (consultant: Consultant) => {
         this.consultant = consultant;
+      },
+      error => {
+        console.log("error occured.");
+      });
+  }
+
+  getMembersRegistered(consultant_id: number) {
+    this.openService.getUrl(`consultants/${consultant_id}/actions/info`)
+    .subscribe(
+      (results: Consultant) => {
+        this.consultant_info = results;
       },
       error => {
         console.log("error occured.");

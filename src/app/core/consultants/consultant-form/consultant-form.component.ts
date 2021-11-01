@@ -20,8 +20,8 @@ export class ConsultantFormBuilder {
       'id': [details.id],
       'first_name': [details.first_name, [Validators.required]],
       'last_name': [details.last_name, [Validators.required]],
-      'email': [details.email, [Validators.required]],
-      'username': [details.username, [Validators.required, Validators.minLength(6)]],
+      'email': [details.email, [Validators.required, Validators.email]],
+      'username': [details.username, [Validators.required, Validators.minLength(3)]],
       'branch': [details.branch, [Validators.required]],
       'number': [details.number, [Validators.required]]
     });

@@ -50,6 +50,15 @@ export class MainMemberFormBuilder {
 }
 
 
+const relation_types = {
+  0: 'Spouse',
+  1: 'Dependant',
+  2: 'Extended Member',
+  3: 'Additional Extended Member',
+  4: 'Select Member Type'
+}
+
+
 @Component({
   selector: 'app-extended-member-form',
   templateUrl: './extended-member-form.component.html',
@@ -63,6 +72,11 @@ export class ExtendedMemberFormComponent implements OnInit {
   applicant_id: any;
   user: any;
   plans: Array<any> = [];
+  applicant: any;
+  plan: any;
+  typeSelected: any;
+  relationshipSelected: any;
+  relation_types: any
 
   constructor(public openService: OpenService,
     private route: ActivatedRoute,
@@ -89,6 +103,22 @@ export class ExtendedMemberFormComponent implements OnInit {
   });
   }
 
+  initTypes() {
+    this.relation_types = [
+        {"id": 0, "name": relation_types[0]},
+        {"id": 1, "name": relation_types[1]},
+        {"id": 2, "name": relation_types[2]},
+        {"id": 3, "name": relation_types[3]},
+        {"id": 4, "name": relation_types[4]},
+    ]
+
+    if (this.extended_member) {
+      this.typeSelected = this.extended_member.type;
+    } else {
+      this.typeSelected = 4;
+    }
+  }
+
   initForm(extended_member: ExtendedMember) {
     this.extended_member = extended_member;
     this.form = this.formBuilder.buildForm(this.extended_member);
@@ -104,13 +134,31 @@ export class ExtendedMemberFormComponent implements OnInit {
         error => console.log("ERROR"));
   }
 
+  getApplicant(id) {
+    this.openService.getOne(`applicant/${id}/get`)
+      .subscribe(
+        applicant => {
+          this.applicant = applicant;
+        },
+        error => console.log("ERROR"));
+  }
+
+  getPlan(id) {
+    this.openService.getOne(`plans/${id}/get`)
+      .subscribe(
+        plan => {
+          this.plan = plan;
+        },
+        error => console.log("ERROR"));
+  }
+
   submit() {
     const formValue = this.form.value;
     formValue["applicant_id"] = this.applicant_id;
     if (formValue['type'] == 0 ) {
       formValue['relation_to_main_member'] = 9;
     }
-    console.log(formValue);
+
     if (this.extended_member) {
       this.openService.put(`extended-members/${this.extended_member.id}/update`, formValue)
         .subscribe(
@@ -118,8 +166,8 @@ export class ExtendedMemberFormComponent implements OnInit {
             this.showSuccess()
           },
         error => {
-          const description = error.hasOwnProperty('errors') ? this.getErrorDetails(error) : error['description'];
-          this.toastr.error(description, error['title'], {timeOut: 3000});
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
         });
     }else {
       this.openService.post(`extended-members`, formValue)
@@ -128,8 +176,8 @@ export class ExtendedMemberFormComponent implements OnInit {
             this.showSuccess();
           },
         error => {
-          const description = error.hasOwnProperty('errors') ? this.getErrorDetails(error) : error['description'];
-          this.toastr.error(description, error['title'], {timeOut: 3000});
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
         });
     }
   }
@@ -158,7 +206,7 @@ export class ExtendedMemberFormComponent implements OnInit {
 
       let this_year = new Date().getFullYear().toString().substr(2,3);
       if (year_digits) {
-          if (parseInt(year_digits) >= 0 && parseInt(year_digits) < 35) {
+          if (parseInt(year_digits) >= 0 && parseInt(year_digits) < 28) {
             const age = parseInt(this_year) - parseInt(year_digits);
             return age + " years old";
           }
@@ -170,5 +218,13 @@ export class ExtendedMemberFormComponent implements OnInit {
       }
     }
     return null;
+  }
+
+  onTypeSelected(event){
+    this.typeSelected =  event;
+  }
+
+  onRelationshipSelected(event){
+    this.relationshipSelected =  event;
   }
 }

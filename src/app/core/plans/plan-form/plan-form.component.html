@@ -13,16 +13,19 @@
     <mat-card class="d-flex justify-content-center">
         <form [formGroup]="form" class="col-md-6" *ngIf="form">
             <div class="mb-3">
+                <span style="color: red;position:relative; bottom: -5rem; right: 20px;max-width: 10px">*</span>
                 <label for="plan" class="col-form-label fs-4 d-flex justify-content-center">Plan Name:</label>
                 <input type="text" placeholder="Plan Name" mandatory class="form-control" id="plan" formControlName="plan">
             </div>
   
+            <span style="color: red;position:relative; bottom: -5rem; right: 20px;max-width: 10px">*</span>
             <label for="cover" class="col-form-label fs-4 d-flex justify-content-center">Cover Amount:</label>
             <div class="input-group mb-3">
                 <span class="input-group-text" id="basic-addon3">R</span>
                 <input type="number" class="form-control" aria-describedby="basic-addon3" placeholder="Cover Amount" id="cover" formControlName="cover">
             </div>
 
+            <span style="color: red;position:relative; bottom: -5rem; right: 20px;max-width: 10px">*</span>
             <label for="premium" class="col-form-label fs-4 d-flex justify-content-center">Premium Amount:</label>
             <div class="input-group mb-3">
                 <span class="input-group-text" id="basic-addon3">R</span>
@@ -42,7 +45,8 @@
             <br>
             <label for="main_members" class="col-form-label m-2 fs-6">How many main members can be included in this plan?</label>
             <div class="mb-5">
-                <label for="main_members" class="col-form-label m-2 fs-6">Number of main members: </label>
+                <label for="main_members" class="col-form-label m-4 fs-6">Number of main members: </label>
+                <span style="color: red;position:relative;right: 10px;max-width: 10px">*</span>
                 <input class="form-control-sm col-sm-2" type="number" id="main_members" formControlName="main_members" style="border: 1px solid #ced4da;" />
             </div>
 
@@ -74,8 +78,8 @@
             <br>
             <label for="main_members" class="col-form-label m-2 fs-6">How many spouses can be included in this plan?</label>
             <div class="mb-5">
-                <label for="spouses" class="col-form-label m-2 fs-6">Number of spouses: </label>
-                <input class="form-control-sm col-sm-2" type="number" id="spouses" formControlName="spouses" style="border: 1px solid #ced4da;" />
+                <label for="spouse" class="col-form-label m-2 fs-6">Number of spouses: </label>
+                <input class="form-control-sm col-sm-2" type="number" id="spouse" formControlName="spouse" style="border: 1px solid #ced4da;" />
             </div>
 
             <div class="form-check">
@@ -198,6 +202,8 @@
 
             <hr />
 
+            <!-- ============================================================  BENEFITS ================================================================================== -->
+
             <div class="form-check mb-5">
                 <input mandatory class="form-check-input" type="checkbox" id="has_benefits" formControlName="has_benefits" (change)="benefitsCheck($event)" />
                 <label for="has_benefits" class="form-check-label">Does this plan have benefits?</label>
@@ -210,7 +216,8 @@
 
             <div class="col-12 d-flex justify-content-center">
                 <button class="btn-dark btn-lg w-50 m-2" type="submit" (click)="goBack($event)">Back</button>
-                <button class="btn-dark btn-lg w-50 m-2" type="submit" (click)="submit()">Submit</button>
+                <button class="btn-secondary btn-lg w-50 m-2" type="submit" *ngIf="!form.valid" [disabled]="!form.valid">Submit</button>
+                <button class="btn-dark btn-lg w-50 m-2" type="submit" (click)="submit()" *ngIf="form.valid">Submit</button>
             </div>
         </form>
     </mat-card>

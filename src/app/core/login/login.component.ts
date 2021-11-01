@@ -16,8 +16,8 @@ class SignInFormBuilder {
   buildSignInForm(user) {
     user = {"username": null, "password": null};
     return this.formBuilder.group({
-      'username': [user.username, [Validators.required, Validators.minLength(6)]],
-      'password': [user.amount, [Validators.required, Validators.minLength(8)]]
+      'username': [user.username, [Validators.required]],
+      'password': [user.amount, [Validators.required]]
     });
   }
 }
@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
     this.openservice.setUserToken(event.token);
     this.openservice.setUser(event.user);
     this.openservice.setLoggedIn();
-    
+
     this.openservice.setPermissions(event.permission);
     this.user = event.user;
     if (event.permission == "Parlour") {

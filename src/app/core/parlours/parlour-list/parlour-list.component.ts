@@ -156,12 +156,12 @@ export class ParlourListComponent implements OnInit {
     this.router.navigate(view);
   }
 
-  navigateToPalourAddForm() {
-    this.router.navigate(['signup']);
-  }
-
   navigateToPalourForm(parlour: any) {
-    this.router.navigate(['parlours', parlour.id,'form']);
+    if (parlour){
+      this.router.navigate(['parlours', parlour.id,'form']);
+    }else {
+      this.router.navigate(['parlours/form']);
+    }
   }
 
   confirmSuspendParlour(parlour: any) {

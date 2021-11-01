@@ -21,6 +21,7 @@ import { LoginModule } from './core/login/login.module';
 import { SignupModule } from './core/signup/signup.module';
 // import { NavSignInModule } from './core/nav-signin/nav-signin.module';
 import { NavbarModule } from './core/navbar/navbar.module';
+import { NavbarOutModule } from './core/navbar-out/navbar-out.module';
 import { NavbuttonsModule } from './core/nav-buttons/nav-buttons.module';
 import { ToastrModule } from 'ngx-toastr';
 import { MainMembersArchivedModule } from './core/archived/main-members-archived.module';
@@ -29,6 +30,9 @@ import { ContactsModule } from './core/contacts/contacts.module';
 import { TermsandconditionsComponent } from './termsandconditions/termsandconditions.component';
 import { TermsandconditionsModule } from './termsandconditions/termsandconditions.module';
 import { InvoiceModule } from './core/invoices/invoices.module';
+import { ForgotPasswordModule } from './core/forgot-password/forgot-password.module';
+import { ResetPasswordModule } from './core/reset-password/reset-password.module';
+
 
 const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
   { path: '',
@@ -39,8 +43,6 @@ const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
 @NgModule({
   declarations: [
     AppComponent
-   
-    
   ],
   imports: [
 
@@ -65,10 +67,13 @@ const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
     TermsandconditionsModule,
     // NavSignInModule,
     NavbarModule,
+    NavbarOutModule,
     NavbuttonsModule,
     MainMembersArchivedModule,
     ChangePasswordModule,
     InvoiceModule,
+    ForgotPasswordModule,
+    ResetPasswordModule,
     rootRouting,
     ToastrModule.forRoot()
   ],

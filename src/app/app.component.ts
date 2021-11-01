@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { Subject } from "rxjs";
 import { OpenService } from 'src/app/shared/services/open.service';
 
@@ -7,7 +7,7 @@ import { OpenService } from 'src/app/shared/services/open.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnChanges {
   title = 'open-source-frontend';
   isLoggedin = false;
   user: any = null;
@@ -17,7 +17,12 @@ export class AppComponent implements OnInit {
 
   constructor(private openservice: OpenService) {}
   ngOnInit() {
+    console.log("App: ", this.user);
+  }
 
+  ngOnChanges(changes: SimpleChanges) {
+    console.log("App: ", changes);
+    this.user = changes.user.firstChange;
   }
 
   initPermissions() {

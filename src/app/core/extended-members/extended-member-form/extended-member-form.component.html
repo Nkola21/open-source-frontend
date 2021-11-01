@@ -14,14 +14,14 @@
     <mat-card class="d-flex justify-content-center">
         <form [formGroup]="form" class="col-md-6" *ngIf="form">
             <div class="mb-3">
+                <span style="color: red;position:relative; bottom: -5rem; right: 20px;max-width: 10px">*</span>
                 <label for="first_name" class="col-form-label fs-4 d-flex justify-content-center">First Name:</label>
-                <span style="color: red;position:relative; top: 30px; right: 20px">*</span>
                 <input type="text" placeholder="First Name" mandatory class="form-control" id="first_name" formControlName="first_name">
             </div>
 
             <div class="mb-3">
+                <span style="color: red;position:relative; bottom: -5rem; right: 20px;max-width: 10px">*</span>
                 <label for="last_name" class="col-form-label fs-4 d-flex justify-content-center">Last Name:</label>
-                <span style="color: red;position:relative; top: 30px; right: 20px">*</span>
                 <input type="last_name" mandatory class="form-control" placeholder="Last Name" id="last_name" formControlName="last_name">
             </div>
 
@@ -45,11 +45,11 @@
 
             <fieldset class="mb-3">
                 <div class="form-group row">
+                    <span style="color: red;position:relative; bottom: -5rem; right: 20px;max-width: 10px">*</span>
                     <label class="col-xs-3 col-form-label fs-4 d-flex justify-content-center">Type of Member:</label>
-                    <span style="color: red;position:relative; top: 30px; right: 20px">*</span>
                     <div class="col-xs-9">
-                        <select id="form.controls.type" class="form-control" formControlName="type" >
-                            <option selected="selected" value="" >Select Member Type</option>
+                        <select id="form.controls.type" class="form-control" formControlName="type" [(ngModel)]='typeSelected' (ngModelChange)='onTypeSelected($event)'>
+                            <option selected="selected" value="" disabled>Select Member Type</option>
                             <option [ngValue]="0" >Spouse</option>
                             <option [ngValue]="1" >Dependant</option>
                             <option [ngValue]="2" >Extended Member</option>
@@ -62,10 +62,10 @@
 
             <fieldset class="mb-3">
                 <div class="form-group row">
+                    <span style="color: red;position:relative; bottom: -5rem; right: 20px;max-width: 10px">*</span>
                     <label class="col-xs-3 col-form-label fs-4 d-flex justify-content-center">Relationship to Main Member:</label>
-                    <span style="color: red;position:relative; top: 30px; right: 20px">*</span>
                     <div class="col-xs-9">
-                        <select id="form.controls.relation_to_main_member" class="form-control" formControlName="relation_to_main_member">
+                        <select id="form.controls.relation_to_main_member" class="form-control" formControlName="relation_to_main_member" [(ngModel)]='relationshipSelected' (ngModelChange)='onRelationshipSelected($event)'>
                             <option selected="selected" value="" >Relationship to Main Member</option>
                             <option [ngValue]="0" >Child</option>
                             <option [ngValue]="1" >Parent</option>
@@ -85,9 +85,9 @@
             </fieldset>
 
             <div>
+                <span style="color: red;position:relative; bottom: -5rem; right: 20px;max-width: 10px">*</span>
                 <label for="date_joined" class="col-form-label fs-4 d-flex justify-content-center">Date Joined:</label>
             </div>
-            <span style="color: red;position:relative; top: 30px; right: 20px">*</span>
             <mat-form-field appearance="fill">
                 <mat-label>Choose a date</mat-label>
                 <input mandatory class="form-control" id="date_joined" formControlName="date_joined" matInput [matDatepicker]="picker">

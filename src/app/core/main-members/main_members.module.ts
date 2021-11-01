@@ -8,7 +8,7 @@ import { MaterialModule } from '../../material/material.module';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MainMemberFormComponent } from './main-member-form/main-member-form.component';
+import { MainMemberFormComponent, FileValueAccessor } from './main-member-form/main-member-form.component';
 import { SharedModule } from './../../shared/shared.module';
  
 
@@ -61,7 +61,8 @@ const MainMemberRouting: ModuleWithProviders<MainMembersModule> = RouterModule.f
     MainMemberListComponent,
     MainMemberSubListComponent,
     MainMemberViewComponent,
-    MainMemberFormComponent
+    MainMemberFormComponent,
+    FileValueAccessor
   ],
   exports: [
     MainMemberListComponent,

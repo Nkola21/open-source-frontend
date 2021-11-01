@@ -32,14 +32,16 @@
           </div>
 
             <div class="mb-3">
+                <span style="color: red;position:relative;top: 30px;right: 20px;max-width: 10px">*</span>
                 <select id="form.controls.payment_type" class="form-control" formControlName="payment_type">
-                    <option value="">Type of Payment</option>
+                    <option selected value="">Type of Payment</option>
                     <option value="Cash" >Cash</option>
                     <option value="Card" >Card</option>
                 </select>
             </div>
 
             <div>
+                <span style="color: red;position:relative;top: 5.6rem;right: 20px;max-width: 10px">*</span>
                 <label for="date_joined" class="col-form-label fs-4 d-flex justify-content-center">Payment Date:</label>
             </div>
             <mat-form-field appearance="fill">
@@ -48,16 +50,18 @@
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
+            <span style="color: red;position:relative;top: 2.6rem;right: 20px;max-width: 10px">*</span>
             <mat-form-field appearance="fill">
               <mat-label>Choose end date</mat-label>
-              <input mandatory class="form-control" id="end_date" formControlName="end_date" matInput [matDatepicker]="picker2">
+              <input class="form-control" id="end_date" formControlName="end_date" matInput [matDatepicker]="picker2">
               <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
               <mat-datepicker #picker2></mat-datepicker>
             </mat-form-field>
 
             <div class="col-12 d-flex justify-content-center">
                 <button class="btn-dark btn-lg w-50 m-2" type="button" (click)="goBack($event)">Back</button>
-                <button class="btn-dark btn-lg w-50 m-2" type="submit" (click)="submit()">Pay</button>
+                <button class="btn-secondary btn-lg w-50 m-2" type="submit" *ngIf="!form.valid" [disabled]="!form.valid">Pay</button>
+                <button class="btn-dark btn-lg w-50 m-2" type="submit" (click)="submit()" *ngIf="form.valid">Pay</button>
                 <a id="printInvoice" class="btn btn-md btn-dark" href="" target="_blank" style="display: none;"></a>
             </div>
         </form>

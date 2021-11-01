@@ -1,9 +1,12 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OpenService } from 'src/app/shared/services/open.service';
 import { MainMember, newMainMember, newApplicant } from './../main-members.models';
 import { ToastrService } from 'ngx-toastr';
+import { validateMSISDN, validateSAIDNumber } from 'src/app/shared/validation';
+import {Directive} from "@angular/core";
+import {NG_VALUE_ACCESSOR, ControlValueAccessor} from "@angular/forms";
 
 
 export class MainMemberFormBuilder {
@@ -20,18 +23,18 @@ export class MainMemberFormBuilder {
       'id': [details.id],
       'first_name': [details.first_name, [Validators.required]],
       'last_name': [details.last_name, [Validators.required]],
-      'id_number': [details.id_number, [Validators.required]],
+      'id_number': [details.id_number, [Validators.required, validateSAIDNumber]],
       'date_joined': [details.date_joined, [Validators.required]],
-      'contact': [details.contact, [Validators.required]],
+      'contact': [details.contact, [Validators.required, validateMSISDN]],
       'applicant': this.buildApplicantForm(details.applicant),
-      'plan_id': [details.plan_id]
+      'plan_id': [details.plan_id, [Validators.required]]
     });
   }
 
   buildPlan(details) {
     details = details === undefined ? {'id': null, 'name': null} : details;
     return this.formBuilder.group({
-      'id': [details.id],
+      'id': [details.id, [Validators.required]],
     });
   }
 
@@ -51,6 +54,28 @@ export class MainMemberFormBuilder {
 }
 
 
+@Directive({
+    selector: "input[type=file]",
+    host : {
+        "(change)" : "onChange($event.target.files)",
+        "(blur)": "onTouched()"
+    },
+    providers: [
+        { provide: NG_VALUE_ACCESSOR, useExisting: FileValueAccessor, multi: true }
+    ]
+})
+export class FileValueAccessor implements ControlValueAccessor {
+    value: any;
+    onChange = (_) => {};
+    onTouched = () => {};
+
+    writeValue(value) {}
+    registerOnChange(fn: any) { this.onChange = fn; }
+    registerOnTouched(fn: any) { this.onTouched = fn; }
+}
+
+
+
 @Component({
   selector: 'app-main-member-form',
   templateUrl: './main-member-form.component.html',
@@ -64,6 +89,7 @@ export class MainMemberFormComponent implements OnInit  {
   parlour_id: any;
   user: any;
   plans: Array<any> = [];
+  optionSelected: any;
 
   constructor(public openService: OpenService,
     private route: ActivatedRoute,
@@ -108,7 +134,7 @@ export class MainMemberFormComponent implements OnInit  {
   submit() {
     const formValue = this.form.value;
     formValue["parlour_id"] = this.parlour_id;
-
+    
     if (this.main_member) {
       this.openService.put(`main-members/${this.main_member.id}/update`, formValue)
         .subscribe(
@@ -121,6 +147,7 @@ export class MainMemberFormComponent implements OnInit  {
           this.toastr.error(err['description'], error['title'], {timeOut: 3000});
         });
     }else {
+      console.log(formValue)
       this.openService.post(`consultants/${this.user.id}/main-members`, formValue)
         .subscribe(
           (user: any) => {
@@ -185,15 +212,27 @@ export class MainMemberFormComponent implements OnInit  {
   initPlans() {
     this.openService.getUrl(`parlours/${this.parlour_id}/plans/all`)
     .subscribe((plans: any) => {
+
       this.plans = plans.map((plan: any) => {
+          if (this.main_member && plan.id == this.main_member.applicant.plan.id) {
+            this.optionSelected = plan.id;
+          }
           return {
             id: plan.id,
             name: plan.plan
           };
       });
+      this.plans.unshift({id: 0, name: "-- Select Plan --"});
+      if (this.optionSelected == undefined) {
+        this.optionSelected = 0;
+      }
     },
     error => {
       this.showError(error);
     });
+  }
+
+  onOptionsSelected(event){
+    this.optionSelected =  event; //option value will be sent as event
   }
 }

@@ -8,7 +8,7 @@ import { MaterialModule } from '../../material/material.module';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ConsultantFormComponent } from './consultant-form/consultant-form.component';
-
+import { SharedModule } from 'src/app/shared/shared.module';
 
 const ConsultantRouting: ModuleWithProviders<ConsultantModule> = RouterModule.forChild([
   {
@@ -36,6 +36,7 @@ const ConsultantRouting: ModuleWithProviders<ConsultantModule> = RouterModule.fo
 @NgModule({
   imports: [
     CommonModule,
+    SharedModule,
     ConsultantRouting,
     MaterialModule,
     MatListModule,

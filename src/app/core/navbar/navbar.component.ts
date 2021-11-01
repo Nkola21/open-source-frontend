@@ -21,17 +21,15 @@ export class NavbarComponent implements OnInit, OnChanges {
     private currentUserService: CurrentUserService,
     public router: Router) { 
       currentUserService.userValue$.subscribe(currentUser => {
-        console.log(currentUser);
         this.user = JSON.parse(currentUser);
        });
     }
 
   ngOnInit(): void {
     // this.isLoggedIn$ = this.openService.isLoggedIn;
+    console.log(this.user)
     this.resetFormSubject.subscribe(response => {
       if(response){
-        console.log('=')
-       console.log(response);
       // Or do whatever operations you need.
       }
     });
@@ -41,8 +39,7 @@ export class NavbarComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes)
-    console.log(changes.user.firstChange)
+    console.log(changes);
     this.user = changes.user.firstChange;
   }
 

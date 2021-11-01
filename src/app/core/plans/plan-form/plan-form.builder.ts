@@ -18,7 +18,7 @@ export class PlanFormBuilder {
       'cover': [details.cover, [Validators.required]],
       'premium': [details.premium, [Validators.required]],
       'underwriter_premium': [details.underwriter_premium],
-      'main_members': [details.main_members, [Validators.required]],
+      'main_members': [{value: 1, disabled: true}, [Validators.required]],
       'member_age_restriction': [details.member_age_restriction],
       'member_minimum_age': [details.member_minimum_age],
       'member_maximum_age': [details.member_maximum_age],

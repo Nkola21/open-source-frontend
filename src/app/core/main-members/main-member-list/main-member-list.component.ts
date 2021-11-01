@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 import { MainMember } from '../main-members.models';
+import { Consultant } from '../../consultants/consultants.models';
 // import { saveAs } from 'file-saver';
 
 
@@ -48,6 +49,26 @@ export class SMSFormBuilder {
       'message': [details.message, [Validators.required, Validators.minLength(2)]],
       'from': [{value: from, disabled: true}, [Validators.required]],
       'to': [details.to, [Validators.required]]
+    });
+  }
+}
+
+
+export class PerformanceFormBuilder {
+  constructor(private formBuilder: FormBuilder, parlour?: any) {
+  }
+
+  buildForm(entity) {
+    return this.buildPeromanceForm(entity);
+  }
+
+  buildPeromanceForm(details) {
+    // console.log(parlour);
+    details = details === undefined ? {'entity': null, 'start_date': null, 'end_date': null} : details;
+    return this.formBuilder.group({
+      'entity': [details.entity, [Validators.required]],
+      'start_date': [details.start_date],
+      'end_date': [details.end_date]
     });
   }
 }
@@ -98,9 +119,11 @@ export class MainMemberListComponent implements OnInit {
   main_member: any;
   formBuilder: SearchFormBuilder;
   smsFormBuilder: SMSFormBuilder;
+  perfomanceBuilder: PerformanceFormBuilder;
   form: FormGroup;
   smsForm: FormGroup;
   searchField: null;
+  performanceForm: FormGroup;
   smsFields: null;
   status: null;
   dataSource: any;
@@ -114,6 +137,11 @@ export class MainMemberListComponent implements OnInit {
   user: any;
   message_parts: number;
   message_length: number;
+  consultant: any;
+  consultant_full_name: any;
+  branch: any;
+  consultants: Array<Consultant> = [];
+  branches: Array<string> = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild("dataBlock") block: ElementRef;
@@ -125,9 +153,11 @@ export class MainMemberListComponent implements OnInit {
     public router: Router,
     private fb: FormBuilder,
     private fc: FormBuilder,
+    private pf: FormBuilder,
     private toastr: ToastrService) { 
       this.formBuilder = new SearchFormBuilder(fb);
       this.smsFormBuilder = new SMSFormBuilder(fc);
+      this.perfomanceBuilder = new PerformanceFormBuilder(pf);
     }
 
   ngOnInit(): void {
@@ -138,9 +168,11 @@ export class MainMemberListComponent implements OnInit {
     }
     this.parlour_id = this.openService.getParlourId()
     this.initParlour(this.parlour_id);
+    this.initConsultants(this.parlour_id);
     this.initSearchForm(this.searchField);
 
     this.initSMSForm(this.smsFields, this.parlour);
+    this.initPerformanceForm(this.consultant);
     this.initMainMembers(this.user.id)
   }
 
@@ -165,6 +197,10 @@ export class MainMemberListComponent implements OnInit {
     this.smsForm = this.smsFormBuilder.buildForm(smsFields, parlour);
   }
 
+  initPerformanceForm(entity) {
+    this.performanceForm = this.perfomanceBuilder.buildForm(entity)
+  }
+
   initSearchForm(searchField: string) {
     this.form = this.formBuilder.buildForm(searchField);
   }
@@ -182,7 +218,7 @@ export class MainMemberListComponent implements OnInit {
 
     this.openService.getUrl(`${permission.toLowerCase()}s/${id}/main-members/all`)
       .subscribe(
-        (main_members: Array<any>) => { 
+        (main_members: Array<any>) => {
           this.status = null;
           this.searchField = null;
           this.main_members = main_members;
@@ -210,6 +246,91 @@ export class MainMemberListComponent implements OnInit {
       });
   }
 
+  setConsultant(consultant) {
+    this.consultant = consultant;
+    this.consultant_full_name = `${this.consultant.first_name} ${this.consultant.last_name}`;
+  }
+
+  setBranch(branch) {
+    this.branch = branch;
+  }
+  getByConsultant() {
+    let queryString= '';
+    const formValue = this.performanceForm.value;
+    if (this.status) {
+      queryString = `status=${this.status}`
+    }
+
+    if (this.searchField) {
+      queryString = queryString ? `${queryString}&search_string=${this.searchField}` : `search_string=${this.searchField}`;
+    }
+
+    let filter = `consultant=${this.consultant.id}`
+    if (formValue['start_date']) {
+      const start_date = formValue['start_date'];
+      filter = `${filter}&start_date=${start_date}`;
+    }
+
+    if (formValue['end_date']) {
+      const end_date = formValue['end_date'];
+      filter = `${filter}&end_date=${end_date}`;
+    }
+
+    queryString = queryString ? `${queryString}&${filter}` : `${filter}`;
+
+    this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?${queryString}`)
+      .subscribe(
+        (main_members: any) => {
+          this.main_members = main_members;
+          this.initPerformanceForm(undefined);
+          this.configureMainMembers(main_members);
+          this.loadingState = 'complete';
+        },
+      error => {
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
+      });
+  }
+
+  getByBranch(branch: any) {
+    let queryString: string;
+    const formValue = this.performanceForm.value;
+
+    if (this.status) {
+      queryString = `status=${this.status}`
+    }
+
+    if (this.searchField) {
+      queryString = queryString ? `${queryString}&search_string=${this.searchField}` : `search_string=${this.searchField}`;
+    }
+
+    let filter = `branch=${this.branch}`
+    if (formValue['start_date']) {
+      const start_date = formValue['start_date'];
+      filter = `${filter}&start_date=${start_date}`;
+    }
+
+    if (formValue['end_date']) {
+      const end_date = formValue['end_date'];
+      filter = `${filter}&end_date=${end_date}`;
+    }
+    
+    queryString = queryString ? `${queryString}&${filter}` : `${filter}`;
+
+    this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?${queryString}`)
+      .subscribe(
+        (main_members: any) => {
+          this.main_members = main_members;
+          this.initPerformanceForm(undefined);
+          this.configureMainMembers(main_members);
+          this.loadingState = 'complete';
+        },
+      error => {
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
+      });
+  }
+
   showExceptSuccess() {
     this.toastr.success('', 'Success!!!');
   }
@@ -228,9 +349,30 @@ export class MainMemberListComponent implements OnInit {
           this.parlour = parlour;
         },
         error => {
-          console.log("error occured.");
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
         });
   }
+
+  initConsultants(parlour_id) {
+    this.openService.getOne(`parlours/${parlour_id}/consultants/`)
+      .subscribe(
+        (consultants: any) => {
+          this.consultants = consultants;
+
+          for(let consultant of consultants) {
+            if (this.branches.includes(consultant.branch)){
+              continue;
+            }
+            this.branches.push(consultant.branch);
+          }
+        },
+        error => {
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
+        });
+  }
+
   configureMainMembers(main_members: Array<any>): void {
     this.tableSize = this.main_members.length
     this.dataSource = new MatTableDataSource(main_members);
@@ -283,7 +425,8 @@ export class MainMemberListComponent implements OnInit {
           this.toastr.success('Main member has been deleted!', 'Success');
         },
         error => {
-          console.log(error);
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
         });
   }
 
@@ -323,7 +466,8 @@ export class MainMemberListComponent implements OnInit {
           this.loadingState = 'complete';
         },
         error => {
-          console.log(error);
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
         });
   }
 
@@ -338,7 +482,8 @@ export class MainMemberListComponent implements OnInit {
           }
         },
         error => {
-          console.log(error);
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
         });
   }
 
@@ -355,7 +500,8 @@ export class MainMemberListComponent implements OnInit {
           this.loadingState = 'complete';
         },
         error => {
-          console.log(error);
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
         });
   }
 
@@ -377,7 +523,8 @@ export class MainMemberListComponent implements OnInit {
           this.loadingState = 'complete';
         },
         error => {
-          console.log(error);
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
         });
   }
 
@@ -391,12 +538,12 @@ export class MainMemberListComponent implements OnInit {
         row.last_name,
         row.id_number == undefined ? row.date_of_birth :row.id_number,
         row.contact == undefined ? row.number : row.contact,
-        row.applicant.policy_num,
+        row.relation_to_main_member == undefined ? row.applicant.policy_num : null,
         row.date_joined == undefined ? null : row.date_joined,
-        row.applicant.status,
-        row.applicant.plan.cover,
-        row.applicant.plan.premium,
-        row.applicant.plan.underwriter_premium,
+        row.relation_to_main_member == undefined ? row.applicant.status : null,
+        row.relation_to_main_member == undefined ? row.applicant.plan.cover: null,
+        row.relation_to_main_member == undefined ? row.applicant.plan.premium : null,
+        row.relation_to_main_member == undefined ? row.applicant.plan.underwriter_premium : null,
         row.relation_to_main_member == undefined ? null : row.relation_to_main_member
 
       ].join(",")

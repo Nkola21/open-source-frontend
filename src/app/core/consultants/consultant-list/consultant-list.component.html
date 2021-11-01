@@ -66,6 +66,7 @@
                   <th style="width: 330px;" class="fs-5" mat-header-cell *matHeaderCellDef>Actions</th>
                   <td mat-cell *matCellDef="let consultant">
                     <a class="btn btn-md btn-dark m-2" (click)="navigateToConsultantForm(consultant)">Edit</a>
+                    <a class="btn btn-md btn-dark m-2" (click)="navigateToConsultantView(consultant)">View</a>
                     <a class="btn btn-md btn-dark"
                       (click)="confirmDeleteConsultant(consultant)">Delete</a>
                     <button class="btn btn-md btn-dark" style="display: none;" id="deleteConsultant" data-bs-toggle="modal"

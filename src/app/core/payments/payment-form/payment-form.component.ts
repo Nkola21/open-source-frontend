@@ -102,7 +102,7 @@ export class PaymentFormComponent implements OnInit {
     formValue['date'] = moment(start_date).format('DD/MM/YYYY');
     formValue['end_date'] = moment(end_date).format('DD/MM/YYYY');
     formValue["user"] = this.user;
-    console.log(formValue)
+
     this.openService.post(`parlours/${this.parlour_id}/payments`, formValue)
       .subscribe(
         (invoice: any) => {

@@ -11,7 +11,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ParlourFormComponent } from './parlour-form/parlour-form.component';
 import { PlansModule } from './../plans/plans.module';
-
+import { SharedModule } from 'src/app/shared/shared.module';
 
 const ParlourRouting: ModuleWithProviders<ParloursModule> = RouterModule.forChild([
   {
@@ -48,6 +48,7 @@ const ParlourRouting: ModuleWithProviders<ParloursModule> = RouterModule.forChil
 @NgModule({
   imports: [
     CommonModule,
+    SharedModule,
     ParlourRouting,
     MaterialModule,
     MatListModule,

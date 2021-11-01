@@ -1,32 +1,35 @@
-  import { Component, OnInit, AfterViewInit } from '@angular/core';
-  import { ActivatedRoute, Router } from '@angular/router';
-  import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-  import { OpenService } from 'src/app/shared/services/open.service';
-  import { newParlour, Parlour } from './../parlours.models';
-  import { ToastrService } from 'ngx-toastr';
-  
-  
-  export class ParlourFormBuilder {
-    constructor(private formBuilder: FormBuilder) {
-    }
-  
-    buildForm(parlour) {
-      return this.buildParlourForm(parlour);
-    }
-  
-    buildParlourForm(details) {
-      details = details === undefined ? newParlour() : details;
-      return this.formBuilder.group({
-        'id': [details.id],
-        'parlour_name': [details.parlour_name, [Validators.required, Validators.minLength(6)]],
-        'person_name': [details.person_name, [Validators.required, Validators.minLength(6)]],
-        'address': [details.address, [Validators.required]],
-        'email': [details.email, [Validators.required]],
-        'number': [details.number, [Validators.required]]
-      });
-    }
-  
+import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { OpenService } from 'src/app/shared/services/open.service';
+import { newParlour, Parlour } from './../parlours.models';
+import { ToastrService } from 'ngx-toastr';
+
+
+export class ParlourFormBuilder {
+  constructor(private formBuilder: FormBuilder) {
   }
+
+  buildForm(parlour) {
+    return this.buildParlourForm(parlour);
+  }
+
+  buildParlourForm(details) {
+    details = details === undefined ? newParlour() : details;
+    return this.formBuilder.group({
+      'id': [details.id],
+      'parlour_name': [details.parlour_name, [Validators.required]],
+      'person_name': [details.person_name, [Validators.required]],
+      'address': [details.address, [Validators.required]],
+      'email': [details.email, [Validators.required, Validators.email]],
+      'number': [details.number, [Validators.required]],
+      'agreed_to_terms': [details.agreed_to_terms],
+      'username': [details.username, [Validators.required]],
+      'password': [details.password],
+      'confirm_password': [details.confirm_password]
+    });
+  }
+}
 
 
 @Component({
@@ -68,15 +71,28 @@ export class ParlourFormComponent implements OnInit  {
   initForm(parlour: Parlour) {
     this.parlour = parlour;
     this.form = this.formBuilder.buildForm(this.parlour);
+    const confirmed_password: FormControl = (<FormControl>this.form.controls['confirm_password']);
+
+    this.form.controls['password'].valueChanges.subscribe(value => {
+      
+      confirmed_password.setValue('');
+      confirmed_password.markAsDirty();
+      confirmed_password.setErrors({ 'validateConfirmPassword': true });
+    });
+
+    this.form.controls['confirm_password'].valueChanges.subscribe(value => {
+      if (value !== this.form.controls['password'].value) {
+        confirmed_password.setErrors({ 'validateConfirmPassword': true });
+      }
+    });
   }
 
   getParlour(id) {
-    console.log("get parlour");
     this.openService.getOne(`parlours/${id}`)
       .subscribe(
         parlour => {
-          console.log("parlour: ", parlour);
           this.parlour = parlour;
+          console.table(parlour)
           this.initForm(this.parlour);
         },
         error => console.log("ERROR"));
@@ -94,10 +110,19 @@ export class ParlourFormComponent implements OnInit  {
             this.showSuccess();
           },
         error => {
-            console.log(error);
-            this.toastr.error(error['message'], error['statusText'], {timeOut: 3000});
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
         });
     }else {
+      if (!formValue["password"]){
+        this.toastr.error("Error", "Password field is required", {timeOut: 3000});
+        return;
+      }
+
+      if (!formValue["agreed_to_terms"]){
+        this.toastr.error("Error", "You mst agree to terms to continue.", {timeOut: 3000});
+        return;
+      }
       this.openService.post(`parlours`, formValue)
         .subscribe(
           (user: any) => {
@@ -105,7 +130,8 @@ export class ParlourFormComponent implements OnInit  {
             this.submitted = true;
           },
         error => {
-          this.toastr.error(error['description'], error['title'], {timeOut: 3000});
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
         });
     }
   }

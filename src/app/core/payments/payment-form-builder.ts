@@ -15,7 +15,7 @@ export class PaymentFormBuilder {
         return this.formBuilder.group({
             'date': [details.date, [Validators.required]],
             'applicant_id': [details.applicant_id],
-            'payment_type': [details.payment_type],
+            'payment_type': [details.payment_type, [Validators.required]],
             'end_date': [details.date, [Validators.required]],
             'cover': [{value: details.cover, disabled: true}, [Validators.required]],
             'premium': [{value: details.premium, disabled: true}, [Validators.required]],

@@ -32,8 +32,8 @@ export class OpenService {
   }
 
   getBaseUrl(): any {
-    // return 'http://localhost:8009/open-source'
-    return 'https://nocorpgroup.herokuapp.com/open-source';
+    return 'http://localhost:8009/open-source'
+    // return 'https://nocorpgroup.herokuapp.com/open-source';
   }
 
   getClientUrl(): any {
@@ -53,6 +53,7 @@ export class OpenService {
     window.location.href = this.getClientUrl();
     window.localStorage.setItem('logged_out', 'true');
   }
+
   setUserToken(token: string): void {
     localStorage.setItem('token', token);
   }
@@ -61,9 +62,13 @@ export class OpenService {
     return localStorage.getItem('token');
   }
 
-  getHeaders(): HttpHeaders {
+  getHeaders() {
     let headers = new HttpHeaders();
-    // headers = headers.set('Authorization', 'Bearer ' + this.getUserToken());
+    return headers;
+  }
+
+  getUnSecureHeaders(): HttpHeaders {
+    let headers = new HttpHeaders();
     return headers;
   }
 
@@ -81,6 +86,7 @@ export class OpenService {
     const loggedIn = localStorage.getItem('logged_out');
     return loggedIn == "false";
   }
+
   setUser(user) {
     localStorage.setItem('user', JSON.stringify(user));
   }
