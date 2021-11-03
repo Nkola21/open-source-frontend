@@ -63,6 +63,8 @@ export class PlanFormComponent implements OnInit {
   submit() {
     let formValue = this.form.value;
     formValue["parlour_id"] = this.parlour_id
+    formValue["main_members"] = 1
+
     if (this.plan) {
       this.openService.put(`plans/${this.plan.id}/update`, formValue)
         .subscribe(

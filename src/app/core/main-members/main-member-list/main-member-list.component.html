@@ -8,7 +8,7 @@
               <div class="d-flex justify-content-between">
                 <div class="d-flex justify-content-between">            
                   <div class="btn-group" role="group" style="margin-right: 10px;"><a class="btn btn-md btn-dark" *ngIf="isConsultant()" (click)="navigateToMainMemberAddForm()">Add Member</a></div>
-                  <div class="btn-group" role="group" style="margin-right: 10px;"><a class="btn btn-md btn-dark" (click)="getCVSFile($event)">Export to Excel</a></div>
+                  <div class="btn-group" role="group" style="margin-right: 10px;"><a class="btn btn-md btn-dark" href="{{getExcel()}}" target="_blank">Export to Excel</a></div>
                   <div class="btn-group" role="group" style="margin-right: 10px;" *ngIf="!parlour.number_of_sms">
                     <button class="btn btn-md btn-dark" data-bs-toggle="modal" data-bs-target="#sendSMSModal" matTooltip="You do not have any SMSes left"
                     aria-label="You do not have any SMSes left" disabled>Send SMS</button>
@@ -79,7 +79,7 @@
               <div class="d-flex justify-content-between">
                 <div class="d-flex justify-content-between">            
                   <div class="btn-group" role="group" style="margin-right: 10px;"><a class="btn btn-md btn-dark" *ngIf="isConsultant()" (click)="navigateToMainMemberAddForm()">Add Member</a></div>
-                  <div class="btn-group" role="group" style="margin-right: 10px;"><a class="btn btn-md btn-dark" (click)="getCVSFile($event)">Export to Excel</a></div>
+                  <div class="btn-group" role="group" style="margin-right: 10px;"><a class="btn btn-md btn-dark" href="{{getExcel()}}" target="_blank">Export to Excel</a></div>
                   <div class="btn-group" role="group" style="margin-right: 10px;" *ngIf="!parlour.number_of_sms">
                     <button class="btn btn-md btn-dark" data-bs-toggle="modal" data-bs-target="#sendSMSModal" matTooltip="You do not have any SMSes left"
                     aria-label="You do not have any SMSes left" disabled>Send SMS</button>
@@ -321,15 +321,15 @@
         <form [formGroup]="performanceForm" *ngIf="performanceForm">
           <div class="mb-3">
             <span style="color: red;position:relative; bottom: -5rem; right: 20px;max-width: 10px">*</span>
-            <label for="entity" class="col-form-label fs-4 d-flex justify-content-center">From:</label>
+            <label for="entity" class="col-form-label fs-4 d-flex justify-content-center">Consultant:</label>
             <input type="text" class="form-control" id="entity" formControlName="entity" [(ngModel)]="consultant_full_name" >
         </div>
         <div class="mb-3">
-          <label for="start_date" class="col-form-label fs-4 d-flex justify-content-center">To:</label>
+          <label for="start_date" class="col-form-label fs-4 d-flex justify-content-center">Start Date:</label>
           <input type="date" class="form-control" id="start_date" formControlName="start_date" >
         </div>
         <div class="mb-3">
-          <label for="end_date" class="col-form-label fs-4 d-flex justify-content-center">To:</label>
+          <label for="end_date" class="col-form-label fs-4 d-flex justify-content-center">End Date:</label>
           <input type="date" class="form-control" id="end_date" formControlName="end_date" >
         </div>
       </form>

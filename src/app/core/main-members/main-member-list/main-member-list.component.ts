@@ -514,52 +514,14 @@ export class MainMemberListComponent implements OnInit {
     return 160 * this.message_parts; 
   }
 
-  getCVSFile(event) {
-    event.preventDefault();
-    this.openService.getUrl(`consultants/${this.user.id}/export_to_csv`)
-      .subscribe(
-        (main_members: Array<any>) => {
-          this.downloadFile(main_members);
-          this.loadingState = 'complete';
-        },
-        error => {
-          let err = error['error'];
-          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
-        });
-  }
+  getExcel() {
+    let queryString= `permission=${this.permission}`;
 
-  downloadFile(data: any) {
-    const replacer = (key, value) => (value === null ? '' : value); // specify how you want to handle null values here
-    const header = ["First Name", "Last Name", "ID Number", "Contact Number", "Policy Number", "Date Joined", "Status", "Cover", "Premium", "Underwriter Premium", "Relationship"]
+    if (this.status) {
+      queryString = `${queryString}&status=${this.status}`
+    }
 
-    const csv = data.map((row) =>
-      [
-        row.first_name,
-        row.last_name,
-        row.id_number == undefined ? row.date_of_birth :row.id_number,
-        row.contact == undefined ? row.number : row.contact,
-        row.relation_to_main_member == undefined ? row.applicant.policy_num : null,
-        row.date_joined == undefined ? null : row.date_joined,
-        row.relation_to_main_member == undefined ? row.applicant.status : null,
-        row.relation_to_main_member == undefined ? row.applicant.plan.cover: null,
-        row.relation_to_main_member == undefined ? row.applicant.plan.premium : null,
-        row.relation_to_main_member == undefined ? row.applicant.plan.underwriter_premium : null,
-        row.relation_to_main_member == undefined ? null : row.relation_to_main_member
-
-      ].join(",")
-    );
-    csv.unshift(header.join(','));
-    const csvArray = csv.join('\r\n');
-  
-    const a = document.createElement('a');
-    const blob = new Blob([csvArray], { type: 'text/xlsx' });
-    const url = window.URL.createObjectURL(blob);
-  
-    a.href = url;
-    a.download = 'Applicants.xlsx';
-    a.click();
-    window.URL.revokeObjectURL(url);
-    a.remove();
+    return `${this.openService.getBaseUrl()}/actions/${this.user.id}/export_to_excel?${queryString}`
   }
 
   sendSMS() {
