@@ -595,4 +595,13 @@ export class MainMemberListComponent implements OnInit {
     return this.parlour !== undefined && this.parlour.number_of_sms !== undefined ? this.parlour.number_of_sms : 0;
   }
 
+  noExtendedMembers(main_member) {
+    let plan = main_member.applicant.plan;
+
+    if (!plan.extended_members && !plan.dependants && !plan.additional_extended_members && !plan.spouse){
+      return false;
+    }
+    return true;
+  }
+
 }
