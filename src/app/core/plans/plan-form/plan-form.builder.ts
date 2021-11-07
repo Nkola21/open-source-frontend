@@ -15,7 +15,7 @@ export class PlanFormBuilder {
     return this.formBuilder.group({
       'id': [details.id],
       'plan': [details.plan, [Validators.required]],
-      'cover': [details.cover, [Validators.required]],
+      'cover': [details.cover],
       'premium': [details.premium, [Validators.required]],
       'underwriter_premium': [details.underwriter_premium],
       'main_members': [{value: 1, disabled: true}, [Validators.required]],
