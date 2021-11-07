@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {ActivatedRoute, Router, Params} from '@angular/router';
-import { OpenService } from 'src/app/shared/services/open.service';
+import { OpenService, CommonService } from 'src/app/shared/services/open.service';
 import { ToastrService } from 'ngx-toastr';
 
 
@@ -32,9 +32,12 @@ export class LoginComponent implements OnInit {
   user: any = null;
   form: FormGroup;
   formBuilder: SignInFormBuilder;
+  userMode: boolean;
+
 
   constructor(
     private openservice: OpenService,
+    private service: CommonService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
@@ -45,6 +48,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
+    this.service.data$.subscribe(res => this.userMode = res)
+    
   }
 
   initForm() {
@@ -53,7 +58,10 @@ export class LoginComponent implements OnInit {
 
   handleSignIn(event) {
     let parlour_id = null;
+    this.newData();
+    this.service.userUpdateData(event.user);
     this.openservice.setUserToken(event.token);
+    
     this.openservice.setUser(event.user);
     this.openservice.setLoggedIn();
 
@@ -67,6 +75,10 @@ export class LoginComponent implements OnInit {
     this.openservice.setParlourId(parlour_id)
 
     this.redirectToView(this.user.id, event.permission)
+  }
+
+  newData() {
+    this.service.changeData(true);  //invoke new Data
   }
 
   redirectToView(user_id, permission) {
@@ -91,7 +103,6 @@ export class LoginComponent implements OnInit {
 
   redirectToAdminView(user_id) {
     const view = [`/parlours`];
-    console.log("parlours");
     this.router.navigate(view);
   }
 

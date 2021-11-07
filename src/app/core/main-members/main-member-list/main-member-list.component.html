@@ -31,6 +31,11 @@
                       Perfomance
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="btnGroupDrop2">
+                      <li>{{permission}}
+                        <ul>
+                          <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#parlourPerformanceModal">{{ parlour.parlour_name }}</a></li>
+                        </ul>
+                      </li>
                       <li>Consultants
                         <ul>
                           <li *ngFor="let consultant of consultants"><a class="dropdown-item" (click)="setConsultant(consultant)" data-bs-toggle="modal" data-bs-target="#consultantPerformanceModal" >{{ consultant.first_name }} {{ consultant.last_name }}</a></li>
@@ -102,6 +107,11 @@
                       Perfomance
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="btnGroupDrop2">
+                      <li>{{permission}}
+                        <ul>
+                          <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#parlourPerformanceModal">{{ parlour.parlour_name }}</a></li>
+                        </ul>
+                      </li>
                       <li>Consultants
                         <ul>
                           <li *ngFor="let consultant of consultants"><a class="dropdown-item" (click)="setConsultant(consultant)" data-bs-toggle="modal" data-bs-target="#consultantPerformanceModal">{{ consultant.first_name }} {{ consultant.last_name }}</a></li>
@@ -284,6 +294,10 @@
           <label for="to" class="col-form-label fs-4 d-flex justify-content-center">To:</label>
           <input type="text" class="form-control" id="to" formControlName="to" >
         </div>
+        <div class="mb-3">
+          <label for="start_date" class="col-form-label fs-4 d-flex justify-content-center">Start Date (Optional):</label>
+          <input type="date" class="form-control" id="start_date" formControlName="start_date" >
+        </div>
           <div class="mb-3">
               <label for="message" class="col-form-label fs-4 d-flex justify-content-center">Message:</label>
               <textarea type="text" class="form-control col-md-6" id="message" formControlName="message" rows=4></textarea>
@@ -358,7 +372,7 @@
             <input mandetory type="text" class="form-control" id="entity" formControlName="entity" [(ngModel)]="branch">
         </div>
         <div class="mb-3">
-          <label for="start_date" class="col-form-label fs-4 d-flex justify-content-center">Satrt Date:</label>
+          <label for="start_date" class="col-form-label fs-4 d-flex justify-content-center">Start Date:</label>
           <input type="date" class="form-control" id="start_date" formControlName="start_date" >
         </div>
         <div class="mb-3">
@@ -370,6 +384,33 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="getByBranch(branch)" >Search</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="parlourPerformanceModal" tabindex="-1" aria-labelledby="parlourPerformanceModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fs-4" id="parlourPerformanceModal">Parlour Review</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="performanceForm" *ngIf="performanceForm">
+        <div class="mb-3">
+          <label for="start_date" class="col-form-label fs-4 d-flex justify-content-center">Start Date:</label>
+          <input type="date" class="form-control" id="start_date" formControlName="start_date" >
+        </div>
+        <div class="mb-3">
+          <label for="end_date" class="col-form-label fs-4 d-flex justify-content-center">End Date:</label>
+          <input type="date" class="form-control" id="end_date" formControlName="end_date" >
+        </div>
+      </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="getByParlour()" >Search</button>
       </div>
     </div>
   </div>

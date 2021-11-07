@@ -1,28 +1,31 @@
 import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { Subject } from "rxjs";
-import { OpenService } from 'src/app/shared/services/open.service';
+import { CommonService, OpenService } from 'src/app/shared/services/open.service';
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit, OnChanges {
+export class AppComponent implements OnInit {
   title = 'open-source-frontend';
   isLoggedin = false;
   user: any = null;
   authId: any;
   fullPath: any;
   resetUserSubject: Subject<boolean> = new Subject<boolean>();
+  data: boolean;
 
-  constructor(private openservice: OpenService) {}
-  ngOnInit() {
-    console.log("App: ", this.user);
+  constructor(private openservice: OpenService, private service: CommonService) {
   }
-
-  ngOnChanges(changes: SimpleChanges) {
-    console.log("App: ", changes);
-    this.user = changes.user.firstChange;
+  ngOnInit() {
+    const isLoggedIn = this.openservice.isLoggedIn();
+    this.service.data$.subscribe(res => {
+      this.data = res
+      console.log("App state: ", res);
+      console.log("Logged in: ", isLoggedIn);
+    });  //read the invoked data or default data
   }
 
   initPermissions() {

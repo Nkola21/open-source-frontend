@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { ParloursModule } from './core/parlours/parlours.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { OpenService } from './shared/services/open.service';
+import { CommonService, OpenService } from './shared/services/open.service';
 import { ConsultantModule } from './core/consultants/consultant.module';
 import { PlansModule } from './core/plans/plans.module';
 import { MainMembersModule } from './core/main-members/main_members.module';
@@ -21,7 +21,6 @@ import { LoginModule } from './core/login/login.module';
 import { SignupModule } from './core/signup/signup.module';
 // import { NavSignInModule } from './core/nav-signin/nav-signin.module';
 import { NavbarModule } from './core/navbar/navbar.module';
-import { NavbarOutModule } from './core/navbar-out/navbar-out.module';
 import { NavbuttonsModule } from './core/nav-buttons/nav-buttons.module';
 import { ToastrModule } from 'ngx-toastr';
 import { MainMembersArchivedModule } from './core/archived/main-members-archived.module';
@@ -67,7 +66,6 @@ const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
     TermsandconditionsModule,
     // NavSignInModule,
     NavbarModule,
-    NavbarOutModule,
     NavbuttonsModule,
     MainMembersArchivedModule,
     ChangePasswordModule,
@@ -77,7 +75,7 @@ const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
     rootRouting,
     ToastrModule.forRoot()
   ],
-  providers: [OpenService],
+  providers: [OpenService, CommonService],
   bootstrap: [AppComponent]
   // entryComponents: [HomeComponent]
 })

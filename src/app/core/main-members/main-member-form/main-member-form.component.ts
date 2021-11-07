@@ -90,6 +90,7 @@ export class MainMemberFormComponent implements OnInit  {
   user: any;
   plans: Array<any> = [];
   optionSelected: any;
+  selectedFile: File = null;
 
   constructor(public openService: OpenService,
     private route: ActivatedRoute,
@@ -131,10 +132,28 @@ export class MainMemberFormComponent implements OnInit  {
         error => console.log("ERROR"));
   }
 
+  onFileSelected(files) {
+    this.selectedFile = files.item(0);
+  }
+
+  submitFile() {
+    const fileReader = new FileReader();
+
+    fileReader.onload = (e) => {
+      this.openService.postFile(``, { 'document': fileReader.result })
+        .subscribe(result => {
+
+          },
+          error => {
+            // handleError(error, this.toastr, null, 500);
+          });
+    };
+  }
+
   submit() {
     const formValue = this.form.value;
     formValue["parlour_id"] = this.parlour_id;
-    
+
     if (this.main_member) {
       this.openService.put(`main-members/${this.main_member.id}/update`, formValue)
         .subscribe(
@@ -147,7 +166,6 @@ export class MainMemberFormComponent implements OnInit  {
           this.toastr.error(err['description'], error['title'], {timeOut: 3000});
         });
     }else {
-      console.log(formValue)
       this.openService.post(`consultants/${this.user.id}/main-members`, formValue)
         .subscribe(
           (user: any) => {

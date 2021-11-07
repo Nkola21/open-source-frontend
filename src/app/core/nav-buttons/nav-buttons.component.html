@@ -1,4 +1,4 @@
-<ul class="nav nav-pills nav-fill" style="height: 70px;align-content: center;" *ngIf="user && !isAdmin()">
+<ul class="nav nav-pills nav-fill" style="height: 70px;align-content: center;" *ngIf="userMode && !isAdmin()">
   <li class="nav-item inner">
     <a class="nav-link btn btn-md fs-4" aria-current="page" style="width: 235px;" (click)="redirectToMainMembersList()">Members</a>
   </li>

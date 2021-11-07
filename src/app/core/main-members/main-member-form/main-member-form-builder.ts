@@ -38,8 +38,8 @@ export class ApplicantFormBuilder {
         return this.formBuilder.group({
             'id': [details.id],
             'plan_id': [details.plan_id, [Validators.required]],
-            'policy_num': [details.policy_num, [Validators.required, Validators.minLength(6)]],
-            'document': [details.document, [Validators.required, Validators.minLength(6)]],
+            'policy_num': [details.policy_num, [Validators.required]],
+            'document': [details.document],
             'cancelled': [details.cancelled, [Validators.required]],
             'status': [details.status, [Validators.required]],
             'date': [details.date, [Validators.required]],

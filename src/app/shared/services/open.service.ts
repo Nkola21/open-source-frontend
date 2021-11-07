@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
-import { Observable, of, throwError, Subject } from 'rxjs';
-// import { BehaviorSubject } from 'rxjs';
-// import { Subject } from 'rxjs/Subject';  
+import { Observable, of, throwError, Subject, BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
+
 
 export function trimWhiteSpace(obj) {
   for (let prop in obj) {
@@ -25,6 +25,8 @@ export function trimWhiteSpace(obj) {
 })
 export class OpenService {
 
+  private headerSource: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  header = this.headerSource.asObservable();
   constructor(private http: HttpClient) { }
 
   setBaseUrl(): void {
@@ -32,11 +34,12 @@ export class OpenService {
   }
 
   getBaseUrl(): any {
-    return 'http://localhost:8009/open-source'
-    // return 'https://nocorpgroup.herokuapp.com/open-source';
+    // return 'http://localhost:8009/open-source'
+    return 'https://nocorpgroup.herokuapp.com/open-source';
   }
 
   getClientUrl(): any {
+    // return 'http://localhost:4200'
     return 'https://nkosana-citiq.github.io/open-source-frontend/';
   }
 
@@ -177,6 +180,14 @@ export class OpenService {
       .pipe(catchError(this.handleError));
   }
 
+  postFile(path: string, obj: any) {
+    const url = `${this.getBaseUrl()}/${path}`;
+    const headers = this.getHeaders();
+    return this.http
+      .post(url, obj, { headers: headers })
+      .pipe(catchError(this.handleError));
+  }
+
   putUrl(path: string, obj: any): Observable<any> {
     const url = `${this.getBaseUrl()}/${path}`;
     let headers = this.getHeaders();
@@ -216,18 +227,25 @@ export class OpenService {
       .pipe(catchError(this.handleError));
   }
 }
- 
 
-@Injectable()
-export class CurrentUserService {
-  userValue$: Observable<any>;
-  private userValueSubject = new Subject<string>();
 
-  constructor() {
-    this.userValue$ = this.userValueSubject.asObservable();
+@Injectable({providedIn: 'root'})
+export class CommonService {
+  data$: Observable<any>;
+  private data = new Subject<Boolean>();
+  userData$: Observable<any>;
+  private userData = new Subject<any>();
+
+  constructor(private router:  Router) {
+    this.data$ = this.data.asObservable();
+    this.userData$ = this.data.asObservable();
   }
 
-  getUserValue(data) {
-    this.userValueSubject.next(data);
+  changeData(data: boolean) {
+    this.data.next(data);
+  }
+
+  userUpdateData(data: any) {
+    this.userData.next(data);
   }
 }

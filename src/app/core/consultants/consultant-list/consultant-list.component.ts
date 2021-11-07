@@ -100,7 +100,6 @@ export class ConsultantListComponent implements OnInit {
     this.openService.getUrl(`parlours/${id}/consultants/`)
       .subscribe(
         (consultants: Array<any>) => {
-          console.log(consultants);
           this.consultants = consultants;
           this.configureConsultants(consultants);
           this.loadingState = 'complete';

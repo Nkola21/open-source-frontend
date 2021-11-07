@@ -6,15 +6,15 @@ import { ExtendedMember, newExtendedMember, newApplicant } from './../extended-m
 import { ToastrService } from 'ngx-toastr';
 
 
-export class MainMemberFormBuilder {
+export class ExtendedMemberFormBuilder {
   constructor(private formBuilder: FormBuilder) {
   }
 
   buildForm(extended_member) {
-    return this.buildMainMemberForm(extended_member);
+    return this.buildExtendedMemberForm(extended_member);
   }
 
-  buildMainMemberForm(details) {
+  buildExtendedMemberForm(details) {
     details = details === undefined ? newExtendedMember() : details;
     return this.formBuilder.group({
       'id': [details.id],
@@ -66,7 +66,7 @@ const relation_types = {
 })
 export class ExtendedMemberFormComponent implements OnInit {
   extended_member: any;
-  formBuilder: MainMemberFormBuilder;
+  formBuilder: ExtendedMemberFormBuilder;
   form: FormGroup;
   parlour_id: any;
   applicant_id: any;
@@ -83,7 +83,7 @@ export class ExtendedMemberFormComponent implements OnInit {
     public router: Router,
     private fb: FormBuilder,
     private toastr: ToastrService) {
-      this.formBuilder = new MainMemberFormBuilder(fb);
+      this.formBuilder = new ExtendedMemberFormBuilder(fb);
      }
 
   ngOnInit(): void {

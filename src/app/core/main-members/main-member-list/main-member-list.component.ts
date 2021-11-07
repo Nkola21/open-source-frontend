@@ -44,11 +44,12 @@ export class SMSFormBuilder {
   buildSMSForm(details, parlour?: any) {
     const from = parlour !== undefined ? parlour.parlour_name : null
     // console.log(parlour);
-    details = details === undefined ? {'message': null, 'from': null, 'to': null} : details;
+    details = details === undefined ? {'message': null, 'from': null, 'to': null, start_date: null} : details;
     return this.formBuilder.group({
       'message': [details.message, [Validators.required, Validators.minLength(2)]],
       'from': [{value: from, disabled: true}, [Validators.required]],
-      'to': [details.to, [Validators.required]]
+      'to': [details.to, [Validators.required]],
+      'start_date': [details.start_date]
     });
   }
 }
@@ -142,6 +143,7 @@ export class MainMemberListComponent implements OnInit {
   branch: any;
   consultants: Array<Consultant> = [];
   branches: Array<string> = [];
+  filter: string;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild("dataBlock") block: ElementRef;
@@ -277,11 +279,13 @@ export class MainMemberListComponent implements OnInit {
     }
 
     queryString = queryString ? `${queryString}&${filter}` : `${filter}`;
+    this.filter = queryString;
 
     this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?${queryString}`)
       .subscribe(
         (main_members: any) => {
           this.main_members = main_members;
+          this.branch = null;
           this.initPerformanceForm(undefined);
           this.configureMainMembers(main_members);
           this.loadingState = 'complete';
@@ -316,11 +320,53 @@ export class MainMemberListComponent implements OnInit {
     }
     
     queryString = queryString ? `${queryString}&${filter}` : `${filter}`;
-
+    this.filter = queryString;
     this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?${queryString}`)
       .subscribe(
         (main_members: any) => {
           this.main_members = main_members;
+          this.consultant = null;
+          this.initPerformanceForm(undefined);
+          this.configureMainMembers(main_members);
+          this.loadingState = 'complete';
+        },
+      error => {
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
+      });
+  }
+
+  getByParlour() {
+    let queryString: string;
+    const formValue = this.performanceForm.value;
+
+    if (this.status) {
+      queryString = `status=${this.status}`
+    }
+
+    if (this.searchField) {
+      queryString = queryString ? `${queryString}&search_string=${this.searchField}` : `search_string=${this.searchField}`;
+    }
+
+    let filter = ``;
+    if (formValue['start_date']) {
+      const start_date = formValue['start_date'];
+      filter = `${filter}&start_date=${start_date}`;
+    }
+
+    if (formValue['end_date']) {
+      const end_date = formValue['end_date'];
+      filter = `${filter}&end_date=${end_date}`;
+    }
+
+    queryString = queryString ? `${queryString}&${filter}` : `${filter}`;
+    this.filter = queryString;
+    this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?${queryString}`)
+      .subscribe(
+        (main_members: any) => {
+          this.main_members = main_members;
+          this.branch = null;
+          this.consultant = null;
           this.initPerformanceForm(undefined);
           this.configureMainMembers(main_members);
           this.loadingState = 'complete';
@@ -456,6 +502,7 @@ export class MainMemberListComponent implements OnInit {
   }
 
   getByPaymentStatus(status) {
+    this.filter = `status=${status}`
     this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?status=${status}`)
       .subscribe(
         (main_members: Array<any>) => {
@@ -489,7 +536,7 @@ export class MainMemberListComponent implements OnInit {
 
   getBySearchField() {
     const formValue = this.form.value;
-
+    this.filter = `search_string=${formValue["searchField"]}`;
     this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?search_string=${formValue["searchField"]}`)
       .subscribe(
         (main_members: Array<any>) => {
@@ -529,6 +576,8 @@ export class MainMemberListComponent implements OnInit {
     formValues['state'] = this.status;
     formValues['search_string'] = this.searchField;
     formValues['parlour_id'] = this.parlour_id;
+    formValues['consultant_id'] = this.consultant ? this.consultant.id : null;
+    formValues['branch'] = this.consultant ? this.consultant.branch : null;
 
     this.openService.post(`main-members/send-sms`, formValues)
       .subscribe(
