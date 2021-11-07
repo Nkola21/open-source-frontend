@@ -216,7 +216,7 @@ export class ParlourListComponent implements OnInit {
     const formValue = this.form.value;
     this.openService.put(`parlours/${this.parlour.id}/action/sms`, formValue)
     .subscribe((result) => {
-      this.toastr.success('Parlour was unsuspended successfully', '');
+      this.toastr.success('Parlour SMS updated successfully.', '');
     },
     error => {
       const err = error["error"];

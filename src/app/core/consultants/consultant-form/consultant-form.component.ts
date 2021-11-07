@@ -21,7 +21,7 @@ export class ConsultantFormBuilder {
       'first_name': [details.first_name, [Validators.required]],
       'last_name': [details.last_name, [Validators.required]],
       'email': [details.email, [Validators.required, Validators.email]],
-      'username': [details.username, [Validators.required, Validators.minLength(3)]],
+      'username': [details.username, [Validators.required]],
       'branch': [details.branch, [Validators.required]],
       'number': [details.number, [Validators.required]]
     });
