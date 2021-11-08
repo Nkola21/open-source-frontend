@@ -55,7 +55,7 @@
                 </div>
 
                 <div class="d-flex justify-content-between">
-                  <form [formGroup]="form" (ngSubmit)="getBySearchField()" *ngIf="form" class="row row-cols-lg-auto g-3 align-items-center">
+                  <form [formGroup]="form" *ngIf="form" class="row row-cols-lg-auto g-3 align-items-center">
                     <div style="margin-right: 10px;">
                       <input type="text" class="form-control" id="searchField" formControlName="searchField" placeholder="Search">
                     </div>

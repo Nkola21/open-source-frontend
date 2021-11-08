@@ -233,7 +233,6 @@ export class MainMemberArchivedListComponent implements OnInit {
     this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/archived?status=${status}`)
       .subscribe(
         (main_members: Array<any>) => {
-          console.log(main_members);
           this.status = status;
           this.main_members = main_members;
           this.configureMainMembers(main_members);
@@ -272,8 +271,6 @@ export class MainMemberArchivedListComponent implements OnInit {
     this.openService.getUrl(`parlours/${this.parlour_id}/main-members/file`)
       .subscribe(
         (main_members: Array<any>) => {
-          console.log("success.");
-          // console.log(main_members);
           this.downloadFile(main_members);
           this.loadingState = 'complete';
         },

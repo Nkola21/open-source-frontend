@@ -542,6 +542,7 @@ export class MainMemberListComponent implements OnInit {
         (main_members: Array<any>) => {
           this.status = null;
           this.searchField = formValue["searchField"];
+
           this.main_members = main_members;
           this.configureMainMembers(main_members);
           this.loadingState = 'complete';
@@ -596,10 +597,12 @@ export class MainMemberListComponent implements OnInit {
   }
 
   noExtendedMembers(main_member) {
-    let plan = main_member.applicant.plan;
+    if (main_member) {
+      let plan = main_member.applicant.plan;
 
-    if (!plan.extended_members && !plan.dependants && !plan.additional_extended_members && !plan.spouse){
-      return false;
+      if (!plan.extended_members && !plan.dependants && !plan.additional_extended_members && !plan.spouse){
+        return false;
+      }
     }
     return true;
   }

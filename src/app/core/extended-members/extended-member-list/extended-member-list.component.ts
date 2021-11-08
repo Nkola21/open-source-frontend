@@ -66,7 +66,7 @@ const dialogConfig = new MatDialogConfig();
 })
 export class ExtendedMemberListComponent implements OnInit {
 
-  displayedColumns = ['full_name', 'type', 'relation', 'date', 'contact', 'date_of_birth', 'date_joined', 'actions'];
+  displayedColumns = ['full_name', 'type', 'relation', 'contact', 'date_of_birth', 'date_joined', 'actions'];
   extended_members: Array<any> = [];
   dataSource: any;
   page: any;
