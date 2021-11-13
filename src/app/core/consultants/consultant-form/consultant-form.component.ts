@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { OpenService } from 'src/app/shared/services/open.service';
+import { OpenService, CommonService } from 'src/app/shared/services/open.service';
 import { ToastrService } from 'ngx-toastr';
 import { Consultant, newConsultant } from './../consultants.models'
 
@@ -44,6 +44,7 @@ export class ConsultantFormComponent implements OnInit {
   permission: any
 
   constructor(public openService: OpenService,
+    public service: CommonService,
     private route: ActivatedRoute,
     public router: Router,
     private toastr: ToastrService,
@@ -54,18 +55,22 @@ export class ConsultantFormComponent implements OnInit {
   ngOnInit(): void {
     this.permission = this.openService.getPermissions();
     this.user = this.openService.getUser();
+    this.transition(this.user);
     this.parlour_id = this.permission == "Parlour" ? this.user.id : this.user.parlour_id;
     this.route.params.subscribe(
       (params) => {
         const id = +params['id'];
         if (id){
-          console.log("ID is valid")
           this.getConsultant(id);
         }else{
           this.initForm(this.consultant);
         }
       }
     )
+  }
+
+  transition(user: any) {
+    this.service.switchHeader(user);
   }
   
   getConsultant(id) {

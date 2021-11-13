@@ -34,7 +34,7 @@
             <mat-form-field appearance="fill">
                 <mat-label>Choose a date</mat-label>
                 <input class="form-control" id="date_of_birth" formControlName="date_of_birth" matInput [matDatepicker]="picker2">
-                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker-toggle matSuffix [for]="picker2" id="dob_picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker2></mat-datepicker>
             </mat-form-field>
 
@@ -78,6 +78,7 @@
                             <option [ngValue]="8" >Grand Parent</option>
                             <option [ngValue]="9" >Wife</option>
                             <option [ngValue]="10" >Husband</option>
+                            <option [ngValue]="11" >Cousin</option>
                         </select>
                         <app-input-error [control]="form.controls.relation_to_main_member"></app-input-error>
                     </div>
@@ -97,7 +98,7 @@
 
             <div class="col-12 d-flex justify-content-center">
                 <button class="btn-dark btn-lg w-50 m-2" type="submit" (click)="goBack($event)">Back</button>
-                <button class="btn-dark btn-lg w-50 m-2" type="submit" (click)="submit()">Submit</button>
+                <button id="submitBtn" class="btn-dark btn-lg w-50 m-2" type="submit" (click)="submit()">Submit</button>
             </div>
         </form>
     </mat-card>

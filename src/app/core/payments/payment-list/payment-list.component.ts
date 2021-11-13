@@ -7,7 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { Observable, BehaviorSubject, merge } from 'rxjs';
 
 import { map } from 'rxjs/operators';
-import { OpenService } from 'src/app/shared/services/open.service';
+import { OpenService, CommonService } from 'src/app/shared/services/open.service';
 
 export class PaymentDataSource extends DataSource<any> {
 
@@ -54,16 +54,24 @@ export class PaymentListComponent implements OnInit {
   page: any;
   loadingState: any;
   tableSize: number;
+  user: any;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     public openService: OpenService,
+    public service: CommonService,
     public dialog: MatDialog,
     public router: Router) { }
 
   ngOnInit(): void {
+    this.user = this.openService.getUser();
+    this.transition(this.user);
     this.initPayments();
+  }
+
+  transition(user: any) {
+    this.service.switchHeader(user);
   }
 
   initializePaginator() {

@@ -1,6 +1,6 @@
 
 <mat-card>
-    <div *ngIf="loadingState == 'complete' && main_members.length == 0" class="-y-sm">
+    <div *ngIf="loadingState == 'complete'  && main_members && main_members.length == 0" class="-y-sm">
       <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="20px">
         <div fxFlex="100">
           <mat-card style="margin-top: 30px" class="line-top">
@@ -76,7 +76,7 @@
       </div>
     </div>
   
-    <div *ngIf="dataSource && main_members.length > 0" [ngClass]="{'animated fadeIn': dataSource}">
+    <div *ngIf="dataSource && main_members && main_members.length > 0" [ngClass]="{'animated fadeIn': dataSource}">
       <div fxLayout="row" fxLayoutAlign="center start">
         <div fxFlex="100">
           <mat-card style="margin-top: 30px" class="line-top">

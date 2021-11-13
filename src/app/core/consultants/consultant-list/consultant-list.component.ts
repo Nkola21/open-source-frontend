@@ -7,7 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { Observable, BehaviorSubject, merge } from 'rxjs';
 
 import { map } from 'rxjs/operators';
-import { OpenService } from 'src/app/shared/services/open.service';
+import { OpenService, CommonService } from 'src/app/shared/services/open.service';
 import { ToastrService } from 'ngx-toastr';
 
 
@@ -59,23 +59,31 @@ export class ConsultantListComponent implements OnInit {
   loadingState: any;
   tableSize: number;
   consultant: any;
+  user: any;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     public openService: OpenService,
+    public service: CommonService,
     public dialog: MatDialog,
     private route: ActivatedRoute,
     public router: Router,
     private toastr: ToastrService) { }
 
   ngOnInit(): void {
+    this.user = this.openService.getUser();
+    this.transition(this.user);
     this.route.params.subscribe(
       (params) => {
         const id = +params['parlour_id'];
         this.initConsultants(id);
       }
     )
+  }
+
+  transition(user: any) {
+    this.service.switchHeader(user);
   }
 
   initializePaginator() {

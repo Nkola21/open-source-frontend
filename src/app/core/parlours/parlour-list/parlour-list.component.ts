@@ -7,7 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { Observable, BehaviorSubject, merge } from 'rxjs';
 
 import { map } from 'rxjs/operators';
-import { OpenService } from 'src/app/shared/services/open.service';
+import { OpenService, CommonService } from 'src/app/shared/services/open.service';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
@@ -79,10 +79,12 @@ export class ParlourListComponent implements OnInit {
   form: FormGroup;
   numberOfSms: null;
   searchField: null;
+  user: any;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
+    public service: CommonService,
     public openService: OpenService,
     public dialog: MatDialog,
     private fb: FormBuilder,
@@ -93,7 +95,13 @@ export class ParlourListComponent implements OnInit {
 
   ngOnInit(): void {
     this.initParlours();
+    this.user = this.openService.getUser();
+    this.transition(this.user);
     this.initSMSForm(this.numberOfSms);
+  }
+
+  transition(user: any) {
+    this.service.switchHeader(user);
   }
 
   initSMSForm(numberOfSms: string) {

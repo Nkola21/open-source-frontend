@@ -32,8 +32,6 @@ export class LoginComponent implements OnInit {
   user: any = null;
   form: FormGroup;
   formBuilder: SignInFormBuilder;
-  userMode: boolean;
-
 
   constructor(
     private openservice: OpenService,
@@ -48,8 +46,6 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-    this.service.data$.subscribe(res => this.userMode = res)
-    
   }
 
   initForm() {
@@ -58,11 +54,10 @@ export class LoginComponent implements OnInit {
 
   handleSignIn(event) {
     let parlour_id = null;
-    this.newData();
-    this.service.userUpdateData(event.user);
+
     this.openservice.setUserToken(event.token);
-    
     this.openservice.setUser(event.user);
+    this.transition(event.user);
     this.openservice.setLoggedIn();
 
     this.openservice.setPermissions(event.permission);
@@ -77,8 +72,8 @@ export class LoginComponent implements OnInit {
     this.redirectToView(this.user.id, event.permission)
   }
 
-  newData() {
-    this.service.changeData(true);  //invoke new Data
+  transition(user: any) {
+    this.service.switchHeader(user);
   }
 
   redirectToView(user_id, permission) {

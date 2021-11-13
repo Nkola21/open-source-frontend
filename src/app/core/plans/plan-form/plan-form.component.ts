@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { OpenService } from 'src/app/shared/services/open.service';
+import { OpenService, CommonService } from 'src/app/shared/services/open.service';
 import { Plan } from './../plans.model';
 import { PlanFormBuilder } from './plan-form.builder';
 import { ToastrService } from 'ngx-toastr';
@@ -23,8 +23,9 @@ export class PlanFormComponent implements OnInit {
   user: any;
   parlour_id: any;
   permission: any
-  
+
   constructor(public openService: OpenService,
+    public service: CommonService,
     private route: ActivatedRoute,
     public router: Router,
     private fb: FormBuilder,
@@ -34,6 +35,10 @@ export class PlanFormComponent implements OnInit {
     }
 
   ngOnInit() {
+    this.permission = this.openService.getPermissions();
+    this.user = this.openService.getUser();
+    this.transition(this.user);
+    this.parlour_id = this.openService.getParlourId();
     this.route.params.subscribe(
       (params) => {
         const id = +params['id'];
@@ -50,9 +55,10 @@ export class PlanFormComponent implements OnInit {
           this.initForm(this.plan);
         }
     });
-    this.permission = this.openService.getPermissions();
-    this.user = this.openService.getUser();
-    this.parlour_id = this.openService.getParlourId();
+  }
+
+  transition(user: any) {
+    this.service.switchHeader(user);
   }
 
   initForm(plan: Plan) {
@@ -91,10 +97,8 @@ export class PlanFormComponent implements OnInit {
   }
 
   showError(error) {
-    let errors = {};
-    errors = error.json();
-    const description = errors.hasOwnProperty('errors') ? this.getErrorDetails(error) : errors['description'];
-    this.toastr.error(description, errors['title'], {timeOut: 3000});
+    let err = error['error'];
+    this.toastr.error(err['description'], error['title'], {timeOut: 3000});
   }
 
   getErrorDetails(error) {

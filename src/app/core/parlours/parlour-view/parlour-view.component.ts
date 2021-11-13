@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { OpenService } from 'src/app/shared/services/open.service';
+import { OpenService, CommonService } from 'src/app/shared/services/open.service';
 import { Parlour } from './../parlours.models';
 
 @Component({
@@ -10,18 +10,26 @@ import { Parlour } from './../parlours.models';
 })
 export class ParlourViewComponent implements OnInit {
   parlour:Parlour;
+  user: any;
 
   constructor(
     public openService: OpenService,
+    public service: CommonService,
     private route: ActivatedRoute,) { }
 
   ngOnInit(): void {
+    this.user = this.openService.getUser();
+    this.transition(this.user);
     this.route.params.subscribe(
       (params) => {
         const id = +params['id'];
         this.initParlour(id);
       }
     )
+  }
+
+  transition(user: any) {
+    this.service.switchHeader(user);
   }
 
   initParlour(parlour_id: number) {

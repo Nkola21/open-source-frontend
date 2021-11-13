@@ -1,4 +1,4 @@
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 
 
 export function validateSAIDNumber(c: FormControl) {
@@ -53,4 +53,28 @@ export function getErrorMessage(control) {
     if (control.errors.custom)
       return `${control.errors.custom.message}`;
     return null;
+  }
+
+  export class CompareFormValue {
+
+    reference: string;
+  
+    createReference(form: FormGroup) {
+      this.reference = JSON.stringify(form.value);
+    }
+  
+    formValuesHaveChanged(form: FormGroup) {
+      return this.reference === JSON.stringify(form.value);
+    }
+  
+    disableFormElement(elementId: string): void {
+      const formElement = <HTMLInputElement>document.getElementById(elementId);
+      formElement.disabled = true;
+    }
+  
+    enableFormElement(elementId: string): void {
+      const formElement = <HTMLInputElement>document.getElementById(elementId);
+      formElement.disabled = false;
+    }
+  
   }

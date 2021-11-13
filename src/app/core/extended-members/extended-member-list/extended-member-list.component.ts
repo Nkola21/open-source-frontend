@@ -7,7 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { Observable, BehaviorSubject, merge } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { map } from 'rxjs/operators';
-import { OpenService } from 'src/app/shared/services/open.service';
+import { OpenService, CommonService } from 'src/app/shared/services/open.service';
 import { ToastrService } from 'ngx-toastr';
 
 export class SearchFormBuilder {
@@ -85,6 +85,7 @@ export class ExtendedMemberListComponent implements OnInit {
 
   constructor(
     public openService: OpenService,
+    public service: CommonService,
     public dialog: MatDialog,
     private route: ActivatedRoute,
     public router: Router,
@@ -96,6 +97,7 @@ export class ExtendedMemberListComponent implements OnInit {
   ngOnInit(): void {
     this.permission = this.openService.getPermissions();
     this.user = this.openService.getUser();
+    this.transition(this.user);
     this.route.params.subscribe(
       (params) => {
         const id = +params['id'];
@@ -103,6 +105,10 @@ export class ExtendedMemberListComponent implements OnInit {
         this.initExtendedMembers(id);
       }
     )
+  }
+
+  transition(user: any) {
+    this.service.switchHeader(user);
   }
 
   isParlour() {

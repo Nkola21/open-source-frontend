@@ -7,7 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { Observable, BehaviorSubject, merge } from 'rxjs';
 
 import { map } from 'rxjs/operators';
-import { OpenService } from 'src/app/shared/services/open.service';
+import { OpenService, CommonService } from 'src/app/shared/services/open.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
@@ -85,12 +85,14 @@ export class MainMemberSubListComponent implements OnInit {
   months: any;
   original: any;
   period: any;
+  user: any;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild("dataBlock") block: ElementRef;
 
   constructor(
     public openService: OpenService,
+    public service: CommonService,
     public dialog: MatDialog,
     private route: ActivatedRoute,
     public router: Router,
@@ -101,6 +103,8 @@ export class MainMemberSubListComponent implements OnInit {
     }
 
   ngOnInit(): void {
+    this.user = this.openService.getUser()
+    this.transition(this.user);
     this.route.params.subscribe(
       (params) => {
         const id = +params['id'];
@@ -111,6 +115,10 @@ export class MainMemberSubListComponent implements OnInit {
         this.initSearchForm(this.searchField);
       }
     )
+  }
+
+  transition(user: any) {
+    this.service.switchHeader(user);
   }
 
   initSearchForm(searchField: string) {

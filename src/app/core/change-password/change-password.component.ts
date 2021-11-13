@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {ActivatedRoute, Router, Params} from '@angular/router';
-import { OpenService } from 'src/app/shared/services/open.service';
+import { OpenService, CommonService } from 'src/app/shared/services/open.service';
 import { ChangePasswordFormBuilder } from './change-password-form';
 import { ToastrService } from 'ngx-toastr';
 
@@ -19,6 +19,7 @@ export class ChangePasswordComponent implements OnInit {
 
   constructor(
     private openservice: OpenService,
+    private service: CommonService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
@@ -30,7 +31,12 @@ export class ChangePasswordComponent implements OnInit {
   ngOnInit(): void {
     this.permission = this.openservice.getPermissions();
     this.user = this.openservice.getUser();
+    this.transition(this.user);
     this.initForm();
+  }
+
+  transition(user: any) {
+    this.service.switchHeader(user);
   }
 
   isConsultant() {

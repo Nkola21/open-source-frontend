@@ -7,7 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { Observable, BehaviorSubject, merge } from 'rxjs';
 
 import { map } from 'rxjs/operators';
-import { OpenService } from 'src/app/shared/services/open.service';
+import { OpenService, CommonService } from 'src/app/shared/services/open.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
@@ -150,6 +150,7 @@ export class MainMemberListComponent implements OnInit {
 
   constructor(
     public openService: OpenService,
+    public service: CommonService,
     public dialog: MatDialog,
     private route: ActivatedRoute,
     public router: Router,
@@ -165,6 +166,7 @@ export class MainMemberListComponent implements OnInit {
   ngOnInit(): void {
     this.permission = this.openService.getPermissions();
     this.user = this.openService.getUser();
+    this.transition(this.user);
     if (this.permission == "Consultant") {
       this.parlour = this.user.parlour;
     }
@@ -383,8 +385,11 @@ export class MainMemberListComponent implements OnInit {
 
   getDocUrl(main_member) {
     const id = main_member.id;
+    const applicant = main_member.applicant
     const base_url = this.openService.getBaseUrl();
-
+    if (applicant.old_url) {
+      return applicant.document;
+    }
     return `${base_url}/main-members/${id}/document`;
   }
 
@@ -419,8 +424,12 @@ export class MainMemberListComponent implements OnInit {
         });
   }
 
+  transition(user: any) {
+    this.service.switchHeader(user);
+  }
+
   configureMainMembers(main_members: Array<any>): void {
-    this.tableSize = this.main_members.length
+    this.tableSize = this.main_members ? this.main_members.length : 0;
     this.dataSource = new MatTableDataSource(main_members);
     this.initializePaginator()
   }

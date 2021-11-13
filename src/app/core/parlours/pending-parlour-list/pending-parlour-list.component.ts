@@ -6,7 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { Observable, BehaviorSubject, merge } from 'rxjs';
 
 import { map } from 'rxjs/operators';
-import { OpenService } from 'src/app/shared/services/open.service';
+import { OpenService, CommonService } from 'src/app/shared/services/open.service';
 import { ToastrService } from 'ngx-toastr';
 
 export class ParlourDataSource extends DataSource<any> {
@@ -54,6 +54,7 @@ export class PendingParlourListComponent implements OnInit {
   page: any;
   loadingState: any;
   tableSize: number;
+  user: any;
 
   searchField: null;
 
@@ -61,12 +62,20 @@ export class PendingParlourListComponent implements OnInit {
 
   constructor(
     public openService: OpenService,
+    public service: CommonService,
     private toastr: ToastrService,
     public router: Router) {
      }
 
   ngOnInit(): void {
+    this.user = this.openService.getUser();
+    this.transition(this.user);
+
     this.initParlours();
+  }
+
+  transition(user: any) {
+    this.service.switchHeader(user);
   }
 
   initializePaginator() {

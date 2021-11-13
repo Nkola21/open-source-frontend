@@ -182,7 +182,8 @@ export class OpenService {
 
   postFile(path: string, obj: any) {
     const url = `${this.getBaseUrl()}/${path}`;
-    const headers = this.getHeaders();
+    let headers = this.getHeaders();
+    headers.append('Content-Type', 'multipart/form-data')
     return this.http
       .post(url, obj, { headers: headers })
       .pipe(catchError(this.handleError));
@@ -229,23 +230,14 @@ export class OpenService {
 }
 
 
-@Injectable({providedIn: 'root'})
+@Injectable()
 export class CommonService {
-  data$: Observable<any>;
-  private data = new Subject<Boolean>();
-  userData$: Observable<any>;
-  private userData = new Subject<any>();
 
-  constructor(private router:  Router) {
-    this.data$ = this.data.asObservable();
-    this.userData$ = this.data.asObservable();
-  }
+  private dataSource = new Subject<object>();
 
-  changeData(data: boolean) {
-    this.data.next(data);
-  }
+  datasource$ = this.dataSource.asObservable();
 
-  userUpdateData(data: any) {
-    this.userData.next(data);
+  switchHeader(mission: any) {
+    this.dataSource.next(mission);
   }
 }

@@ -5,6 +5,7 @@ export interface Applicant {
     status: string;
     cancelled: string;
     date: Date;
+    old_url: Boolean;
 }
 
 
@@ -15,7 +16,8 @@ export function newApplicant() {
         plan_id: null,
         status: null,
         cancelled: null,
-        date: null
+        date: null,
+        old_url: null 
     }
 }
 

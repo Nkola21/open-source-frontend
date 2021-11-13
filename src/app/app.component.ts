@@ -21,11 +21,6 @@ export class AppComponent implements OnInit {
   }
   ngOnInit() {
     const isLoggedIn = this.openservice.isLoggedIn();
-    this.service.data$.subscribe(res => {
-      this.data = res
-      console.log("App state: ", res);
-      console.log("Logged in: ", isLoggedIn);
-    });  //read the invoked data or default data
   }
 
   initPermissions() {

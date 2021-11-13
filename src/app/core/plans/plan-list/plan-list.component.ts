@@ -7,7 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { Observable, BehaviorSubject, merge } from 'rxjs';
 
 import { map } from 'rxjs/operators';
-import { OpenService } from 'src/app/shared/services/open.service';
+import { OpenService, CommonService } from 'src/app/shared/services/open.service';
 import { ToastrService } from 'ngx-toastr';
 
 
@@ -64,6 +64,7 @@ export class PlanListComponent implements OnInit {
 
   constructor(
     public openService: OpenService,
+    public service: CommonService,
     public router: Router,
     private toastr: ToastrService) { }
 
@@ -72,6 +73,10 @@ export class PlanListComponent implements OnInit {
     this.user = this.openService.getUser();
     this.parlour_id = this.openService.getParlourId();
     this.initPlans();
+  }
+
+  transition(user: any) {
+    this.service.switchHeader(user);
   }
 
   initializePaginator() {

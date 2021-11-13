@@ -1,9 +1,10 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { OpenService } from 'src/app/shared/services/open.service';
+import { OpenService, CommonService } from 'src/app/shared/services/open.service';
 import { ExtendedMember, newExtendedMember, newApplicant } from './../extended-members.models';
 import { ToastrService } from 'ngx-toastr';
+import { CompareFormValue } from './../../../shared/utils'
 
 
 export class ExtendedMemberFormBuilder {
@@ -64,7 +65,7 @@ const relation_types = {
   templateUrl: './extended-member-form.component.html',
   styleUrls: ['./extended-member-form.component.css']
 })
-export class ExtendedMemberFormComponent implements OnInit {
+export class ExtendedMemberFormComponent extends CompareFormValue implements OnInit {
   extended_member: any;
   formBuilder: ExtendedMemberFormBuilder;
   form: FormGroup;
@@ -79,16 +80,19 @@ export class ExtendedMemberFormComponent implements OnInit {
   relation_types: any
 
   constructor(public openService: OpenService,
+    public service: CommonService,
     private route: ActivatedRoute,
     public router: Router,
     private fb: FormBuilder,
     private toastr: ToastrService) {
+      super();
       this.formBuilder = new ExtendedMemberFormBuilder(fb);
      }
 
   ngOnInit(): void {
     this.parlour_id = this.openService.getParlourId();
     this.user = this.openService.getUser()
+    this.transition(this.user);
     this.route.params.forEach((params: Params) => {
       const id = +params['id'];
       if (params['id'] !== undefined) {
@@ -101,6 +105,10 @@ export class ExtendedMemberFormComponent implements OnInit {
         this.applicant_id = id
       }
   });
+  }
+
+  transition(user: any) {
+    this.service.switchHeader(user);
   }
 
   initTypes() {
@@ -122,6 +130,17 @@ export class ExtendedMemberFormComponent implements OnInit {
   initForm(extended_member: ExtendedMember) {
     this.extended_member = extended_member;
     this.form = this.formBuilder.buildForm(this.extended_member);
+
+    this.form.controls.id_number.valueChanges.subscribe(val => {
+      if (val) {
+        this.disableFormElement('date_of_birth');
+        const dob = document.getElementById('dob_picker');
+        dob.setAttribute("disable", "true");
+      }else {
+        this.enableFormElement('date_of_birth');
+        this.enableFormElement('dob_picker');
+      }
+    });
   }
 
   getExtendedMember(id) {

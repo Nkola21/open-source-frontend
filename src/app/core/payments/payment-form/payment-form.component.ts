@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { OpenService } from 'src/app/shared/services/open.service';
+import { OpenService, CommonService } from 'src/app/shared/services/open.service';
 import { PaymentFormBuilder } from '../payment-form-builder';
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
@@ -24,6 +24,7 @@ export class PaymentFormComponent implements OnInit {
 
   constructor(
     public openService: OpenService,
+    public service: CommonService,
     private route: ActivatedRoute,
     public router: Router,
     private fb: FormBuilder,
@@ -34,13 +35,13 @@ export class PaymentFormComponent implements OnInit {
   ngOnInit(): void {
     this.parlour_id = this.openService.getParlourId();
     this.user = this.openService.getUser();
+    this.transition(this.user);
     this.route.params.subscribe(
       (params) => {
         const id = +params['id'];
         const applicant_id = +params['applicant_id'];
         this.applicant_id = applicant_id;
         if (id){
-          // this.getMainMember(id);
         }else if (applicant_id){
           this.getMainMember(applicant_id);
         }else {
@@ -49,6 +50,10 @@ export class PaymentFormComponent implements OnInit {
       }
     )
     
+  }
+
+  transition(user: any) {
+    this.service.switchHeader(user);
   }
 
   initForm(payment) {
@@ -79,6 +84,7 @@ export class PaymentFormComponent implements OnInit {
       .subscribe(
         last_payment => {
           this.last_payment = last_payment;
+
           const payment = {
             "applicant_id": main_member.applicant.id,
             "cover": main_member.applicant.plan.cover,
@@ -86,6 +92,7 @@ export class PaymentFormComponent implements OnInit {
             "date": new Date(),
             "last_payment": new Date(this.last_payment.created).toDateString()
           }
+
           this.initForm(payment);
         },
         error =>  {

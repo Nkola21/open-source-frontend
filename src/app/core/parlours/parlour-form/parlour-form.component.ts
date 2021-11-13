@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { OpenService } from 'src/app/shared/services/open.service';
+import { OpenService, CommonService } from 'src/app/shared/services/open.service';
 import { newParlour, Parlour } from './../parlours.models';
 import { ToastrService } from 'ngx-toastr';
 
@@ -46,6 +46,7 @@ export class ParlourFormComponent implements OnInit  {
   user: any;
 
   constructor(public openService: OpenService,
+    public service: CommonService,
     private route: ActivatedRoute,
     public router: Router,
     private fb: FormBuilder,
@@ -56,6 +57,7 @@ export class ParlourFormComponent implements OnInit  {
   ngOnInit(): void {
     this.parlour_id = this.openService.getParlourId();
     this.user = this.openService.getUser()
+    this.transition(this.user);
     this.route.params.subscribe(
       (params) => {
         const id = +params['id'];
@@ -66,6 +68,10 @@ export class ParlourFormComponent implements OnInit  {
         }
       }
     )
+  }
+
+  transition(user: any) {
+    this.service.switchHeader(user);
   }
 
   initForm(parlour: Parlour) {

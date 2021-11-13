@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { OpenService } from 'src/app/shared/services/open.service';
+import { OpenService, CommonService } from 'src/app/shared/services/open.service';
 import { MainMember, newMainMember, newApplicant } from './../main-members.models';
 import { ToastrService } from 'ngx-toastr';
 import { validateMSISDN, validateSAIDNumber } from 'src/app/shared/validation';
@@ -75,7 +75,6 @@ export class FileValueAccessor implements ControlValueAccessor {
 }
 
 
-
 @Component({
   selector: 'app-main-member-form',
   templateUrl: './main-member-form.component.html',
@@ -93,6 +92,7 @@ export class MainMemberFormComponent implements OnInit  {
   selectedFile: File = null;
 
   constructor(public openService: OpenService,
+    public service: CommonService,
     private route: ActivatedRoute,
     public router: Router,
     private fb: FormBuilder,
@@ -103,6 +103,7 @@ export class MainMemberFormComponent implements OnInit  {
   ngOnInit(): void {
     this.parlour_id = this.openService.getParlourId();
     this.user = this.openService.getUser()
+    this.transition(this.user);
     this.route.params.subscribe(
       (params) => {
         const id = +params['id'];
@@ -114,6 +115,10 @@ export class MainMemberFormComponent implements OnInit  {
         }
       }
     )
+  }
+
+  transition(user: any) {
+    this.service.switchHeader(user);
   }
 
   initForm(main_member: MainMember) {
@@ -136,20 +141,6 @@ export class MainMemberFormComponent implements OnInit  {
     this.selectedFile = files.item(0);
   }
 
-  submitFile() {
-    const fileReader = new FileReader();
-
-    fileReader.onload = (e) => {
-      this.openService.postFile(``, { 'document': fileReader.result })
-        .subscribe(result => {
-
-          },
-          error => {
-            // handleError(error, this.toastr, null, 500);
-          });
-    };
-  }
-
   submit() {
     const formValue = this.form.value;
     formValue["parlour_id"] = this.parlour_id;
@@ -168,7 +159,7 @@ export class MainMemberFormComponent implements OnInit  {
     }else {
       this.openService.post(`consultants/${this.user.id}/main-members`, formValue)
         .subscribe(
-          (user: any) => {
+          (main_member: any) => {
             this.showSuccess();
             this.submitted = true;
           },

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService, OpenService } from 'src/app/shared/services/open.service';
 import { Subscription } from 'rxjs';
@@ -12,7 +12,6 @@ export class NavbuttonsComponent implements OnInit {
   user: any
   permission: any
   parlour_id: any;
-  userMode: boolean;
   subscription: Subscription;
 
   constructor(
@@ -21,8 +20,10 @@ export class NavbuttonsComponent implements OnInit {
     private route: ActivatedRoute,
     public router: Router
   ) {
-    // this.subscription = this.openService.header
-    //     .subscribe(mode => this.userMode = mode);
+    this.subscription = service.datasource$.subscribe(
+      user => {
+        this.user = user;
+    });
   }
 
   ngOnInit(): void {
@@ -30,21 +31,9 @@ export class NavbuttonsComponent implements OnInit {
     this.permission = this.openService.getPermissions();
     this.user = this.openService.getUser();
     this.parlour_id = this.openService.getParlourId();
-    const mode = localStorage.getItem('userMode')
-
-    this.service.data$.subscribe(res => {
-        this.userMode = res;
-    });
-
-    if (isLoggedOut == 'true') {
-      this.userMode = false
-    } else {
-      this.userMode = true
-    }
   }
 
   redirectToMainMembersList() {
-    console.log("Permissions: ", this.permission);
     const view = [`/${this.permission.toLowerCase()}s/${this.user.id}/applicants`];
     this.router.navigate(view);
   }
@@ -80,5 +69,10 @@ export class NavbuttonsComponent implements OnInit {
   }
   getEntity() {
     return `${this.permission.toLowerCase()}s` 
+  }
+
+  ngOnDestroy() {
+    // prevent memory leak when component destroyed
+    this.subscription.unsubscribe();
   }
 }
