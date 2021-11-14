@@ -103,7 +103,7 @@ export class ArchivedParlourListComponent implements OnInit {
       .subscribe(
         (parlours: Array<any>) => {
           this.parlours = parlours;
-          this.configureParlours(parlours);
+          this.configureParlours(parlours.reverse());
           this.loadingState = 'complete';
         },
         error => {
@@ -154,7 +154,7 @@ export class ArchivedParlourListComponent implements OnInit {
           return val;
         }
       });
-      this.configureParlours(this.parlours);
+      this.configureParlours(this.parlours.reverse());
       this.initializePaginator()
     },
     error => {
@@ -178,7 +178,7 @@ export class ArchivedParlourListComponent implements OnInit {
           return val;
         }
       });
-      this.configureParlours(this.parlours);
+      this.configureParlours(this.parlours.reverse());
       this.initializePaginator()
     },
     error => {

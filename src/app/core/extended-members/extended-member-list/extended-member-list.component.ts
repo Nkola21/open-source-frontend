@@ -142,9 +142,8 @@ export class ExtendedMemberListComponent implements OnInit {
     this.openService.getUrl(`applicants/${id}/extended-members/all`)
       .subscribe(
         (extended_members: Array<any>) => {
-          console.log(extended_members);
           this.extended_members = extended_members;
-          this.configureMainMembers(extended_members);
+          this.configureMainMembers(extended_members.reverse());
           this.loadingState = 'complete';
         },
         error => {
@@ -177,11 +176,11 @@ export class ExtendedMemberListComponent implements OnInit {
 
     this.openService.getUrl(`applicants/${this.applicant_id}/extended-members/all?search_string=${formValue["searchField"]}`)
       .subscribe(
-        (main_members: Array<any>) => {
+        (extended_members: Array<any>) => {
           this.status = null;
           this.searchField = formValue["searchField"];
-          this.extended_members = main_members;
-          this.configureMainMembers(main_members);
+          this.extended_members = extended_members;
+          this.configureMainMembers(extended_members.reverse());
           this.loadingState = 'complete';
         },
         error => {
@@ -212,7 +211,7 @@ export class ExtendedMemberListComponent implements OnInit {
         (extended_members: Array<any>) => {
           if (extended_members) {
             this.extended_members = extended_members;
-            this.configureMainMembers(extended_members);
+            this.configureMainMembers(extended_members.reverse());
             this.loadingState = 'complete';
           }
         },

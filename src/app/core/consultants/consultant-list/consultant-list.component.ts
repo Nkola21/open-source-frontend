@@ -109,7 +109,7 @@ export class ConsultantListComponent implements OnInit {
       .subscribe(
         (consultants: Array<any>) => {
           this.consultants = consultants;
-          this.configureConsultants(consultants);
+          this.configureConsultants(consultants.reverse());
           this.loadingState = 'complete';
         },
         error => {
@@ -147,7 +147,7 @@ export class ConsultantListComponent implements OnInit {
               return val;
             }
           });
-          this.configureConsultants(this.consultants);
+          this.configureConsultants(this.consultants.reverse());
           this.initializePaginator()
         },
         error => {

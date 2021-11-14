@@ -228,7 +228,7 @@ export class MainMemberListComponent implements OnInit {
           this.searchField = null;
           this.main_members = main_members;
           this.isAgeLimitExceeded(main_members);
-          this.configureMainMembers(main_members);
+          this.configureMainMembers(main_members.reverse());
           this.loadingState = 'complete';
         },
         error => {
@@ -290,7 +290,7 @@ export class MainMemberListComponent implements OnInit {
           this.main_members = main_members;
           this.branch = null;
           this.initPerformanceForm(undefined);
-          this.configureMainMembers(main_members);
+          this.configureMainMembers(main_members.reverse());
           this.loadingState = 'complete';
         },
       error => {
@@ -330,7 +330,7 @@ export class MainMemberListComponent implements OnInit {
           this.main_members = main_members;
           this.consultant = null;
           this.initPerformanceForm(undefined);
-          this.configureMainMembers(main_members);
+          this.configureMainMembers(main_members.reverse());
           this.loadingState = 'complete';
         },
       error => {
@@ -371,7 +371,7 @@ export class MainMemberListComponent implements OnInit {
           this.branch = null;
           this.consultant = null;
           this.initPerformanceForm(undefined);
-          this.configureMainMembers(main_members);
+          this.configureMainMembers(main_members.reverse());
           this.loadingState = 'complete';
         },
       error => {
@@ -476,7 +476,7 @@ export class MainMemberListComponent implements OnInit {
               return val;
             }
           });
-          this.configureMainMembers(this.main_members);
+          this.configureMainMembers(this.main_members.reverse());
           this.initializePaginator()
           this.toastr.success('Main member has been deleted!', 'Success');
         },
@@ -519,7 +519,7 @@ export class MainMemberListComponent implements OnInit {
           this.status = status;
           this.searchField = null;
           this.main_members = main_members;
-          this.configureMainMembers(main_members);
+          this.configureMainMembers(main_members.reverse());
           this.loadingState = 'complete';
         },
         error => {
@@ -534,7 +534,7 @@ export class MainMemberListComponent implements OnInit {
         (main_members: Array<any>) => {
           if (main_members) {
             this.main_members = main_members;
-            this.configureMainMembers(main_members);
+            this.configureMainMembers(main_members.reverse());
             this.loadingState = 'complete';
           }
         },
@@ -554,7 +554,7 @@ export class MainMemberListComponent implements OnInit {
           this.searchField = formValue["searchField"];
 
           this.main_members = main_members;
-          this.configureMainMembers(main_members);
+          this.configureMainMembers(main_members.reverse());
           this.loadingState = 'complete';
         },
         error => {

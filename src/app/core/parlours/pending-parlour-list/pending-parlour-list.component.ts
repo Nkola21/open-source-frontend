@@ -101,7 +101,7 @@ export class PendingParlourListComponent implements OnInit {
       .subscribe(
         (parlours: Array<any>) => {
           this.parlours = parlours;
-          this.configureParlours(parlours);
+          this.configureParlours(parlours.reverse());
           this.loadingState = 'complete';
         },
         error => {

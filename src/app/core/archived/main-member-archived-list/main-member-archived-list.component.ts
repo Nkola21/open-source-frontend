@@ -142,9 +142,9 @@ export class MainMemberArchivedListComponent implements OnInit {
 
     this.openService.getUrl(`${permission.toLowerCase()}s/${id}/main-members/archived`)
       .subscribe(
-        (main_members: Array<any>) => {        
+        (main_members: Array<any>) => {
           this.main_members = main_members;
-          this.configureMainMembers(main_members);
+          this.configureMainMembers(main_members.reverse());
           this.loadingState = 'complete';
         },
         error => {
@@ -187,7 +187,7 @@ export class MainMemberArchivedListComponent implements OnInit {
               return val;
             }
           });
-          this.configureMainMembers(this.main_members);
+          this.configureMainMembers(this.main_members.reverse());
           this.toastr.success('Applicant has been restored!', 'Success');
           this.changeDetectorRefs.detectChanges();
         },
@@ -224,7 +224,7 @@ export class MainMemberArchivedListComponent implements OnInit {
   getByPaymentSkipped() {
     this.getByPaymentStatus('Skipped');
   }
-  
+
   getByPaymentLapsed() {
     this.getByPaymentStatus('lapsed');
   }
@@ -235,7 +235,7 @@ export class MainMemberArchivedListComponent implements OnInit {
         (main_members: Array<any>) => {
           this.status = status;
           this.main_members = main_members;
-          this.configureMainMembers(main_members);
+          this.configureMainMembers(main_members.reverse());
           this.loadingState = 'complete';
         },
         error => {
@@ -253,7 +253,7 @@ export class MainMemberArchivedListComponent implements OnInit {
           this.status = null;
           this.searchField = formValue["searchField"];
           this.main_members = main_members;
-          this.configureMainMembers(main_members);
+          this.configureMainMembers(main_members.reverse());
           this.loadingState = 'complete';
         },
         error => {

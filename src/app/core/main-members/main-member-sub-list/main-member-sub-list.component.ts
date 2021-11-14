@@ -168,7 +168,7 @@ export class MainMemberSubListComponent implements OnInit {
       .subscribe(
         (main_members: Array<any>) => { 
           this.main_members = main_members;
-          this.configureMainMembers(main_members);
+          this.configureMainMembers(main_members.reverse());
           this.loadingState = 'complete';
         },
         error => {

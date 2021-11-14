@@ -104,7 +104,7 @@ export class PlanListComponent implements OnInit {
       .subscribe(
         (plans: Array<any>) => {
           this.plans = plans;
-          this.configurePlans(plans);
+          this.configurePlans(plans.reverse());
           this.loadingState = 'complete';
         },
         error => {
@@ -151,7 +151,7 @@ export class PlanListComponent implements OnInit {
               return val;
             }
           });
-          this.configurePlans(this.plans);
+          this.configurePlans(this.plans.reverse());
           this.initializePaginator()
         },
         error => {

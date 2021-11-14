@@ -104,7 +104,7 @@ export class InvoiceListComponent implements OnInit {
       .subscribe(
         (invoices: Array<any>) => {
           this.invoices = invoices;
-          this.configureInvoices(invoices);
+          this.configureInvoices(invoices.reverse());
           this.loadingState = 'complete';
         },
         error => {
