@@ -9,6 +9,10 @@ import {Directive} from "@angular/core";
 import {NG_VALUE_ACCESSOR, ControlValueAccessor} from "@angular/forms";
 
 
+interface HTMLInputEvent extends Event {
+  target: HTMLInputElement & EventTarget;
+}
+
 export class MainMemberFormBuilder {
   constructor(private formBuilder: FormBuilder) {
   }
@@ -137,8 +141,22 @@ export class MainMemberFormComponent implements OnInit  {
         error => console.log("ERROR"));
   }
 
-  onFileSelected(files) {
+  onFileSelected(target ) {
+    let files = (target as HTMLInputElement).files
     this.selectedFile = files.item(0);
+  }
+
+  submitFile(main_member_id) {
+    console.log(this.selectedFile)
+    this.openService.postFile(`main-members/${main_member_id}/document`, {'document': this.selectedFile})
+      .subscribe(
+        () => {
+
+        },
+      error => {
+        let err = error['error'];
+        this.toastr.error(err['description'], error['title'], {timeOut: 3000});
+      });
   }
 
   submit() {
@@ -148,8 +166,12 @@ export class MainMemberFormComponent implements OnInit  {
     if (this.main_member) {
       this.openService.put(`main-members/${this.main_member.id}/update`, formValue)
         .subscribe(
-          (user: any) => {
+          (main_member: any) => {
             this.submitted = true;
+
+            if (this.selectedFile){
+              this.submitFile(main_member.id);
+            }
             this.showSuccess();
           },
         error => {
@@ -160,6 +182,9 @@ export class MainMemberFormComponent implements OnInit  {
       this.openService.post(`consultants/${this.user.id}/main-members`, formValue)
         .subscribe(
           (main_member: any) => {
+            if (this.selectedFile){
+              this.submitFile(main_member.id);
+            }
             this.showSuccess();
             this.submitted = true;
           },

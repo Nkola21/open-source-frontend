@@ -15,6 +15,8 @@ export class SignupComponent implements OnInit {
   user: any;
   formBuilder: ParlourSignupFormBuilder;
   form: FormGroup;
+  submitted = false;
+
   constructor(public openService: OpenService,
     public router: Router,
     private toastr: ToastrService,
@@ -33,10 +35,22 @@ export class SignupComponent implements OnInit {
 
   postSignUp() {
     const formValue = this.form.value;
+
+    if (!formValue["password"]){
+      this.toastr.error("Error", "Password field is required", {timeOut: 3000});
+      return;
+    }
+
+    if (!formValue["agreed_to_terms"]){
+      this.toastr.error("Error", "You must agree to terms to continue.", {timeOut: 3000});
+      return;
+    }
+
     this.openService.post(`parlours/signup`, formValue)
       .subscribe(
         (user: any) => {
           this.toastr.success('Parlour was created successfully', '');
+          this.submitted = true;
         },
         error => {
           const err = error["error"];

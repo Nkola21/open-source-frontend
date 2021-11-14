@@ -14,14 +14,15 @@ export class ParlourSignupFormBuilder {
       details = details === undefined ? newParlour() : details;
       return this.formBuilder.group({
         'id': [details.id],
-        'parlour_name': [details.parlour_name, [Validators.required, Validators.minLength(6)]],
-        'address': [details.address, [Validators.required, Validators.minLength(6)]],
-        'person_name': [details.person_name, [Validators.required, Validators.minLength(6)]],
-        'number': [details.number, [Validators.required, Validators.minLength(10)]],
+        'parlour_name': [details.parlour_name, [Validators.required]],
+        'address': [details.address, [Validators.required]],
+        'person_name': [details.person_name, [Validators.required]],
+        'number': [details.number, [Validators.required]],
         'email': [details.email, [Validators.required]],
-        'username': [details.username, [Validators.required, Validators.minLength(6)]],
-        'password': [details.password, [Validators.required, Validators.minLength(8)]],
-        'confirm_password': [details.confirm_password, [Validators.required, , Validators.minLength(6)]]
+        'username': [details.username, [Validators.required]],
+        'password': [details.password, [Validators.required]],
+        'confirm_password': [details.confirm_password, [Validators.required]],
+        'agreed_to_terms': [details.agreed_to_terms, [Validators.required]]
       });
     }
   }

@@ -44,12 +44,13 @@ export class SMSFormBuilder {
   buildSMSForm(details, parlour?: any) {
     const from = parlour !== undefined ? parlour.parlour_name : null
     // console.log(parlour);
-    details = details === undefined ? {'message': null, 'from': null, 'to': null, start_date: null} : details;
+    details = details === undefined ? {'message': null, 'from': null, 'to': null, start_date: null, end_date: null} : details;
     return this.formBuilder.group({
       'message': [details.message, [Validators.required, Validators.minLength(2)]],
       'from': [{value: from, disabled: true}, [Validators.required]],
       'to': [details.to, [Validators.required]],
-      'start_date': [details.start_date]
+      'start_date': [details.start_date],
+      'end_date': [details.end_date]
     });
   }
 }

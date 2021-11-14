@@ -126,9 +126,10 @@ export class ParlourFormComponent implements OnInit  {
       }
 
       if (!formValue["agreed_to_terms"]){
-        this.toastr.error("Error", "You mst agree to terms to continue.", {timeOut: 3000});
+        this.toastr.error("Error", "You must agree to terms to continue.", {timeOut: 3000});
         return;
       }
+
       this.openService.post(`parlours`, formValue)
         .subscribe(
           (user: any) => {

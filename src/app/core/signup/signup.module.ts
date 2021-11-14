@@ -5,6 +5,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { MaterialModule } from '../../material/material.module';
 import { RouterModule } from '@angular/router';
 import { SignupComponent } from './signup.component';
+import { SharedModule } from 'src/app/shared/shared.module';
+
 
 const SignupRouting: ModuleWithProviders<SignupModule> = RouterModule.forChild([
   {
@@ -26,6 +28,7 @@ const SignupRouting: ModuleWithProviders<SignupModule> = RouterModule.forChild([
     BrowserModule,
     MaterialModule,
     ReactiveFormsModule,
+    SharedModule,
     SignupRouting
     
   ],

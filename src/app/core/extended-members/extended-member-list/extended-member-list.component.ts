@@ -79,7 +79,7 @@ export class ExtendedMemberListComponent implements OnInit {
   applicant_id: any;
   extended_member: any;
   formBuilder: SearchFormBuilder;
-  ageLimitExceeded = true;
+  ageLimitExceeded = false;
   form: FormGroup;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
