@@ -12,6 +12,7 @@ export class NavbuttonsComponent implements OnInit {
   user: any
   permission: any
   parlour_id: any;
+  parlour: any;
   subscription: Subscription;
 
   constructor(
@@ -23,6 +24,11 @@ export class NavbuttonsComponent implements OnInit {
     this.subscription = service.datasource$.subscribe(
       user => {
         this.user = user;
+    });
+    this.subscription = service.permissionDatasource$.subscribe(
+      permission => {
+      this.permission = permission;
+      this.getParlour();
     });
   }
 
@@ -62,6 +68,24 @@ export class NavbuttonsComponent implements OnInit {
 
   notConsultant(){
     return this.permission != 'Consultant';
+  }
+
+  getParlour() {
+    if (this.isParlour()) {
+      this.parlour = this.user
+      this.parlour_id = this.parlour.id
+    }else if (this.isConsultant()) {
+      this.parlour = this.user.parlour;
+      this.parlour_id = this.parlour.id
+    }
+  }
+
+  isParlour() {
+    return this.permission == 'Parlour';
+  }
+
+  isConsultant() {
+    return this.permission == 'Consultant';
   }
 
   isAdmin() {

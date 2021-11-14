@@ -57,7 +57,6 @@ export class LoginComponent implements OnInit {
 
     this.openservice.setUserToken(event.token);
     this.openservice.setUser(event.user);
-    this.transition(event.user);
     this.openservice.setLoggedIn();
 
     this.openservice.setPermissions(event.permission);
@@ -68,12 +67,14 @@ export class LoginComponent implements OnInit {
       parlour_id = this.user.parlour.id
     }
     this.openservice.setParlourId(parlour_id)
-
+    this.transition(event.user, parlour_id, event.permission);
     this.redirectToView(this.user.id, event.permission)
   }
 
-  transition(user: any) {
+  transition(user: any, parlour: any, permission: any) {
     this.service.switchHeader(user);
+    this.service.permissionSwitchHeader(permission);
+    this.service.parlourSwitchHeader(parlour);
   }
 
   redirectToView(user_id, permission) {

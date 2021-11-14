@@ -23,6 +23,12 @@ export class NavbarComponent implements OnInit {
       this.subscription = service.datasource$.subscribe(
         user => {
           this.user = user;
+          this.getParlour();
+      });
+      this.subscription = service.permissionDatasource$.subscribe(
+        permission => {
+          this.permission = permission;
+          this.getParlour();
       });
   }
 

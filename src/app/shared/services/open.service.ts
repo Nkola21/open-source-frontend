@@ -234,10 +234,24 @@ export class OpenService {
 export class CommonService {
 
   private dataSource = new Subject<object>();
-
   datasource$ = this.dataSource.asObservable();
 
-  switchHeader(mission: any) {
-    this.dataSource.next(mission);
+  private permissionDataSource = new Subject<object>();
+  permissionDatasource$ = this.permissionDataSource.asObservable();
+
+  private parlourDataSource = new Subject<object>();
+  parlourDataSource$ = this.parlourDataSource.asObservable();
+
+
+  switchHeader(user: any) {
+    this.dataSource.next(user);
+  }
+
+  permissionSwitchHeader(permission: any) {
+    this.permissionDataSource.next(permission);
+  }
+
+  parlourSwitchHeader(parlour: any) {
+    this.parlourDataSource.next(parlour);
   }
 }
