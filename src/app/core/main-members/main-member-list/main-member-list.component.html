@@ -205,6 +205,13 @@
                   </td>
                 </ng-container>
 
+                <ng-container matColumnDef="other">
+                  <th style="padding-left: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef>Other</th>
+                  <td style="padding-left: 10px;" mat-cell *matCellDef="let main_member">
+                    <a class="btn btn-md btn-dark" href="{{getOtherDocUrl(main_member)}}" target="_blank" style="margin-top: 5px;">files</a>
+                  </td>
+                </ng-container>
+
                 <ng-container matColumnDef="date_joined">
                   <th style="padding-left: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef>Date Joined</th>
                   <td style="padding-left: 10px;" mat-cell *matCellDef="let main_member">

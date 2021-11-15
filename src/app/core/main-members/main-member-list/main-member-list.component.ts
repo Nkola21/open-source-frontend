@@ -116,7 +116,7 @@ const dialogConfig = new MatDialogConfig();
 })
 export class MainMemberListComponent implements OnInit {
 
-  displayedColumns = ['full_name', 'id_number', 'contact', 'extended_members', 'premium', 'policy_num', 'policy', 'date_joined', 'status', 'actions'];
+  displayedColumns = ['full_name', 'id_number', 'contact', 'extended_members', 'premium', 'policy_num', 'policy', 'other', 'date_joined', 'status', 'actions'];
   main_members: Array<any> = [];
   main_member: any;
   formBuilder: SearchFormBuilder;
@@ -392,6 +392,16 @@ export class MainMemberListComponent implements OnInit {
       return applicant.document;
     }
     return `${base_url}/main-members/${id}/document`;
+  }
+
+  getOtherDocUrl(main_member) {
+    const id = main_member.id;
+    const applicant = main_member.applicant
+    const base_url = this.openService.getBaseUrl();
+    if (applicant.old_url) {
+      return applicant.personal_docs;
+    }
+    return `${base_url}/main-members/${id}/personal_docs`;
   }
 
   initParlour(parlour_id) {

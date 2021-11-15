@@ -88,7 +88,6 @@ export class DependantListComponent implements OnInit {
     this.openService.getUrl(`dependants/`)
       .subscribe(
         (dependants: Array<any>) => {
-          console.log(dependants);          
           this.dependants = dependants;
           this.configureDependants(dependants);
           this.loadingState = 'complete';

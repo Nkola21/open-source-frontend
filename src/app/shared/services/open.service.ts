@@ -183,7 +183,6 @@ export class OpenService {
   postFile(path: string, obj: any) {
     const url = `${this.getBaseUrl()}/${path}`;
     let headers = this.getHeaders();
-    headers.append('Content-Type', 'multipart/form-data')
     return this.http
       .post(url, obj, { headers: headers })
       .pipe(catchError(this.handleError));

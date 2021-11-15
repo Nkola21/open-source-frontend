@@ -146,9 +146,11 @@ export class MainMemberFormComponent implements OnInit  {
     this.selectedFile = files.item(0);
   }
 
-  submitFile(main_member_id) {
-    console.log(this.selectedFile)
-    this.openService.postFile(`main-members/${main_member_id}/document`, {'document': this.selectedFile})
+  submitFile(main_member) {
+    const uploadFormData = new FormData();
+    uploadFormData.append('myFile', this.selectedFile, this.selectedFile.name);
+
+    this.openService.postFile(`main-members/${main_member.id}/upload`, uploadFormData)
       .subscribe(
         () => {
 
@@ -170,7 +172,7 @@ export class MainMemberFormComponent implements OnInit  {
             this.submitted = true;
 
             if (this.selectedFile){
-              this.submitFile(main_member.id);
+              this.submitFile(main_member);
             }
             this.showSuccess();
           },
@@ -183,7 +185,7 @@ export class MainMemberFormComponent implements OnInit  {
         .subscribe(
           (main_member: any) => {
             if (this.selectedFile){
-              this.submitFile(main_member.id);
+              this.submitFile(main_member);
             }
             this.showSuccess();
             this.submitted = true;
