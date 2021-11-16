@@ -208,7 +208,7 @@
                 <ng-container matColumnDef="other">
                   <th style="padding-left: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef>Other</th>
                   <td style="padding-left: 10px;" mat-cell *matCellDef="let main_member">
-                    <a class="btn btn-md btn-dark" href="{{getOtherDocUrl(main_member)}}" target="_blank" [disabled]="main_member.applicant.personal_docs" style="margin-top: 5px;">Files</a>
+                    <button class="btn btn-md btn-dark" (click)="hasPersonalFiles(main_member)">File</button>
                   </td>
                 </ng-container>
 
@@ -251,7 +251,9 @@
   </mat-card>
   
   <button id="openModal" class="btn btn-md btn-danger" data-toggle="modal" data-modal="#confirmDeleteApplicantModal" style="display: none;"></button>
-  
+
+
+  <a id="viewFile" class="btn btn-md btn-dark" href="{{getOtherDocUrl()}}" target="_blank" style="margin-top: 5px;display: none;">Files</a>
 <!-- Scrollable modal -->
 <div class="modal-dialog modal-dialog-scrollable" id="modalShow">
   ...

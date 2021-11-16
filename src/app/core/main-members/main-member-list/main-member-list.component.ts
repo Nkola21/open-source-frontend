@@ -394,14 +394,29 @@ export class MainMemberListComponent implements OnInit {
     return `${base_url}/main-members/${id}/document`;
   }
 
-  getOtherDocUrl(main_member) {
-    const id = main_member.id;
-    const applicant = main_member.applicant
-    const base_url = this.openService.getBaseUrl();
-    if (applicant.old_url) {
-      return applicant.personal_docs;
+  getOtherDocUrl() {
+    if (this.main_member) {
+      const id = this.main_member.id;
+      const applicant = this.main_member.applicant
+      const base_url = this.openService.getBaseUrl();
+      if (applicant.old_url) {
+        return applicant.personal_docs;
+      }
+      return `${base_url}/main-members/${id}/personal_docs`;
     }
-    return `${base_url}/main-members/${id}/personal_docs`;
+  }
+
+  hasPersonalFiles(main_member) {
+    const id = main_member.id;
+    const applicant = main_member.applicant;
+    this.main_member = main_member;
+    const base_url = this.openService.getBaseUrl();
+    if(applicant.personal_docs) {
+      const anchor = <HTMLAnchorElement>document.getElementById("viewFile")
+      console.log(applicant.personal_docs)
+      anchor.href = `${base_url}/main-members/${id}/personal_docs`;
+      anchor.click()
+    }
   }
 
   initParlour(parlour_id) {
