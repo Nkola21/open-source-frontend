@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/nocorpgr/public_html/
+    - /bin/cp -R images $DEPLOYPATH
