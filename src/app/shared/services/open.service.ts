@@ -30,21 +30,21 @@ export class OpenService {
   constructor(private http: HttpClient) { }
 
   setBaseUrl(): void {
-    localStorage.setItem('baseUrl', 'https://nocorpgroup.herokuapp.com/open-source');
+    localStorage.setItem('baseUrl', 'http://nocorpgroup.co.za');
   }
 
   getBaseUrl(): any {
     // return 'http://localhost:8009/open-source'
-    return 'https://nocorpgroup.herokuapp.com/open-source';
+    return 'http://nocorpgroup.co.za/open-source';
   }
 
   getClientUrl(): any {
     // return 'http://localhost:4200'
-    return 'https://nkosana-citiq.github.io/open-source-frontend/';
+    return 'http://nocorpgroup.co.za';
   }
 
   isProduction(): boolean {
-    return this.getBaseUrl() === 'https://osource.co.za/';
+    return this.getBaseUrl() === 'http://nocorpgroup.co.za/open-source';
   }
 
   isLocal(): boolean {
