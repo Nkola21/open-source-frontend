@@ -40,7 +40,7 @@ export class OpenService {
 
   getClientUrl(): any {
     // return 'http://localhost:4200'
-    return 'http://nocorpgroup.co.za';
+    return 'https://nocorpgroup.co.za';
   }
 
   isProduction(): boolean {
