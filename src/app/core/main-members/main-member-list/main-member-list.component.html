@@ -75,7 +75,7 @@
         </div>
       </div>
     </div>
-  
+
     <div *ngIf="dataSource && main_members && main_members.length > 0" [ngClass]="{'animated fadeIn': dataSource}">
       <div fxLayout="row" fxLayoutAlign="center start">
         <div fxFlex="100">
@@ -144,7 +144,7 @@
                 </div>
             </div>
             </mat-card-title>
-            
+
             <mat-card-content>
               <div *ngIf="ageLimitExceeded">
               <button style="background-color: #fff; border: none;" (click)="getAgeLimitNotice()"><span class="material-icons"  style="font-size:48px;color:red;">
@@ -208,14 +208,14 @@
                 <ng-container matColumnDef="other">
                   <th style="padding-left: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef>Other</th>
                   <td style="padding-left: 10px;" mat-cell *matCellDef="let main_member">
-                    <button class="btn btn-md btn-dark" (click)="hasPersonalFiles(main_member)">File</button>
+                    <button class="btn btn-md btn-dark" (click)="hasPersonalFiles(main_member)" target="_blank" style="margin-top: 5px;">File</button>
                   </td>
                 </ng-container>
 
                 <ng-container matColumnDef="date_joined">
                   <th style="padding-left: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef>Date Joined</th>
                   <td style="padding-left: 10px;" mat-cell *matCellDef="let main_member">
-                    {{main_member.date_joined}}
+                    {{toDate(main_member.created_at)}}
                   </td>
                 </ng-container>
   

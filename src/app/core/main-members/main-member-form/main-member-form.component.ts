@@ -92,6 +92,7 @@ export class MainMemberFormComponent implements OnInit  {
   parlour_id: any;
   user: any;
   plans: Array<any> = [];
+  plan: any;
   optionSelected: any;
   selectedFile: File = null;
 
@@ -125,6 +126,15 @@ export class MainMemberFormComponent implements OnInit  {
     this.service.switchHeader(user);
   }
 
+  getCurrentPlan(plan_id) {
+    this.openService.getOne(`plans/${plan_id}/get`)
+      .subscribe(
+        plan => {
+          this.plan = plan;
+          this.initForm(this.plan);
+        },
+        error => console.log(error));
+  }
   initForm(main_member: MainMember) {
     this.main_member = main_member;
     this.form = this.formBuilder.buildForm(this.main_member);
@@ -187,6 +197,7 @@ export class MainMemberFormComponent implements OnInit  {
             if (this.selectedFile){
               this.submitFile(main_member);
             }
+
             this.showSuccess();
             this.submitted = true;
           },
@@ -231,9 +242,7 @@ export class MainMemberFormComponent implements OnInit  {
     errors = error.json();
     const description = errors.hasOwnProperty('errors') ? this.getErrorDetails(error) : errors['description'];
     this.toastr.error(description, errors['title'], {timeOut: 3000});
-    // this.toastr.error('Error', 'Major Error', {
-    //   timeOut: 3000,
-    // });
+
   }
 
   getErrorDetails(error) {

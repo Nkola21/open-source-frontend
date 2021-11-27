@@ -181,6 +181,9 @@ export class MainMemberListComponent implements OnInit {
     this.initMainMembers(this.user.id)
   }
 
+  toDate(created) {
+    return created.split(" ")[0];
+  }
   isParlour() {
     return this.permission == 'Parlour';
   }
@@ -413,7 +416,6 @@ export class MainMemberListComponent implements OnInit {
     const base_url = this.openService.getBaseUrl();
     if(applicant.personal_docs) {
       const anchor = <HTMLAnchorElement>document.getElementById("viewFile")
-      console.log(applicant.personal_docs)
       anchor.href = `${base_url}/main-members/${id}/personal_docs`;
       anchor.click()
     }

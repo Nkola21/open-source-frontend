@@ -37,7 +37,7 @@ const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
   { path: '',
     pathMatch: 'full',
     redirectTo: '/home' }
-], { useHash: false, relativeLinkResolution: 'legacy' });
+], { useHash: true });
 
 @NgModule({
   declarations: [
