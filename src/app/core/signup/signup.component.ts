@@ -49,6 +49,8 @@ export class SignupComponent implements OnInit {
     this.openService.post(`parlours/signup`, formValue)
       .subscribe(
         (user: any) => {
+          const btn = document.getElementById("signUpTriggerModal");
+          btn.click();
           this.toastr.success('Parlour was created successfully', '');
           this.submitted = true;
         },

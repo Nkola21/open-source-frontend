@@ -30,21 +30,21 @@ export class OpenService {
   constructor(private http: HttpClient) { }
 
   setBaseUrl(): void {
-    localStorage.setItem('baseUrl', 'http://nocorpgroup.co.za');
+    localStorage.setItem('baseUrl', 'https://backend.osource.co.za/open-source');
   }
 
   getBaseUrl(): any {
     // return 'http://localhost:8009/open-source'
-    return 'http://nocorpgroup.co.za/open-source';
+    return 'https://backend.osource.co.za/open-source';
   }
 
   getClientUrl(): any {
     // return 'http://localhost:4200'
-    return 'https://nocorpgroup.co.za';
+    return 'https://osource.co.za/';
   }
 
   isProduction(): boolean {
-    return this.getBaseUrl() === 'http://nocorpgroup.co.za/open-source';
+    return this.getBaseUrl() === 'https://backend.osource.co.za/open-source';
   }
 
   isLocal(): boolean {

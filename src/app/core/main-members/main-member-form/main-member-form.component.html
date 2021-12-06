@@ -101,3 +101,28 @@
         </form>
     </mat-card>
   </mat-card>
+
+<button id="ageExceededModal" class="btn btn-md btn-danger" data-bs-toggle="modal" data-bs-target="#ageLimitExceededModal" style="display: none;"></button>
+
+  <!-- Modal -->
+<div class="modal fade" id="ageLimitExceededModal" tabindex="-1" aria-labelledby="ageLimitExceededModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fs-4" id="ageLimitExceededModalLabel">Age limit exceeded</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="">
+          <p class="mb-0 ml-3 fs-5">
+              Age limit exceeded, do you want to conntinue adding the member?
+          </p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="submit()">Proceed</button>
+      </div>
+    </div>
+  </div>
+</div>

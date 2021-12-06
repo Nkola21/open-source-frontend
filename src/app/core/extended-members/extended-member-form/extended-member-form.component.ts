@@ -236,6 +236,32 @@ export class ExtendedMemberFormComponent extends CompareFormValue implements OnI
     return null;
   }
 
+  isAgeLimitExceeded() {
+    const formValue = this.form.value;
+
+    let queryString = `type=${formValue['type']}`
+    if (formValue['id_number']) {
+      queryString += `&id_number=${formValue['id_number']}`
+    }
+    if (formValue['date_of_birth']) {
+      queryString += `&date_of_birth=${formValue['date_of_birth']}`
+    }
+    this.openService.getUrl(`applicants/${this.applicant_id}/extended-members/age-limit?${queryString}`)
+        .subscribe(
+          (res: any) => {
+            if (res['result'] != 'OK!') {
+              let btn = document.getElementById("ageExceededModal");
+              btn.click();
+            }else{
+              this.submit();
+            }
+          },
+        error => {
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
+        });
+  }
+
   onTypeSelected(event){
     this.typeSelected =  event;
   }

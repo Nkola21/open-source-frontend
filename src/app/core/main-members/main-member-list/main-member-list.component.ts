@@ -184,6 +184,7 @@ export class MainMemberListComponent implements OnInit {
   toDate(created) {
     return created.split(" ")[0];
   }
+
   isParlour() {
     return this.permission == 'Parlour';
   }
@@ -637,7 +638,7 @@ export class MainMemberListComponent implements OnInit {
     if (main_member) {
       let plan = main_member.applicant.plan;
 
-      if (!plan.extended_members && !plan.dependants && !plan.additional_extended_members && !plan.spouse){
+      if (!plan.extended_members && !plan.consider_age && !plan.additional_extended_members && !plan.spouse){
         return false;
       }
     }

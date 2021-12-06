@@ -208,6 +208,27 @@ export class MainMemberFormComponent implements OnInit  {
     }
   }
 
+  isAgeLimitExceeded() {
+    const formValue = this.form.value;
+
+    let queryString = `&id_number=${formValue['id_number']}`
+
+    this.openService.getUrl(`plans/${formValue['plan_id']}/check_age_limit?${queryString}`)
+        .subscribe(
+          (res: any) => {
+            if (res['result'] != 'OK!') {
+              let btn = document.getElementById("ageExceededModal");
+              btn.click();
+            }else{
+              this.submit();
+            }
+          },
+        error => {
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
+        });
+  }
+
   showSuccess() {
     this.toastr.success('New Applicant saved successfully!', 'Success!!!');
   }
@@ -273,7 +294,8 @@ export class MainMemberFormComponent implements OnInit  {
       }
     },
     error => {
-      this.showError(error);
+      let err = error['error'];
+      this.toastr.error(err['description'], error['title'], {timeOut: 3000});
     });
   }
 

@@ -58,6 +58,9 @@ export class PaymentFormComponent implements OnInit {
 
   initForm(payment) {
     this.payment = payment;
+    if (this.payment.last_payment == "Invalid Date") {
+      this.payment.last_payment = null;
+    }
     this.form = this.formBuilder.buildForm(this.payment);
   }
 
