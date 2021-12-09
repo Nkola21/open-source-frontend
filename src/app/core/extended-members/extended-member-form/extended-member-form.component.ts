@@ -60,6 +60,22 @@ const relation_types = {
 }
 
 
+const relationships = {
+  0: 'Child',
+  1: 'Parent',
+  2: 'Brother',
+  3: 'Sister',
+  4: 'Nephew',
+  5: 'Niece',
+  6: 'Aunt',
+  7: 'Uncle',
+  8: 'Grand Parent',
+  9: 'Wife',
+  10: 'Husband',
+  11: 'Cousin',
+  12: 'Relationship to Main Member'
+}
+
 @Component({
   selector: 'app-extended-member-form',
   templateUrl: './extended-member-form.component.html',
@@ -77,7 +93,8 @@ export class ExtendedMemberFormComponent extends CompareFormValue implements OnI
   plan: any;
   typeSelected: any;
   relationshipSelected: any;
-  relation_types: any
+  relation_types: Array<any> = [];
+  relationships: Array<any> = [];
 
   constructor(public openService: OpenService,
     public service: CommonService,
@@ -127,6 +144,30 @@ export class ExtendedMemberFormComponent extends CompareFormValue implements OnI
     }
   }
 
+  initRelationships() {
+    this.relationships = [
+        {"id": 0, "name": relationships[0]},
+        {"id": 1, "name": relationships[1]},
+        {"id": 2, "name": relationships[2]},
+        {"id": 3, "name": relationships[3]},
+        {"id": 4, "name": relationships[4]},
+        {"id": 5, "name": relationships[5]},
+        {"id": 6, "name": relationships[6]},
+        {"id": 7, "name": relationships[7]},
+        {"id": 8, "name": relationships[8]},
+        {"id": 9, "name": relationships[9]},
+        {"id": 10, "name": relationships[10]},
+        {"id": 11, "name": relationships[11]},
+        {"id": 12, "name": relationships[12]},
+    ]
+
+    if (this.extended_member) {
+      this.relationshipSelected = this.extended_member.relation_to_main_member;
+    } else {
+      this.relationshipSelected = 12;
+    }
+  }
+  
   initForm(extended_member: ExtendedMember) {
     this.extended_member = extended_member;
     this.form = this.formBuilder.buildForm(this.extended_member);
@@ -141,6 +182,8 @@ export class ExtendedMemberFormComponent extends CompareFormValue implements OnI
         this.enableFormElement('dob_picker');
       }
     });
+    this.initTypes();
+    this.initRelationships();
   }
 
   getExtendedMember(id) {

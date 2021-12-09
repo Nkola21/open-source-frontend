@@ -403,11 +403,10 @@ export class MainMemberListComponent implements OnInit {
       const id = this.main_member.id;
       const applicant = this.main_member.applicant
       const base_url = this.openService.getBaseUrl();
-      if (applicant.old_url) {
-        return applicant.personal_docs;
-      }
+
       return `${base_url}/main-members/${id}/personal_docs`;
     }
+    return null
   }
 
   hasPersonalFiles(main_member) {
@@ -417,7 +416,7 @@ export class MainMemberListComponent implements OnInit {
     const base_url = this.openService.getBaseUrl();
     if(applicant.personal_docs) {
       const anchor = <HTMLAnchorElement>document.getElementById("viewFile")
-      anchor.href = `${base_url}/main-members/${id}/personal_docs`;
+      anchor.href = applicant.personal_docs.search("opensource.cutag.co.za") == -1 ? `${base_url}/main-members/${id}/personal_docs` : applicant.personal_docs;
       anchor.click()
     }
   }

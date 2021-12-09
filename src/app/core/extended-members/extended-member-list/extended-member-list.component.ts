@@ -10,6 +10,34 @@ import { map } from 'rxjs/operators';
 import { OpenService, CommonService } from 'src/app/shared/services/open.service';
 import { ToastrService } from 'ngx-toastr';
 
+
+
+const relation_types = {
+  0: 'Spouse',
+  1: 'Dependant',
+  2: 'Extended Member',
+  3: 'Additional Extended Member',
+  4: 'Select Member Type'
+}
+
+
+const relationships = {
+  0: 'Child',
+  1: 'Parent',
+  2: 'Brother',
+  3: 'Sister',
+  4: 'Nephew',
+  5: 'Niece',
+  6: 'Aunt',
+  7: 'Uncle',
+  8: 'Grand Parent',
+  9: 'Wife',
+  10: 'Husband',
+  11: 'Cousin',
+  12: 'Relationship to Main Member'
+}
+
+
 export class SearchFormBuilder {
   constructor(private formBuilder: FormBuilder) {
   }
@@ -162,8 +190,6 @@ export class ExtendedMemberListComponent implements OnInit {
   }
 
   navigateToExtendedMemberForm(extended_member: any) {
-    console.log(this.applicant_id);
-    console.log(extended_member)
     this.router.navigate(['applicants', this.applicant_id, 'extended-members', extended_member.id,'form']);
   }
 
@@ -242,8 +268,6 @@ export class ExtendedMemberListComponent implements OnInit {
     this.openService.getUrl(`applicants/${this.applicant_id}/extended-members/file`)
       .subscribe(
         (main_members: Array<any>) => {
-          console.log("success.");
-          // console.log(main_members);
           this.downloadFile(main_members);
           this.loadingState = 'complete';
         },
@@ -271,5 +295,13 @@ export class ExtendedMemberListComponent implements OnInit {
     a.click();
     window.URL.revokeObjectURL(url);
     a.remove();
+  }
+
+  getMemberType(memberType) {
+    return memberType ? relation_types[memberType] : null;
+  }
+
+  getMemberRelationship(memberRelationship) {
+    return memberRelationship ? relationships[memberRelationship] : null;
   }
 }

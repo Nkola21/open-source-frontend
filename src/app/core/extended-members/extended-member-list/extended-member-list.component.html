@@ -80,21 +80,21 @@
               <table mat-table #table [dataSource]="dataSource" class="table" style="width: 100%">
                 <ng-container matColumnDef="full_name">
                     <th style="padding-right: 35px;" mat-header-cell *matHeaderCellDef>Full Name</th>
-                    <td style="padding-right: 35px;" mat-cell *matCellDef="let extended_member"> {{extended_member.first_name}} {{extended_member.first_name}}
+                    <td style="padding-right: 35px;" mat-cell *matCellDef="let extended_member"> {{extended_member.first_name}} {{extended_member.last_name}}
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="relation">
                   <th style="padding-left: 10px;" mat-header-cell *matHeaderCellDef>Relation to Main Member</th>
                   <td style="padding-left: 10px;" mat-cell *matCellDef="let extended_member">
-                    {{extended_member.relation_to_main_member}}
+                    {{getMemberRelationship(extended_member.relation_to_main_member)}}
                   </td>
                 </ng-container>
 
                 <ng-container matColumnDef="type">
                   <th style="padding-left: 10px;" mat-header-cell *matHeaderCellDef>Member Type</th>
                   <td style="padding-left: 10px;" mat-cell *matCellDef="let extended_member">
-                    {{extended_member.type}}
+                    {{getMemberType(extended_member.type)}}
                   </td>
                 </ng-container>
 
