@@ -213,7 +213,7 @@ export class MainMemberFormComponent implements OnInit  {
 
     let queryString = `&id_number=${formValue['id_number']}`
 
-    this.openService.getUrl(`plans/${formValue['plan_id']}/check_age_limit?${queryString}`)
+    this.openService.getUrl(`plans/${formValue['plan_id']}/check-age-limit?${queryString}`)
         .subscribe(
           (res: any) => {
             if (res['result'] != 'OK!') {

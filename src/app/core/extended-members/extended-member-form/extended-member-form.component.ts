@@ -287,7 +287,8 @@ export class ExtendedMemberFormComponent extends CompareFormValue implements OnI
       queryString += `&id_number=${formValue['id_number']}`
     }
     if (formValue['date_of_birth']) {
-      queryString += `&date_of_birth=${formValue['date_of_birth']}`
+      const dob = new Date(formValue['date_of_birth']).toISOString();
+      queryString += `&date_of_birth=${dob}`
     }
     this.openService.getUrl(`applicants/${this.applicant_id}/extended-members/age-limit?${queryString}`)
         .subscribe(
