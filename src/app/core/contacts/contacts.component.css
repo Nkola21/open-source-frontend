@@ -6,21 +6,17 @@
 }
 
 .container{
-    
     background: #fff;
     border-radius: 14px;
     padding-right: 40px;;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     line-height: 150%;;
-    
-    
   }
   .container .content{
     display: flex;
     align-items:left;
     margin: 40px;
     padding-left: 150px;
-    
   }
   .container .content .left-side{
     width: 30%;

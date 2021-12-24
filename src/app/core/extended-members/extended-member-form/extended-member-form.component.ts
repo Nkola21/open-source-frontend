@@ -52,16 +52,16 @@ export class ExtendedMemberFormBuilder {
 
 
 const relation_types = {
-  0: 'Spouse',
+  4: 'Spouse',
   1: 'Dependant',
   2: 'Extended Member',
   3: 'Additional Extended Member',
-  4: 'Select Member Type'
+  0: 'Select Member Type'
 }
 
 
 const relationships = {
-  0: 'Child',
+  12: 'Child',
   1: 'Parent',
   2: 'Brother',
   3: 'Sister',
@@ -73,7 +73,7 @@ const relationships = {
   9: 'Wife',
   10: 'Husband',
   11: 'Cousin',
-  12: 'Relationship to Main Member'
+  0: 'Relationship to Main Member'
 }
 
 @Component({
@@ -130,23 +130,23 @@ export class ExtendedMemberFormComponent extends CompareFormValue implements OnI
 
   initTypes() {
     this.relation_types = [
-        {"id": 0, "name": relation_types[0]},
+        {"id": 4, "name": relation_types[4]},
         {"id": 1, "name": relation_types[1]},
         {"id": 2, "name": relation_types[2]},
         {"id": 3, "name": relation_types[3]},
-        {"id": 4, "name": relation_types[4]},
+        {"id": 0, "name": relation_types[0]},
     ]
 
     if (this.extended_member) {
       this.typeSelected = this.extended_member.type;
     } else {
-      this.typeSelected = 4;
+      this.typeSelected = 0;
     }
   }
 
   initRelationships() {
     this.relationships = [
-        {"id": 0, "name": relationships[0]},
+        {"id": 12, "name": relationships[12]},
         {"id": 1, "name": relationships[1]},
         {"id": 2, "name": relationships[2]},
         {"id": 3, "name": relationships[3]},
@@ -158,13 +158,13 @@ export class ExtendedMemberFormComponent extends CompareFormValue implements OnI
         {"id": 9, "name": relationships[9]},
         {"id": 10, "name": relationships[10]},
         {"id": 11, "name": relationships[11]},
-        {"id": 12, "name": relationships[12]},
+        {"id": 0, "name": relationships[0]},
     ]
 
     if (this.extended_member) {
       this.relationshipSelected = this.extended_member.relation_to_main_member;
     } else {
-      this.relationshipSelected = 12;
+      this.relationshipSelected = 0;
     }
   }
   
@@ -233,6 +233,7 @@ export class ExtendedMemberFormComponent extends CompareFormValue implements OnI
         .subscribe(
           (user: any) => {
             this.showSuccess();
+            this.form.reset();
           },
         error => {
           let err = error['error'];

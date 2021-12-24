@@ -117,12 +117,15 @@ export class PaymentFormComponent implements OnInit {
       .subscribe(
         (invoice: any) => {
           this.showSuccess();
-          console.log(invoice);
           this.getReceipt(invoice.id);
+          this.form.controls.date.reset();
+          this.form.controls.end_date.reset();
         },
       error => {
         const err = error["error"]
         this.toastr.error(err["description"], err['title'], {timeOut: 3000});
+        this.form.controls.date.reset();
+          this.form.controls.end_date.reset();
       });
   }
 

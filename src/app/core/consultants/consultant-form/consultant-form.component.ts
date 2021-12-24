@@ -113,6 +113,7 @@ export class ConsultantFormComponent implements OnInit {
             this.consultant = user;
             this.confirmConsultant();
             this.showSuccess();
+            this.form.reset();
           },
         error => {
             this.showError(error);

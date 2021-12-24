@@ -38,7 +38,7 @@ export class MainMemberFormBuilder {
   buildPlan(details) {
     details = details === undefined ? {'id': null, 'name': null} : details;
     return this.formBuilder.group({
-      'id': [details.id, [Validators.required]],
+      'id': [details.id],
     });
   }
 
@@ -47,10 +47,10 @@ export class MainMemberFormBuilder {
     return this.formBuilder.group({
         'id': [details.id],
         'policy_num': [details.policy_num, [Validators.required]],
-        'document': [details.document, [Validators.required]],
-        'cancelled': [details.cancelled, [Validators.required]],
-        'status': [details.status, [Validators.required]],
-        'date': [details.date, [Validators.required]],
+        'document': [details.document],
+        'cancelled': [details.cancelled],
+        'status': [details.status],
+        'date': [details.date],
         'address': [details.address, [Validators.required]],
         'plan': this.buildPlan(details.plan)
     });
@@ -200,6 +200,7 @@ export class MainMemberFormComponent implements OnInit  {
 
             this.showSuccess();
             this.submitted = true;
+            this.form.reset();
           },
         error => {
           let err = error['error'];

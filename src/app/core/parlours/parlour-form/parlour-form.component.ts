@@ -98,7 +98,6 @@ export class ParlourFormComponent implements OnInit  {
       .subscribe(
         parlour => {
           this.parlour = parlour;
-          console.table(parlour)
           this.initForm(this.parlour);
         },
         error => console.log("ERROR"));
@@ -114,6 +113,7 @@ export class ParlourFormComponent implements OnInit  {
           (user: any) => {
             this.submitted = true;
             this.showSuccess();
+            this.form.reset()
           },
         error => {
           let err = error['error'];

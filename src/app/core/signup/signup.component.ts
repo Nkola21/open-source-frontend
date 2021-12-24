@@ -33,6 +33,10 @@ export class SignupComponent implements OnInit {
     this.form = this.formBuilder.buildForm(this.user);
   }
 
+  navigateToHome() {
+    this.router.navigate(['home']);
+  }
+
   postSignUp() {
     const formValue = this.form.value;
 
