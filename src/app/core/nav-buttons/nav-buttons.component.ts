@@ -41,7 +41,13 @@ export class NavbuttonsComponent implements OnInit {
 
   redirectToMainMembersList() {
     const view = [`/${this.permission.toLowerCase()}s/${this.user.id}/applicants`];
-    this.router.navigate(view);
+
+    if (`${this.openService.getClientUrl()}/#${view}` == document.URL) {
+      window.location.reload();
+    }else{
+      this.router.navigate(view);
+    }
+
   }
 
   redirectToPlansList() {

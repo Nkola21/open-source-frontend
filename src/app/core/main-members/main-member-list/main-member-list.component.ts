@@ -43,7 +43,7 @@ export class SMSFormBuilder {
 
   buildSMSForm(details, parlour?: any) {
     const from = parlour !== undefined ? parlour.parlour_name : null
-    // console.log(parlour);
+
     details = details === undefined ? {'message': null, 'from': null, 'to': null, start_date: null, end_date: null} : details;
     return this.formBuilder.group({
       'message': [details.message, [Validators.required, Validators.minLength(2)]],
@@ -65,7 +65,6 @@ export class PerformanceFormBuilder {
   }
 
   buildPeromanceForm(details) {
-    // console.log(parlour);
     details = details === undefined ? {'entity': null, 'start_date': null, 'end_date': null} : details;
     return this.formBuilder.group({
       'entity': [details.entity, [Validators.required]],
@@ -168,6 +167,7 @@ export class MainMemberListComponent implements OnInit {
     this.permission = this.openService.getPermissions();
     this.user = this.openService.getUser();
     this.transition(this.user);
+
     if (this.permission == "Consultant") {
       this.parlour = this.user.parlour;
     }
