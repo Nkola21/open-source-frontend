@@ -39,8 +39,8 @@ export class OpenService {
   }
 
   getClientUrl(): any {
-    // return 'http://localhost:4200'
-    return 'https://osource.co.za/';
+    // return 'http://localhost:5100'
+    return 'https://osource.co.za';
   }
 
   isProduction(): boolean {
