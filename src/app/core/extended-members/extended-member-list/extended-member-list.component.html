@@ -123,7 +123,9 @@
                   <td mat-cell *matCellDef="let extended_member">
                     <a class="btn btn-md btn-dark m-2" (click)="navigateToExtendedMemberForm(extended_member)">Edit</a>
                     <button class="btn btn-md btn-dark m-2" (click)="confirmDeleteMember(extended_member)">Delete</button>
+                    <button class="btn btn-md btn-dark m-2" (click)="confirmPromoteMember(extended_member)" *ngIf="canPromote(extended_member)">Promote</button>
                     <button class="btn btn-md btn-dark" style="display: none;" id="deleteMember" data-bs-toggle="modal" data-bs-target="#confirmDeleteMemberModal"></button>
+                    <button class="btn btn-md btn-dark" style="display: none;" id="promoteMember" data-bs-toggle="modal" data-bs-target="#promoteToMainMemberMemberModal"></button>
                     <button class="m-2" style="background-color: #fff; border: none;" *ngIf="extended_member.age_limit_exceeded && !extended_member.age_limit_exception" (click)="ageLimitException(extended_member)"><span class="material-icons"  style="font-size:30px;color:red;">
                       notifications
                       </span></button>
@@ -162,6 +164,33 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="handleDelete()">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="promoteToMainMemberMemberModal" tabindex="-1" aria-labelledby="promoteToMainMemberMemberModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fs-4" id="promoteToMainMemberMemberModalLabel" *ngIf="extended_member">Promote Member: {{ extended_member.first_name }} {{ extended_member.last_name }}</h5>
+          <h5 class="modal-title fs-4" id="confirmDeleteConsultantModalLabel" *ngIf="!extended_member">Promote Member</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="">
+            <p class="mb-0 ml-3 fs-5" >
+              You are about to promote this member to become a main member on this policy.
+            </p>
+          </div>
+          <br />
+          <div class="ml-3">
+            <p class="fs-5">Do you want to proceed?</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="promoteToMainMember()">Promote</button>
         </div>
       </div>
     </div>

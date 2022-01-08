@@ -11,18 +11,17 @@ import { OpenService, CommonService } from 'src/app/shared/services/open.service
 import { ToastrService } from 'ngx-toastr';
 
 
-
 const relation_types = {
-  0: 'Spouse',
+  4: 'Spouse',
   1: 'Dependant',
   2: 'Extended Member',
   3: 'Additional Extended Member',
-  4: 'Select Member Type'
+  0: 'Select Member Type'
 }
 
 
 const relationships = {
-  0: 'Child',
+  12: 'Child',
   1: 'Parent',
   2: 'Brother',
   3: 'Sister',
@@ -34,7 +33,7 @@ const relationships = {
   9: 'Wife',
   10: 'Husband',
   11: 'Cousin',
-  12: 'Relationship to Main Member'
+  0: 'Relationship to Main Member'
 }
 
 
@@ -214,16 +213,16 @@ export class ExtendedMemberListComponent implements OnInit {
         });
   }
 
+  canPromote(extended_member) {
+    return extended_member.is_main_member_deceased;
+  }
+
   ageLimitException(extended_member) {
     this.openService.put(`extended-members/${extended_member.id}/exception`, {"age_limit_exception": true})
       .subscribe(
         (main: any) => {
           extended_member = main;
           this.toastr.success('', 'Success!!!');
-          // this.dataSource.data = this.dataSource.data.map((main) => {
-  
-          //   main !== main_member})
-          // this.showExceptSuccess();
         },
       error => {
 
@@ -249,6 +248,12 @@ export class ExtendedMemberListComponent implements OnInit {
   confirmDeleteMember(extended_member: any) {
     this.extended_member = extended_member;
     const button = document.getElementById('deleteMember');
+    button.click();
+  }
+
+  confirmPromoteMember(extended_member: any) {
+    this.extended_member = extended_member;
+    const button = document.getElementById('promoteMember');
     button.click();
   }
 
@@ -304,4 +309,16 @@ export class ExtendedMemberListComponent implements OnInit {
   getMemberRelationship(memberRelationship) {
     return memberRelationship ? relationships[memberRelationship] : null;
   }
+
+  promoteToMainMember() {
+    this.openService.post(`extended-members/${this.extended_member.id}/promote`, this.extended_member)
+      .subscribe(
+        () => {
+          this.toastr.success('Extended member has been promoted to main member.', 'Success!!!');
+        },
+      error => {
+        let err = error['error'];
+        this.toastr.error(err['description'], error['title'], {timeOut: 3000});
+      });
+    }
 }

@@ -30,6 +30,7 @@ export class MainMemberFormBuilder {
       'id_number': [details.id_number, [Validators.required, validateSAIDNumber]],
       'date_joined': [details.date_joined, [Validators.required]],
       'contact': [details.contact, [Validators.required, validateMSISDN]],
+      'is_deceased': [details.is_deceased],
       'applicant': this.buildApplicantForm(details.applicant),
       'plan_id': [details.plan_id, [Validators.required]]
     });
@@ -135,6 +136,7 @@ export class MainMemberFormComponent implements OnInit  {
         },
         error => console.log(error));
   }
+
   initForm(main_member: MainMember) {
     this.main_member = main_member;
     this.form = this.formBuilder.buildForm(this.main_member);
