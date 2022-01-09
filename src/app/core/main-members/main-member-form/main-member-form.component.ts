@@ -261,6 +261,23 @@ export class MainMemberFormComponent implements OnInit  {
     return null;
   }
 
+  deceasedModal() {
+    const btn = document.getElementById("deceasedMember")
+
+    if (this.form.controls.is_deceased.value == 0) {
+      this.makeMemberDeceasedFalse();
+    } else {
+      btn.click()
+    }
+  }
+  makeMemberDeceasedTrue() {
+    this.form.controls.is_deceased.setValue(true)
+  }
+
+  makeMemberDeceasedFalse() {
+    this.form.controls.is_deceased.setValue(false)
+  }
+
   showError(error) {
     let errors = {};
     errors = error.json();

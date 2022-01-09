@@ -90,13 +90,13 @@
                 <div class="form-group row">
                   <label class="col-xs-3 col-form-label fs-4 d-flex justify-content-center">Document:</label>
                   <div class="col-xs-9">
-                    <input class="form-control" type="file" id="file" formControlName="file" (change)="onFileSelected($event.target)" accept=".pdf" />
+                    <input class="form-control" type="file" id="document" formControlName="document" (change)="onFileSelected($event.target)" accept=".pdf" />
                   </div>
                 </div>
               </fieldset>  
 
               <div class="form-check mb-3">
-                <input mandatory class="form-check-input" type="checkbox" id="is_deceased" formControlName="is_deceased" />
+                <input mandatory class="form-check-input" type="checkbox" id="is_deceased" formControlName="is_deceased" (change)="deceasedModal()" />
                 <label for="is_deceased" class="form-check-label">Is member deceased?</label>
               </div>
             <div class="col-12 d-flex justify-content-center">
@@ -131,3 +131,28 @@
     </div>
   </div>
 </div>
+
+<button id="deceasedMember" class="btn btn-md btn-danger" data-bs-toggle="modal" data-bs-target="#makeMemberDeceasedModal" style="display: none;"></button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="makeMemberDeceasedModal" tabindex="-1" aria-labelledby="makeMemberDeceasedModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fs-4" id="makeMemberDeceasedModalLabel">Age limit exceeded</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="">
+            <p class="mb-0 ml-3 fs-5">
+                Age limit exceeded, do you want to continue adding the member?
+            </p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="makeMemberDeceasedFalse()">Close</button>
+          <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="makeMemberDeceasedTrue()">Proceed</button>
+        </div>
+      </div>
+    </div>
+  </div>
