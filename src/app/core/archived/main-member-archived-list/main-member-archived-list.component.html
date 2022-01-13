@@ -161,7 +161,7 @@
                     <button class="btn btn-md btn-dark m-2" (click)="confirmRestoreApplicant(main_member)" *ngIf="!main_member.is_deceased">Restore</button>
                     <button class="btn btn-md btn-dark" style="display: none;" id="restoreApplicant" data-bs-toggle="modal" data-bs-target="#confirmRestoreApplicantModal"></button>
                     <button class="btn btn-md btn-dark" (click)="confirmDeleteApplicant(main_member)">Delete</button>
-                    <img class="align-middle m-2" src="{{openService.getClientUrl()}}/assets/images/coffin.jpeg" height="30" width="30" alt="Deceased image" *ngIf="main_member.is_deceased" />
+                    <img class="align-middle m-2" src="{{openService.getClientUrl()}}/assets/images/coffin_image.jpeg" height="40" width="40" alt="Deceased image" *ngIf="main_member.is_deceased" />
                     <button class="btn btn-md btn-dark" style="display: none;" id="deleteApplicant" data-bs-toggle="modal" data-bs-target="#confirmDeleteApplicantModal"></button>
                   </td>
                 </ng-container>

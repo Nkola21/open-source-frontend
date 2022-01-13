@@ -5,7 +5,7 @@ import { OpenService, CommonService } from 'src/app/shared/services/open.service
 import { ExtendedMember, newExtendedMember, newApplicant } from './../extended-members.models';
 import { ToastrService } from 'ngx-toastr';
 import { CompareFormValue } from './../../../shared/utils'
-
+import { validateMSISDN, validateSAIDNumber } from 'src/app/shared/validation';
 
 export class ExtendedMemberFormBuilder {
   constructor(private formBuilder: FormBuilder) {
@@ -21,8 +21,8 @@ export class ExtendedMemberFormBuilder {
       'id': [details.id],
       'first_name': [details.first_name, [Validators.required, Validators.minLength(6)]],
       'last_name': [details.last_name, [Validators.required, Validators.minLength(6)]],
-      'number': [details.number],
-      'id_number': [details.id_number],
+      'number': [details.number, [validateMSISDN]],
+      'id_number': [details.id_number, [validateSAIDNumber]],
       'type': [details.type, [Validators.required]],
       'date_joined': [details.date_joined, [Validators.required]],
       'date_of_birth': [details.date_of_birth],

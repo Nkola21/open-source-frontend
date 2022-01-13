@@ -1,25 +1,34 @@
-<div class="card" style="margin-bottom: 3%;margin-top: 2%;">
+<div class="card" style="margin: 2% 5% 3% 8%;">
     <div class="card-header sub-header">
         <h2>Plan Details</h2>
     </div>
     <br>
-    <div class="row">
-        <div class="col-sm-6">
-            <table class="table table-horiz">
-                <tbody>
+  <br>
+  <fieldset class="flex justify-content-center" style="display: flex">
+      <div class="col-md-4" style="padding-right: 6%">
+          <div class="card">
+              <div class="card-header sub-header">
+                  <h4><strong>Plan</strong></h4>
+              </div>
+              <table class="table table-horiz">
+                  <tbody>
                     <tr>
-                        <th width="50%"><strong>Plan:</strong></th>
-                        <td>{{plan.plan}}</td>
+                        <th width="50%"><strong>Name:</strong></th>
+                        <td>{{plan.name}}</td>
                     </tr>
                     <tr>
-                        <th><strong>Plan Cover:</strong></th>
+                        <th><strong>Cover:</strong></th>
                         <td>
                             <span>{{ plan.cover}}</span>
                         </td>
                     </tr>
                     <tr>
-                        <th><strong>Plan Premium:</strong></th>
+                        <th><strong>Premium:</strong></th>
                         <td>{{ plan.premium}}</td>
+                    </tr>
+                    <tr>
+                        <th><strong>Underwriter Premium:</strong></th>
+                        <td>{{ plan.underwriter_premium }}</td>
                     </tr>
                     <tr>
                         <th><strong>Number of Beneficiaries:</strong></th>
@@ -29,31 +38,154 @@
                         <th><strong>Benefits:</strong></th>
                         <td>{{ plan.has_benefits}}</td>
                     </tr>
-                </tbody>
-            </table>
-        </div>
-  
-        <div class="col-sm-6">
+                  </tbody>
+              </table>
+          </div>
+      </div>
+
+      <div class="col-md-4" >
+          <div class="card">
+              <div class="card-header sub-header">
+                  <h4><strong>Main Member</strong></h4>
+              </div>
+              <table class="table table-horiz">
+                  <tbody>
+                      <tr>
+                          <th width="50%"><strong>Has Age restriction:</strong></th>
+                          <td>{{ plan.member_age_restriction }}</td>
+                      </tr>
+                      <tr>
+                          <th><strong>Minimum Age:</strong></th>
+                          <td>{{ plan.member_minimum_age }}</td>
+                      </tr>
+                      <tr>
+                          <th><strong>Maximum Age:</strong></th>
+                          <td>{{ plan.member_maximum_age }}</td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+      </div>
+
+  </fieldset>
+  <br />
+  <br />
+  <fieldset class="flex justify-content-center" style="display: flex">
+    <div class="col-md-4" style="padding-right: 6%">
+        <div class="card">
+            <div class="card-header sub-header">
+                <h4><strong>Spouse</strong></h4>
+            </div>
             <table class="table table-horiz">
                 <tbody>
                     <tr>
-                        <th width="50%"><strong>Age Restriction:</strong></th>
-                        <td>{{ plan.member_age_restriction }}</td>
+                        <th width="50%"><strong>Number of spouse:</strong></th>
+                        <td>{{ plan.spouse }}</td>
                     </tr>
                     <tr>
-                        <th width="50%"><strong>Min. Age restriction:</strong></th>
-                        <td>{{ plan.member_minimum_age }}</td>
+                        <th width="50%"><strong>Has Age restriction:</strong></th>
+                        <td>{{ plan.spouse_age_restriction }}</td>
                     </tr>
                     <tr>
-                        <th><strong>Max. Age restriction:</strong></th>
-                        <td>{{ plan.member_maximum_age }}</td>
+                        <th><strong>Minimum Age:</strong></th>
+                        <td>{{ plan.spouse_minimum_age }}</td>
                     </tr>
                     <tr>
-                        <th><strong>Consider Age:</strong></th>
-                        <td>{{ plan.consider_age }}</td>
+                        <th><strong>Maximum Age:</strong></th>
+                        <td>{{ plan.spouse_maximum_age }}</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
-  </div>
+
+    <div class="col-md-4" style="padding-right: 0px">
+        <div class="card">
+            <div class="card-header sub-header">
+                <h4><strong>Dependants</strong></h4>
+            </div>
+            <table class="table table-horiz">
+                <tbody>
+                    <tr>
+                        <th width="50%"><strong>Number of dependants:</strong></th>
+                        <td>{{ plan.dependants }}</td>
+                    </tr>
+                    <tr>
+                        <th width="50%"><strong>Has Age restriction:</strong></th>
+                        <td>{{ plan.spouse_age_restriction }}</td>
+                    </tr>
+                    <tr>
+                        <th><strong>Minimum Age:</strong></th>
+                        <td>{{ plan.spouse_minimum_age }}</td>
+                    </tr>
+                    <tr>
+                        <th><strong>Maximum Age:</strong></th>
+                        <td>{{ plan.spouse_maximum_age }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+  </fieldset>
+  <br />
+  <br />
+  <fieldset class="flex justify-content-center" style="display: flex">
+    <div class="col-md-4" style="padding-right: 6%">
+        <div class="card">
+            <div class="card-header sub-header">
+                <h4><strong>Extended member</strong></h4>
+            </div>
+            <table class="table table-horiz">
+                <tbody>
+                    <tr>
+                        <th width="50%"><strong>Number of Extended members:</strong></th>
+                        <td>{{ plan.extended_members }}</td>
+                    </tr>
+                    <tr>
+                        <th width="50%"><strong>Has Age restriction:</strong></th>
+                        <td>{{ plan.extended_age_restriction }}</td>
+                    </tr>
+                    <tr>
+                        <th><strong>Minimum Age:</strong></th>
+                        <td>{{ plan.extended_minimum_age }}</td>
+                    </tr>
+                    <tr>
+                        <th><strong>Maximum Age:</strong></th>
+                        <td>{{ plan.extended_maximum_age }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-md-4" style="padding-right: 0px">
+        <div class="card">
+            <div class="card-header sub-header">
+                <h4><strong>Additional extended members</strong></h4>
+            </div>
+            <table class="table table-horiz">
+                <tbody>
+                    <tr>
+                        <th width="50%"><strong>Number of Additional members:</strong></th>
+                        <td>{{ plan.additional_extended_members }}</td>
+                    </tr>
+                    <tr>
+                        <th width="50%"><strong>Has Age restriction:</strong></th>
+                        <td>{{ plan.additional_extended_consider_age }}</td>
+                    </tr>
+                    <tr>
+                        <th><strong>Minimum Age:</strong></th>
+                        <td>{{ plan.additional_extended_minimum_age }}</td>
+                    </tr>
+                    <tr>
+                        <th><strong>Maximum Age:</strong></th>
+                        <td>{{ plan.additional_extended_maximum_age }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+  </fieldset>
+  <br />
+  <br />
+</div>

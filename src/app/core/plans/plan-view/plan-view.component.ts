@@ -24,7 +24,7 @@ export class PlanViewComponent implements OnInit {
   }
 
   initPlan(plan_id: number) {
-    this.openService.getUrl(`plans/${plan_id}`)
+    this.openService.getUrl(`plans/${plan_id}/get`)
     .subscribe(
       (plan: Plan) => {
         this.plan = plan;

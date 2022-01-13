@@ -89,8 +89,6 @@ export class PlanListComponent implements OnInit {
   }
 
   initPlans() {
-    const permission = this.permission;
-
     this.plans = [];
     this.page = {
       'pageSize': 5,

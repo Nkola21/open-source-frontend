@@ -305,7 +305,7 @@ export class MainMemberFormComponent implements OnInit  {
           }
           return {
             id: plan.id,
-            name: plan.plan
+            name: plan.name
           };
       });
       this.plans.unshift({id: 0, name: "-- Select Plan --"});

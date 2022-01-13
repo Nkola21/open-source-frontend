@@ -26,9 +26,12 @@
             </div>
 
             <label for="id_number" class="col-form-label fs-4 d-flex justify-content-center">ID Number:</label>
-            <div class="input-group mb-3">
+            <div class="input-group">
                 <span class="input-group-text" id="basic-addon3">{{ getAge() }}</span>
                 <input type="text" class="form-control" aria-describedby="basic-addon3" placeholder="ID Number" id="id_number" formControlName="id_number">
+            </div>
+            <div class="mb-3">
+                <app-input-error [control]="form.controls.id_number"></app-input-error>
             </div>
 
             <mat-form-field appearance="fill">
