@@ -167,7 +167,7 @@ export class ExtendedMemberFormComponent extends CompareFormValue implements OnI
       this.relationshipSelected = 0;
     }
   }
-  
+
   initForm(extended_member: ExtendedMember) {
     this.extended_member = extended_member;
     this.form = this.formBuilder.buildForm(this.extended_member);

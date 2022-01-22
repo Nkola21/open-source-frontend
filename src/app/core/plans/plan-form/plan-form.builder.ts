@@ -14,7 +14,7 @@ export class PlanFormBuilder {
     details = details === undefined ? newPlan() : details;
     return this.formBuilder.group({
       'id': [details.id],
-      'name': [details.plan, [Validators.required]],
+      'name': [details.name, [Validators.required]],
       'cover': [details.cover],
       'premium': [details.premium, [Validators.required]],
       'underwriter_premium': [details.underwriter_premium],
