@@ -159,8 +159,7 @@ export class MainMemberArchivedListComponent implements OnInit {
   }
 
   navigateToPaymentForm(main_member: any) {
-    'applicants/:id/payment/form'
-    this.router.navigate(['applicants', main_member.id, 'payment', 'form']);
+    this.router.navigate(['main-members', main_member.id, 'payment', 'form']);
   }
 
   navigateToMainMemberForm(main_member: any) {

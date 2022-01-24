@@ -459,12 +459,11 @@ export class MainMemberListComponent implements OnInit {
   configureMainMembers(main_members: Array<any>): void {
     this.tableSize = this.main_members ? this.main_members.length : 0;
     this.dataSource = new MatTableDataSource(main_members);
-    this.initializePaginator()
+    // this.initializePaginator()
   }
 
   navigateToPaymentForm(main_member: any) {
-    'applicants/:id/payment/form'
-    this.router.navigate(['applicants', main_member.id, 'payment', 'form']);
+    this.router.navigate(['main-members', main_member.id, 'payment', 'form']);
   }
 
   navigateToMainMemberAddForm() {

@@ -39,11 +39,10 @@ export class PaymentFormComponent implements OnInit {
     this.route.params.subscribe(
       (params) => {
         const id = +params['id'];
-        const applicant_id = +params['applicant_id'];
-        this.applicant_id = applicant_id;
+        const member_id = +params['member_id'];
         if (id){
-        }else if (applicant_id){
-          this.getMainMember(applicant_id);
+        }else if (member_id){
+          this.getMainMember(member_id);
         }else {
           this.initForm(this.payment);
         }
@@ -74,6 +73,7 @@ export class PaymentFormComponent implements OnInit {
       .subscribe(
         main_member => {
           this.main_member = main_member;
+          this.applicant_id = this.main_member.applicant.id;
           this.getPreviousPayment(main_member);
         },
         error => {
