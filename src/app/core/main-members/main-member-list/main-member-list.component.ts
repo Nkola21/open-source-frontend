@@ -13,7 +13,6 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 import { MainMember } from '../main-members.models';
 import { Consultant } from '../../consultants/consultants.models';
-// import { saveAs } from 'file-saver';
 
 
 export class SearchFormBuilder {
@@ -263,6 +262,7 @@ export class MainMemberListComponent implements OnInit {
   setBranch(branch) {
     this.branch = branch;
   }
+
   getByConsultant() {
     let queryString= '';
     const formValue = this.performanceForm.value;

@@ -9,6 +9,24 @@ import { Observable, BehaviorSubject, merge } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { OpenService, CommonService } from 'src/app/shared/services/open.service';
 import { ToastrService } from 'ngx-toastr';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+
+
+export class SearchFormBuilder {
+  constructor(private formBuilder: FormBuilder) {
+  }
+
+  buildForm(search) {
+    return this.buildSearchForm(search);
+  }
+
+  buildSearchForm(details) {
+    details = details === undefined ? {'searchField': null} : details;
+    return this.formBuilder.group({
+      'searchField': [details.search]
+    });
+  }
+}
 
 
 export class PlanDataSource extends DataSource<any> {
@@ -60,19 +78,30 @@ export class PlanListComponent implements OnInit {
   parlour_id: any;
   permission: any;
   plan: any;
+  formBuilder: SearchFormBuilder;
+  form: FormGroup;
+  searchField: null;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     public openService: OpenService,
     public service: CommonService,
     public router: Router,
-    private toastr: ToastrService) { }
+    private fb: FormBuilder,
+    private toastr: ToastrService) { 
+      this.formBuilder = new SearchFormBuilder(fb);
+    }
 
   ngOnInit(): void {
     this.permission = this.openService.getPermissions();
     this.user = this.openService.getUser();
     this.parlour_id = this.openService.getParlourId();
     this.initPlans();
+    this.initSearchForm(this.searchField);
+  }
+
+  initSearchForm(searchField: string) {
+    this.form = this.formBuilder.buildForm(searchField);
   }
 
   transition(user: any) {
@@ -137,6 +166,22 @@ export class PlanListComponent implements OnInit {
     this.plan = plan;
     const button = document.getElementById('deletePlan');
     button.click();
+  }
+
+  getBySearchField() {
+    const formValue = this.form.value;
+    const filter = `search_string=${formValue["searchField"]}`;
+    this.openService.getUrl(`parlours/${this.parlour_id}/plans/all?${filter}`)
+      .subscribe(
+        (plans: Array<any>) => {
+          this.plans = plans;
+          this.configurePlans(plans.reverse());
+          this.loadingState = 'complete';
+        },
+        error => {
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
+        });
   }
 
   handleDelete(plan) {
