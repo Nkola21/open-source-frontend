@@ -494,7 +494,7 @@ export class MainMemberListComponent implements OnInit {
   }
 
   handleDelete(main_member) {
-    this.openService.delete(`main-members/${main_member.id}/delete`)
+    this.openService.delete(`main-members/${main_member.id}/archive`)
       .subscribe(
         (main: any) => {
           this.main_members = this.main_members.filter(val => { 
