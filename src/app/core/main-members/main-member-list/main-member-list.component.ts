@@ -497,13 +497,12 @@ export class MainMemberListComponent implements OnInit {
     this.openService.delete(`main-members/${main_member.id}/archive`)
       .subscribe(
         (main: any) => {
-          this.main_members = this.main_members.filter(val => { 
+          this.main_members = this.main_members.filter(val => {
             if (val.id != main_member.id) {
               return val;
             }
           });
           this.configureMainMembers(this.main_members.reverse());
-          this.initializePaginator()
           this.toastr.success('Main member has been deleted!', 'Success');
         },
         error => {

@@ -204,7 +204,13 @@ export class MainMemberArchivedListComponent implements OnInit {
   handleDelete(main_member) {
     this.openService.delete(`main-members/${main_member.id}/delete`)
       .subscribe(
-        (main_member: any) => {
+        (main: any) => {
+          this.main_members = this.main_members.filter(val => {
+            if (val.id != main_member.id) {
+              return val;
+            }
+          });
+          this.configureMainMembers(this.main_members.reverse());
           this.toastr.success('Applicant has been deleted!', 'Success');
         },
         error => {
