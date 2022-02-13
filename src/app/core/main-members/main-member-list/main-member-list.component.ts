@@ -143,6 +143,7 @@ export class MainMemberListComponent implements OnInit {
   consultants: Array<Consultant> = [];
   branches: Array<string> = [];
   filter: string;
+  extendedMemberAgeLimit = false;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild("dataBlock") block: ElementRef;
@@ -325,7 +326,7 @@ export class MainMemberListComponent implements OnInit {
       const end_date = formValue['end_date'];
       filter = `${filter}&end_date=${end_date}`;
     }
-    
+
     queryString = queryString ? `${queryString}&${filter}` : `${filter}`;
     this.filter = queryString;
     this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?${queryString}`)
@@ -640,6 +641,10 @@ export class MainMemberListComponent implements OnInit {
       }
     }
     return true;
+  }
+
+  getExtendedMemberAgeLimitNotice(main_member) {
+    return main_member.extended_member_limit;
   }
 
 }

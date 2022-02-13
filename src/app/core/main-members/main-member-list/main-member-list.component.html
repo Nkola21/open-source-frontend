@@ -237,6 +237,9 @@
                     <button class="m-2" style="background-color: #fff; border: none;" *ngIf="main_member.age_limit_exceeded && !main_member.age_limit_exception" class="tooltip-test" title="This member exceeds the age limit set on current plan" (click)="ageLimitException(main_member)"><span class="material-icons"  style="font-size:30px;color:red;">
                       notifications
                       </span></button>
+                      <button class="m-2" style="background-color: #fff; border: none;" *ngIf="getExtendedMemberAgeLimitNotice(main_member)" class="tooltip-test" title="One or more of this principal's extended members exceed the age limit set on current plan" (click)="ageLimitException(main_member)"><span class="material-icons"  style="font-size:30px;color: #212529">
+                        notifications
+                        </span></button>
                   </td>
                 </ng-container>
   
