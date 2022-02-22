@@ -223,6 +223,7 @@ export class ExtendedMemberListComponent implements OnInit {
         (main: any) => {
           extended_member = main;
           this.toastr.success('', 'Success!!!');
+          this.initExtendedMembers(this.applicant_id);
         },
       error => {
 

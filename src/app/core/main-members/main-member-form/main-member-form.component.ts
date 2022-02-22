@@ -153,24 +153,29 @@ export class MainMemberFormComponent implements OnInit  {
         error => console.log("ERROR"));
   }
 
-  onFileSelected(target ) {
-    let files = (target as HTMLInputElement).files
-    this.selectedFile = files.item(0);
+  onFileSelected(e: any) {
+    let files = e.target.files;
+    // console.log(files.item(0));
+    this.selectedFile = <File>files.item(0);
   }
 
   submitFile(main_member) {
-    const uploadFormData = new FormData();
-    uploadFormData.append('myFile', this.selectedFile, this.selectedFile.name);
+    const fileReader = new FileReader();
 
-    this.openService.postFile(`main-members/${main_member.id}/upload`, uploadFormData)
-      .subscribe(
-        () => {
+    fileReader.onload = (e) => {
+      let result = JSON.stringify(fileReader.result);
+      const content = result.split('data:application/pdf;base64,')[1];
 
+      this.openService.postFile(`main-members/${main_member.id}/upload`, { 'pdf': content })
+        .subscribe(result => {
+          console.log("Success");
         },
-      error => {
-        let err = error['error'];
+        error => {
+          let err = error['error'];
         this.toastr.error(err['description'], error['title'], {timeOut: 3000});
-      });
+        });
+    };
+    fileReader.readAsDataURL(this.selectedFile);
   }
 
   submit() {

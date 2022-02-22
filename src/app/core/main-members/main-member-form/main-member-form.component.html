@@ -90,7 +90,7 @@
                 <div class="form-group row">
                   <label class="col-xs-3 col-form-label fs-4 d-flex justify-content-center">Document:</label>
                   <div class="col-xs-9">
-                    <input class="form-control" type="file" id="document" formControlName="document" (change)="onFileSelected($event.target)" accept=".pdf" />
+                    <input class="form-control" name="document" type="file" id="document" formControlName="document" (change)="onFileSelected($event)" accept=".pdf" />
                   </div>
                 </div>
               </fieldset>  
