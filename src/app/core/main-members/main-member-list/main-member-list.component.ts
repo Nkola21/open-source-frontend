@@ -471,6 +471,9 @@ export class MainMemberListComponent implements OnInit {
     this.router.navigate(['main-members', 'form']);
   }
 
+  navigateToMainMemberBulkAddForm() {
+    this.router.navigate(['main-members', 'bulk-add']);
+  }
   navigateToMainMemberForm(main_member: any) {
     this.router.navigate(['main-members', main_member.id,'form']);
   }

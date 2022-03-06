@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MainMemberListComponent } from './main-member-list/main-member-list.component';
 import { MainMemberSubListComponent } from './main-member-sub-list/main-member-sub-list.component';
 import { RouterModule } from '@angular/router';
-import { MainMemberViewComponent } from './main-member-view/main-member-view.component';
+import { MainMemberBulkAddComponent } from './main-member-bulk-add/main-member-bulk-add.component';
 import { MaterialModule } from '../../material/material.module';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -32,8 +32,8 @@ const MainMemberRouting: ModuleWithProviders<MainMembersModule> = RouterModule.f
     canActivate: []
   },
   {
-    path: 'main-members/:id/view',
-    component: MainMemberViewComponent,
+    path: 'main-members/bulk-add',
+    component: MainMemberBulkAddComponent,
     canActivate: []
   },
   {
@@ -60,13 +60,13 @@ const MainMemberRouting: ModuleWithProviders<MainMembersModule> = RouterModule.f
   declarations: [
     MainMemberListComponent,
     MainMemberSubListComponent,
-    MainMemberViewComponent,
+    MainMemberBulkAddComponent,
     MainMemberFormComponent,
     FileValueAccessor
   ],
   exports: [
     MainMemberListComponent,
-    MainMemberViewComponent,
+    MainMemberBulkAddComponent,
     MainMemberFormComponent,
     MatListModule,
     MatTooltipModule

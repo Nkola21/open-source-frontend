@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MainMemberViewComponent } from './main-member-view.component';
+import { MainMemberBulkAddComponent } from './main-member-bulk-add.component';
 
-describe('MainMemberViewComponent', () => {
-  let component: MainMemberViewComponent;
-  let fixture: ComponentFixture<MainMemberViewComponent>;
+describe('MainMemberBulkAddComponent', () => {
+  let component: MainMemberBulkAddComponent;
+  let fixture: ComponentFixture<MainMemberBulkAddComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MainMemberViewComponent ]
+      declarations: [ MainMemberBulkAddComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MainMemberViewComponent);
+    fixture = TestBed.createComponent(MainMemberBulkAddComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
