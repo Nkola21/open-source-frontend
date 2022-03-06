@@ -38,7 +38,8 @@ export class MainMemberBulkAddComponent implements OnInit {
   form: FormGroup;
   loaded = false;
   submitted = false;
-  datasource: any
+  datasource: any;
+  table_data = [];
 
   constructor(public openService: OpenService,
     public service: CommonService,
@@ -78,8 +79,8 @@ export class MainMemberBulkAddComponent implements OnInit {
   }
 
   downloadFailedEntries() {
-    
-    this.openService.post(`actions/download_failed_members`, this.datasource)
+
+    this.openService.post(`actions/download_failed_members`, this.table_data)
     .subscribe(
       (res: any) => {
         let queryString= `filename=${res.filename}`;
@@ -109,11 +110,10 @@ export class MainMemberBulkAddComponent implements OnInit {
         let content = JSON.stringify(fileReader.result).split('data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,')[1]
         this.openService.postFile(`consultants/${this.user.id}/actions/import_members`, {'plan': plan_id, 'csv': content})
         .subscribe(result => {
-          let table_data = [];
           if (Object(result).length > 0) {
             for(let res of Object(result)) {
-              // console.log(res.data);
-              table_data.push({
+
+              this.table_data.push({
                   'first_name': res.data[0],
                   'last_name': res.data[1],
                   'id_number': res.data[2],
@@ -126,21 +126,23 @@ export class MainMemberBulkAddComponent implements OnInit {
                   'relation': res.data[9],
                   'reason': res.error});
             }
-            this.datasource = <Element[]>table_data;
+            this.datasource = <Element[]>this.table_data;
           }
 
-          document.getElementById("loadMembersModal").style.visibility = "false";
-          if (table_data.length == 0) {
+          if (this.table_data.length == 0) {
             this.showSuccess();
           }else{
             this.submitted = false;
             this.toastr.error("Some members failed to be added", "Error", {timeOut: 3000});  
           }
+          // document.getElementById("loadMembersModal").style.visibility = "false";
+
           this.loaded = true;
         },
         error => {
           this.submitted = false;
-          document.getElementById("loadMembersModal").style.visibility = "false";
+          // document.getElementById("loadMembersModal").style.visibility = "false";
+
           this.toastr.error("Encountered error while importing data", "Error", {timeOut: 3000});
         });
       };
