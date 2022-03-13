@@ -31,6 +31,7 @@ export class ImportMembersFormBuilder {
 export class MainMemberBulkAddComponent implements OnInit {
   parlour_id: any;
   user: any;
+  permission: any;
   selectedFile: any;
   plans: any[];
   plan_id: any;
@@ -52,6 +53,7 @@ export class MainMemberBulkAddComponent implements OnInit {
   ngOnInit(): void {
     this.parlour_id = this.openService.getParlourId();
     this.user = this.openService.getUser()
+    this.permission = this.openService.getPermissions()
     this.initPlans();
     this.initImportMembersForm();
   }
@@ -127,6 +129,9 @@ export class MainMemberBulkAddComponent implements OnInit {
                   'reason': res.error});
             }
             this.datasource = <Element[]>this.table_data;
+          }else{
+            const view = [`/${this.permission.toLowerCase()}s/${this.user.id}/applicants`];
+            this.router.navigate(view);
           }
 
           if (this.table_data.length == 0) {

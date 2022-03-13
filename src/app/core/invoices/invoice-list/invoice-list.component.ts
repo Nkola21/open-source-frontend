@@ -51,6 +51,7 @@ export class InvoiceListComponent implements OnInit {
 
   displayedColumns = ['invoice_number', 'amount', 'number_of_months', 'date', 'contact', 'document'];
   invoices: Array<any> = [];
+  invoice: any;
   dataSource: any;
   page: any;
   loadingState: any;
@@ -126,5 +127,29 @@ export class InvoiceListComponent implements OnInit {
 
   navigateToPalourForm(payment: any) {
     this.router.navigate(['payments', payment.id,'form']);
+  }
+
+  confirmDeleteInvoice(invoice: any) {
+    this.invoice = invoice;
+    const button = document.getElementById('openDeleteModal');
+    button.click();
+  }
+
+  deleteInvoice(invoice: any) {
+    this.openService.delete(`invoice/${invoice.id}/delete`)
+    .subscribe((result) => {
+      this.toastr.success('Invoice was deleted successfully', '');
+      this.invoices = this.invoices.filter(val => { 
+        if (val.id != invoice.id) {
+          return val;
+        }
+      });
+      this.configureInvoices(this.invoices.reverse());
+      this.initializePaginator()
+    },
+    error => {
+      const err = error["error"];
+      this.toastr.error(err["description"], err['title']);
+    });
   }
 }
