@@ -226,6 +226,21 @@ export class OpenService {
     return this.http.post(url, JSON.stringify(obj), { headers: headers })
       .pipe(catchError(this.handleError));
   }
+
+  findMembers(
+    url:string, filter = '', sortOrder = 'asc',
+    pageNumber = 0, pageSize = 3):  Observable<any[]> {
+
+    return this.http.get(url, {
+        params: new HttpParams()
+            .set('filter', filter)
+            .set('sortOrder', sortOrder)
+            .set('pageNumber', pageNumber.toString())
+            .set('pageSize', pageSize.toString())
+    }).pipe(
+        map(res =>  res["payload"])
+    );
+}
 }
 
 
@@ -240,7 +255,6 @@ export class CommonService {
 
   private parlourDataSource = new Subject<object>();
   parlourDataSource$ = this.parlourDataSource.asObservable();
-
 
   switchHeader(user: any) {
     this.dataSource.next(user);

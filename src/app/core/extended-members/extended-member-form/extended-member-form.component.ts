@@ -26,6 +26,7 @@ export class ExtendedMemberFormBuilder {
       'type': [details.type, [Validators.required]],
       'date_joined': [details.date_joined, [Validators.required]],
       'date_of_birth': [details.date_of_birth],
+      'waiting_period': [details.waiting_period, [Validators.required]],
       'relation_to_main_member': [details.relation_to_main_member, [Validators.required]]
     });
   }

@@ -31,6 +31,7 @@ export class MainMemberFormBuilder {
       'date_joined': [details.date_joined, [Validators.required]],
       'contact': [details.contact, [Validators.required, validateMSISDN]],
       'is_deceased': [details.is_deceased],
+      'waiting_period': [details.waiting_period, [Validators.required]],
       'applicant': this.buildApplicantForm(details.applicant),
       'plan_id': [details.plan_id, [Validators.required]]
     });

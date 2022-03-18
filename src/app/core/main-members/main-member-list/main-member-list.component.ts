@@ -1,18 +1,52 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataSource } from '@angular/cdk/collections';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { Observable, BehaviorSubject, merge } from 'rxjs';
+import { MatSort } from '@angular/material/sort';
+import { Observable, BehaviorSubject, merge, of, fromEvent } from 'rxjs';
 
-import { map } from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, finalize, map, tap } from 'rxjs/operators';
 import { OpenService, CommonService } from 'src/app/shared/services/open.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 import { MainMember } from '../main-members.models';
 import { Consultant } from '../../consultants/consultants.models';
+
+
+import {CollectionViewer, DataSource as dd_source} from "@angular/cdk/collections";
+
+export class MembersDataSource implements dd_source<any> {
+
+    private membersSubject = new BehaviorSubject<any[]>([]);
+    private loadingSubject = new BehaviorSubject<boolean>(false);
+
+    constructor(private openService: OpenService) {}
+
+    connect(collectionViewer: CollectionViewer): Observable<any[]> {
+      return this.membersSubject.asObservable();
+    }
+
+    disconnect(collectionViewer: CollectionViewer): void {
+      this.membersSubject.complete();
+      this.loadingSubject.complete();
+    }
+  
+    loadMembers(url: string, filter = '',
+                sortDirection = 'asc', pageIndex = 0, pageSize = 3) {
+
+        this.loadingSubject.next(true);
+        console.log("Call get")
+        this.openService.findMembers(url, filter, sortDirection,
+            pageIndex, pageSize).pipe(
+            catchError(() => of([])),
+            finalize(() => this.loadingSubject.next(false))
+        )
+        .subscribe(members => this.membersSubject.next(members));
+    } 
+}
 
 
 export class SearchFormBuilder {
@@ -112,7 +146,7 @@ const dialogConfig = new MatDialogConfig();
   templateUrl: './main-member-list.component.html',
   styleUrls: ['./main-member-list.component.css']
 })
-export class MainMemberListComponent implements OnInit {
+export class MainMemberListComponent implements AfterViewInit, OnInit {
 
   displayedColumns = ['full_name', 'id_number', 'contact', 'extended_members', 'premium', 'policy_num', 'policy', 'other', 'date_joined', 'status', 'actions'];
   main_members: Array<any> = [];
@@ -146,7 +180,9 @@ export class MainMemberListComponent implements OnInit {
   extendedMemberAgeLimit = false;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
   @ViewChild("dataBlock") block: ElementRef;
+  @ViewChild('input') input: ElementRef;
 
   constructor(
     public openService: OpenService,
@@ -172,6 +208,7 @@ export class MainMemberListComponent implements OnInit {
       this.parlour = this.user.parlour;
     }
     this.parlour_id = this.openService.getParlourId()
+    this.dataSource = new MembersDataSource(this.openService);
     this.initParlour(this.parlour_id);
     this.initConsultants(this.parlour_id);
     this.initSearchForm(this.searchField);
@@ -179,6 +216,37 @@ export class MainMemberListComponent implements OnInit {
     this.initSMSForm(this.smsFields, this.parlour);
     this.initPerformanceForm(this.consultant);
     this.initMainMembers(this.user.id)
+  }
+
+  ngAfterViewInit() {
+
+     // server-side search
+    //  fromEvent(this.input.nativeElement,'keyup')
+    //  .pipe(
+    //      debounceTime(150),
+    //      distinctUntilChanged(),
+    //      tap(() => {
+    //          this.paginator.pageIndex = 0;
+    //          this.loadMembersPage();
+    //      })
+    //  )
+    //  .subscribe();
+    // // reset the paginator after sorting
+    // this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+
+    // merge(this.sort.sortChange, this.paginator.page)
+    //     .pipe(
+    //         tap(() => this.loadMembersPage())
+    //     )
+    //     .subscribe();
+  }
+
+  loadMembersPage() {
+    console.log("call load members...");
+
+    let url = `${this.permission.toLowerCase()}s/${this.user.id}/main-members/all`;
+    this.dataSource.loadMembers(url, '',  this.sort.direction, 
+        this.paginator.pageIndex, this.paginator.pageSize);
   }
 
   toDate(created) {

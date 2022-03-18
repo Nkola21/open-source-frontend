@@ -9,7 +9,7 @@ import { Observable, BehaviorSubject, merge } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { OpenService } from './../../../shared/services/open.service';
 import { ToastrService } from 'ngx-toastr';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 // import { saveAs } from 'file-saver';
 
 
@@ -25,6 +25,23 @@ export class SearchFormBuilder {
     details = details === undefined ? {'searchField': null} : details;
     return this.formBuilder.group({
       'searchField': [details.search]
+    });
+  }
+}
+
+
+export class WaitingPeriodFormBuilder {
+  constructor(private formBuilder: FormBuilder) {
+  }
+
+  buildForm(waiting_period) {
+    return this.buildWaitingPeriodForm(waiting_period);
+  }
+
+  buildWaitingPeriodForm(details) {
+    details = details === undefined ? {'waiting_period': null} : details;
+    return this.formBuilder.group({
+      'waiting_period': [details.waiting_period, [Validators.required]],
     });
   }
 }
@@ -75,7 +92,10 @@ export class MainMemberArchivedListComponent implements OnInit {
   main_members: Array<any> = [];
   main_member: any;
   formBuilder: SearchFormBuilder;
+  waitingPeriodFormBuilder: WaitingPeriodFormBuilder;
   form: FormGroup;
+  waitingPeriodForm: FormGroup;
+  waiting_period: any;
   searchField: null;
   status: null;
   dataSource: any;
@@ -97,6 +117,7 @@ export class MainMemberArchivedListComponent implements OnInit {
     private toastr: ToastrService,
     private changeDetectorRefs: ChangeDetectorRef) { 
       this.formBuilder = new SearchFormBuilder(fb);
+      this.waitingPeriodFormBuilder = new WaitingPeriodFormBuilder(fb);
     }
 
   ngOnInit(): void {
@@ -105,6 +126,7 @@ export class MainMemberArchivedListComponent implements OnInit {
     this.parlour_id = this.openService.getParlourId()
 
     this.initSearchForm(this.searchField);
+    this.initWaitingPeriodForm(this.waiting_period);
     this.initMainMembers(this.user.id)
   }
 
@@ -127,6 +149,10 @@ export class MainMemberArchivedListComponent implements OnInit {
 
   initSearchForm(searchField: string) {
     this.form = this.formBuilder.buildForm(searchField);
+  }
+
+  initWaitingPeriodForm(waitingPeriodFields) {
+    this.waitingPeriodForm = this.waitingPeriodFormBuilder.buildForm(waitingPeriodFields);
   }
 
   initMainMembers(id) {
@@ -170,9 +196,14 @@ export class MainMemberArchivedListComponent implements OnInit {
     this.router.navigate(['applicants', id,'extended-members', 'all']);
   }
 
-  confirmRestoreApplicant(main_member: any) {
+  restoreMember() {
+    const button = document.getElementById('restoreModal');
+    button.click();
+  }
+
+  setWaitingPeriod(main_member) {
     this.main_member = main_member;
-    const button = document.getElementById('restoreApplicant');
+    const button = document.getElementById('waitingPeriodModalBtn');
     button.click();
   }
 
@@ -265,6 +296,12 @@ export class MainMemberArchivedListComponent implements OnInit {
           let err = error['error'];
           this.toastr.error(err['description'], error['title'], {timeOut: 3000});
         });
+  }
+
+  waitingPeriod() {
+    const formValue = this.waitingPeriodForm.value;
+    this.waiting_period = formValue['waiting_period'];
+    this.restoreMember();
   }
 
   showSuccess() {
