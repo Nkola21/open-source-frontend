@@ -261,6 +261,10 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
     return this.permission == 'Consultant';
   }
 
+  isMemberConsultant() {
+    return this.permission == 'Consultant' && this.main_member && this.user.id == this.main_member.applicant.consultant.id;
+  }
+
   initializePaginator() {
     this.dataSource.paginator = this.paginator;
   }

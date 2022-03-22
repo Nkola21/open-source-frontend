@@ -198,8 +198,8 @@
                 <ng-container matColumnDef="extended_members">
                   <th style="padding-left: 40px; padding-right: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef> Extended Members</th>
                   <td style="padding-left: 40px; padding-right: 10px;" mat-cell *matCellDef="let main_member">
-                    <a class="btn btn-md btn-dark m-2" *ngIf="noExtendedMembers(main_member)" (click)="navigateToExtendedMembersListView(main_member.applicant.id)">View</a>
-                    <button class="btn btn-md btn-dark m-2" *ngIf="!noExtendedMembers(main_member)" matTooltip="This plan is only for principal members." [disabled]="true">View</button>
+                    <a class="btn btn-md btn-dark m-2" *ngIf="noExtendedMembers(main_member) && isMemberConsultant()" (click)="navigateToExtendedMembersListView(main_member.applicant.id)">View</a>
+                    <button class="btn btn-md btn-dark m-2" *ngIf="!noExtendedMembers(main_member) || !isMemberConsultant()" matTooltip="This plan is only for principal members." [disabled]="true">View</button>
                   </td>
                 </ng-container>
   
@@ -248,10 +248,13 @@
                 <ng-container matColumnDef="actions">
                   <th style="width: 330px;padding-left: 5%;" class="fs-6" mat-header-cell *matHeaderCellDef>Action</th>
                   <td mat-cell *matCellDef="let main_member">
-                    <a class="btn btn-md btn-dark m-2" (click)="navigateToMainMemberForm(main_member)">Edit</a>
+
+                    <button class="btn btn-md btn-dark m-2" *ngIf="isMemberConsultant()" (click)="navigateToMainMemberForm(main_member)">Edit</button>
+                    <button class="btn btn-md btn-dark m-2" *ngIf="!isMemberConsultant()" [disabled]="true">Edit</button>
                     <a class="btn btn-md btn-dark m-2" (click)="navigateToPaymentForm(main_member)">Pay now</a>
                     <!-- <dialog-elements-example></dialog-elements-example> -->
-                    <button class="btn btn-md btn-dark" (click)="confirmDeleteApplicant(main_member)">Delete</button>
+                    <button class="btn btn-md btn-dark" *ngIf="isMemberConsultant()" (click)="confirmDeleteApplicant(main_member)" [disabled]="isMemberConsultant()">Delete</button>
+                    <button class="btn btn-md btn-dark" *ngIf="!isMemberConsultant()" [disabled]="true">Delete</button>
                     <button class="btn btn-md btn-dark" style="display: none;" id="deleteApplicant" data-bs-toggle="modal" data-bs-target="#confirmDeleteApplicantModal"></button>
                     <button class="m-2" style="background-color: #fff; border: none;" *ngIf="main_member.age_limit_exceeded && !main_member.age_limit_exception" class="tooltip-test" title="This member exceeds the age limit set on current plan" (click)="ageLimitException(main_member)"><span class="material-icons"  style="font-size:30px;color:red;">
                       notifications
