@@ -261,8 +261,8 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
     return this.permission == 'Consultant';
   }
 
-  isMemberConsultant() {
-    return this.permission == 'Consultant' && this.main_member && this.user.id == this.main_member.applicant.consultant.id;
+  isMemberConsultant(main_member: any) {
+    return this.permission == 'Consultant' && main_member && this.user.id == main_member.applicant.consultant.id;
   }
 
   initializePaginator() {
@@ -376,6 +376,20 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
       });
   }
 
+  getByBranchConsultant(consultant: any) {
+    let filter = `consultant_id=${consultant.id}`
+    this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?${filter}`)
+      .subscribe(
+        (main_members: any) => {
+          this.main_members = main_members;
+          this.configureMainMembers(main_members.reverse());
+          this.loadingState = 'complete';
+        },
+      error => {
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
+      });
+  }
   getByBranch(branch: any) {
     let queryString: string;
     const formValue = this.performanceForm.value;

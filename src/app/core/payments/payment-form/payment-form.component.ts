@@ -21,6 +21,7 @@ export class PaymentFormComponent implements OnInit {
   parlour_id: any;
   applicant_id: any;
   user: any;
+  permission: any;
 
   constructor(
     public openService: OpenService,
@@ -35,6 +36,7 @@ export class PaymentFormComponent implements OnInit {
   ngOnInit(): void {
     this.parlour_id = this.openService.getParlourId();
     this.user = this.openService.getUser();
+    this.permission = this.openService.getPermissions();
     this.transition(this.user);
     this.route.params.subscribe(
       (params) => {

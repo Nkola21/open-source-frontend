@@ -36,6 +36,14 @@
                       <li><a class="dropdown-item" (click)="getByPaymentSkipped()">Skipped</a></li>
                     </ul>
                   </div>
+                  <div *ngIf="isConsultant()" class="btn-group" role="group">
+                    <button id="btnGroupDrop1" type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                      Branch Payment
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop2">
+                      <li *ngFor="let consultant of consultants"><a class="dropdown-item" (click)="getByBranchConsultant(consultant)">{{ consultant.first_name }} {{ consultant.last_name }}</a></li>
+                    </ul>
+                  </div>
                   <div *ngIf="isParlour()" class="btn-group" role="group">
                     <button id="btnGroupDrop2" type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                       Perfomance
@@ -121,6 +129,14 @@
                       <li><a class="dropdown-item" (click)="getByPaymentSkipped()">Skipped</a></li>
                     </ul>
                   </div>
+                  <div *ngIf="isConsultant()" class="btn-group" role="group" style="margin-right: -280px;">
+                    <button id="btnGroupDrop1" type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                      Branch Payment
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop2">
+                      <li *ngFor="let consultant of consultants"><a class="dropdown-item" (click)="getByBranchConsultant(consultant)">{{ consultant.first_name }} {{ consultant.last_name }}</a></li>
+                    </ul>
+                  </div>
                   <div *ngIf="isParlour()" class="btn-group" role="group">
                     <button id="btnGroupDrop2" type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                       Perfomance
@@ -198,8 +214,8 @@
                 <ng-container matColumnDef="extended_members">
                   <th style="padding-left: 40px; padding-right: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef> Extended Members</th>
                   <td style="padding-left: 40px; padding-right: 10px;" mat-cell *matCellDef="let main_member">
-                    <a class="btn btn-md btn-dark m-2" *ngIf="noExtendedMembers(main_member) && isMemberConsultant()" (click)="navigateToExtendedMembersListView(main_member.applicant.id)">View</a>
-                    <button class="btn btn-md btn-dark m-2" *ngIf="!noExtendedMembers(main_member) || !isMemberConsultant()" matTooltip="This plan is only for principal members." [disabled]="true">View</button>
+                    <a class="btn btn-md btn-dark m-2" *ngIf="noExtendedMembers(main_member) && isMemberConsultant(main_member)" (click)="navigateToExtendedMembersListView(main_member.applicant.id)">View</a>
+                    <button class="btn btn-md btn-dark m-2" *ngIf="!noExtendedMembers(main_member) || !isMemberConsultant(main_member)" matTooltip="This plan is only for principal members." [disabled]="true">View</button>
                   </td>
                 </ng-container>
   
@@ -249,12 +265,12 @@
                   <th style="width: 330px;padding-left: 5%;" class="fs-6" mat-header-cell *matHeaderCellDef>Action</th>
                   <td mat-cell *matCellDef="let main_member">
 
-                    <button class="btn btn-md btn-dark m-2" *ngIf="isMemberConsultant()" (click)="navigateToMainMemberForm(main_member)">Edit</button>
-                    <button class="btn btn-md btn-dark m-2" *ngIf="!isMemberConsultant()" [disabled]="true">Edit</button>
+                    <button class="btn btn-md btn-dark m-2" *ngIf="isMemberConsultant(main_member)" (click)="navigateToMainMemberForm(main_member)">Edit</button>
+                    <button class="btn btn-md btn-dark m-2" *ngIf="!isMemberConsultant(main_member)" [disabled]="true">Edit</button>
                     <a class="btn btn-md btn-dark m-2" (click)="navigateToPaymentForm(main_member)">Pay now</a>
                     <!-- <dialog-elements-example></dialog-elements-example> -->
-                    <button class="btn btn-md btn-dark" *ngIf="isMemberConsultant()" (click)="confirmDeleteApplicant(main_member)" [disabled]="isMemberConsultant()">Delete</button>
-                    <button class="btn btn-md btn-dark" *ngIf="!isMemberConsultant()" [disabled]="true">Delete</button>
+                    <button class="btn btn-md btn-dark" *ngIf="isMemberConsultant(main_member)" (click)="confirmDeleteApplicant(main_member)">Delete</button>
+                    <button class="btn btn-md btn-dark" *ngIf="!isMemberConsultant(main_member)" [disabled]="true">Delete</button>
                     <button class="btn btn-md btn-dark" style="display: none;" id="deleteApplicant" data-bs-toggle="modal" data-bs-target="#confirmDeleteApplicantModal"></button>
                     <button class="m-2" style="background-color: #fff; border: none;" *ngIf="main_member.age_limit_exceeded && !main_member.age_limit_exception" class="tooltip-test" title="This member exceeds the age limit set on current plan" (click)="ageLimitException(main_member)"><span class="material-icons"  style="font-size:30px;color:red;">
                       notifications
@@ -279,10 +295,6 @@
 
 
   <a id="viewFile" class="btn btn-md btn-dark" href="{{getOtherDocUrl()}}" target="_blank" style="margin-top: 5px;display: none;">Files</a>
-<!-- Scrollable modal -->
-<div class="modal-dialog modal-dialog-scrollable" id="modalShow">
-  ...
-</div>
 
 <!-- Modal -->
 <div class="modal fade" id="confirmDeleteApplicantModal" tabindex="-1" aria-labelledby="confirmDeleteApplicantModalLabel" aria-hidden="true">

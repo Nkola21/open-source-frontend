@@ -56,6 +56,8 @@ export class InvoiceListComponent implements OnInit {
   page: any;
   loadingState: any;
   tableSize: number;
+  user: any;
+  permission: any;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -67,6 +69,8 @@ export class InvoiceListComponent implements OnInit {
     private toastr: ToastrService) { }
 
   ngOnInit(): void {
+    this.user = this.openService.getUser();
+    this.permission = this.openService.getPermissions();
     this.route.params.subscribe(
       (params) => {
         const id = +params['applicant_id'];
@@ -151,5 +155,9 @@ export class InvoiceListComponent implements OnInit {
       const err = error["error"];
       this.toastr.error(err["description"], err['title']);
     });
+  }
+
+  getExcel() {
+    return `${this.openService.getBaseUrl()}/${this.user.id}/invoices/actions/export_to_excel?permission=${this.permission}`;
   }
 }
