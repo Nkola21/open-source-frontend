@@ -209,6 +209,7 @@ export class MainMemberArchivedListComponent implements OnInit {
 
   handleRestore(main_member) {
     main_member.state=1;
+    main_member.waiting_period= this.waiting_period;
     this.openService.put(`main-members/${main_member.id}/restore`, main_member)
       .subscribe(
         (main_member: any) => {
