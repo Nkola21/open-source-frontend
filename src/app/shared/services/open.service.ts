@@ -30,17 +30,19 @@ export class OpenService {
   constructor(private http: HttpClient) { }
 
   setBaseUrl(): void {
-    localStorage.setItem('baseUrl', 'https://staging.osource.co.za/open-source');
+    localStorage.setItem('baseUrl', 'https://backend.osource.co.za/open-source');
   }
 
   getBaseUrl(): any {
-    return 'http://localhost:8009/open-source'
+    // return 'http://localhost:8009/open-source'
     // return 'https://staging.osource.co.za/open-source';
+    return 'https://backend.osource.co.za/open-source';
   }
 
   getClientUrl(): any {
-    return 'http://localhost:5100'
-    // return 'https://Nkosana-citiq.github.io/open-source-frontend/';
+    // return 'http://localhost:5100'
+    // return 'https://nkosana-citiq.github.io/open-source-frontend'
+    return 'https://osource.co.za';
   }
 
   isProduction(): boolean {

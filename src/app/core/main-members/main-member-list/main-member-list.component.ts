@@ -699,11 +699,16 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
 
   sendSMS() {
     let formValues = this.smsForm.value;
-    formValues['state'] = this.status;
-    formValues['search_string'] = this.searchField;
+    if (this.status) {
+      formValues['state'] = this.status;
+    }
+    if (this.searchField) {
+      formValues['search_string'] = this.searchField;
+    }
+
     formValues['parlour_id'] = this.parlour_id;
-    formValues['consultant_id'] = this.consultant ? this.consultant.id : null;
-    formValues['branch'] = this.consultant ? this.consultant.branch : null;
+    formValues['consultant_id'] = this.permission == "Consultant" ? this.user.id : null;
+    formValues['branch'] = this.permission == "Consultant" ? this.user.branch : null;
 
     this.openService.post(`main-members/send-sms`, formValues)
       .subscribe(
