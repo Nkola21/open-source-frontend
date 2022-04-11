@@ -11,7 +11,7 @@
               <a class="nav-link" [routerLink]="['/home']" routerLinkActive="active"></a>
             </li>
             <li class="nav-item" *ngIf="parlour">
-              <p style="font-size: 26px;color: #fff"><span>{{ parlourName() }}</span></p>
+              <p style="font-size: 26px;color: #fff ;  white-space: nowrap ;"><span>{{ parlourName() }}</span></p>
             </li>
             <li class="nav-item" *ngIf="hasParlourName()">
               <p style="font-size: 26px;opacity: 0;"><span>{{ parlourName() }}</span></p>
