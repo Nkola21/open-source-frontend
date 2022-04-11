@@ -390,6 +390,7 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
           this.toastr.error(err['description'], error['title'], {timeOut: 3000});
       });
   }
+
   getByBranch(branch: any) {
     let queryString: string;
     const formValue = this.performanceForm.value;
