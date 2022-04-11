@@ -74,6 +74,8 @@ export class PaymentFormComponent implements OnInit {
     this.openService.getOne(`main-members/${id}/get`)
       .subscribe(
         main_member => {
+          console.log(main_member);
+          
           this.main_member = main_member;
           this.applicant_id = this.main_member.applicant.id;
           this.getPreviousPayment(main_member);
