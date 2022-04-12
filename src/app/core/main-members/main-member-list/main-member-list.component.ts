@@ -381,6 +381,7 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
     this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?${filter}`)
       .subscribe(
         (main_members: any) => {
+          this.consultant = consultant;
           this.main_members = main_members;
           this.configureMainMembers(main_members.reverse());
           this.loadingState = 'complete';
@@ -519,6 +520,12 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
           let err = error['error'];
           this.toastr.error(err['description'], error['title'], {timeOut: 3000});
         });
+  }
+
+  isCurrentConsultant() {
+    console.log("Is current consultant: ", this.consultant);
+  
+    return this.consultant ? this.consultant.id == this.user.id : true;
   }
 
   initConsultants(parlour_id) {
@@ -686,6 +693,11 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
   counter(value: number) {
     this.message_parts = Math.ceil(value/160);
     return 160 * this.message_parts; 
+  }
+
+  getConsultantPaymentsExcel(consultant?: any) {
+    let queryString = consultant ? `?consultant_id=${consultant.id}` : ''
+    return `${this.openService.getBaseUrl()}/${this.user.id}/invoices/actions/export_to_excel${queryString}`;
   }
 
   getExcel() {

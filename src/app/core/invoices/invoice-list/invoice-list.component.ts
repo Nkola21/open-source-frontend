@@ -157,7 +157,4 @@ export class InvoiceListComponent implements OnInit {
     });
   }
 
-  getExcel() {
-    return `${this.openService.getBaseUrl()}/${this.user.id}/invoices/actions/export_to_excel?permission=${this.permission}`;
-  }
 }
