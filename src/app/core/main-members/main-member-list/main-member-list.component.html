@@ -119,6 +119,14 @@
                       <li><a class="dropdown-item" (click)="getByPaymentSkipped()">Skipped</a></li>
                     </ul>
                   </div>
+                  <div class="btn-group" role="group" style="margin-right: -280px;">
+                    <button id="btnGroupDrop1" type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                      Branch Payment
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop2">
+                      <li *ngFor="let consultant of consultants"><a class="dropdown-item" (click)="getByBranchConsultant(consultant)">{{ consultant.first_name }} {{ consultant.last_name }}</a></li>
+                    </ul>
+                  </div>
                   <div *ngIf="isParlour()" class="btn-group" role="group" style="margin-right: 10px;">
                     <button id="btnGroupDrop2" type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                       Perfomance
