@@ -1,41 +1,30 @@
-<section *ngIf="user" class="header">
-  <div class="containers">
+<section *ngIf="user" class="header py-3">
+  <div class="containers h-100 w-100">
     <nav class="navbar navbar-expand-lg navbar-light">
       <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" [routerLink]="['/home']" routerLinkActive="active"></a>
-            </li>
-            <li class="nav-item" *ngIf="parlour">
+        <div class="collapse navbar-collapse justify-content-evenly col-md-10" id="navbarTogglerDemo01">
+          <div class="justify-content-center">
+            <div class="">
               <p style="font-size: 26px;color: #fff ;  white-space: nowrap ;"><span>{{ parlourName() }}</span></p>
-            </li>
-            <li class="nav-item" *ngIf="hasParlourName()">
-              <p style="font-size: 26px;opacity: 0;"><span>{{ parlourName() }}</span></p>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" [routerLink]="['/contacts']" routerLinkActive="active" ></a>
-            </li>
-            </ul>
-            <div class="btn1 btn-group " role="group" aria-label="Button group with nested dropdown" style="margin-left: 20%;">      
-              <div class="btn-group" role="group" style="background-color: black; border-radius: 20%;">
-                <button id="btnGroupDrop1" type="button" class="btn btn-lg btn-dark dropdown-toggle" style="width: max-content;padding: 4%;" data-bs-toggle="dropdown" aria-expanded="false">
-                  {{ user.username }}
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                  <li><a class="dropdown-item" [routerLink]="['/change-password']" *ngIf="isConsultant()">Change Password</a></li>
-                  <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
-                </ul>
-              </div>
             </div>
+          </div>
+        </div>
+        <div class="btn-group col-md-2 collapse navbar-collapse justify-content-around" role="group">
+          <button id="btnGroupDrop1" type="button" class="btn btn-lg btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            {{ user.username }}
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+            <li><a class="dropdown-item" [routerLink]="['/change-password']" *ngIf="isConsultant()">Change Password</a></li>
+            <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+          </ul>
         </div>
       </div>
     </nav>
     </div>
-       
+
 </section>
 
 
@@ -47,7 +36,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-          
+
           <ul class="navbar-nav d-flex justify-content-lg-between">
             <li class="nav-item">
               <a class="nav-link" [routerLink]="['/home']" routerLinkActive="active">HOME</a>
@@ -71,5 +60,5 @@
       </div>
     </nav>
     </div>
-       
+
 </section>

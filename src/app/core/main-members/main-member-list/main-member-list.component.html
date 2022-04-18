@@ -119,14 +119,6 @@
                       <li><a class="dropdown-item" (click)="getByPaymentSkipped()">Skipped</a></li>
                     </ul>
                   </div>
-                  <div *ngIf="isConsultant()" class="btn-group" role="group" style="margin-right: -280px;">
-                    <button id="btnGroupDrop1" type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                      Branch Payment
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop2">
-                      <li *ngFor="let consultant of consultants"><a class="dropdown-item" (click)="getByBranchConsultant(consultant)">{{ consultant.first_name }} {{ consultant.last_name }}</a></li>
-                    </ul>
-                  </div>
                   <div *ngIf="isParlour()" class="btn-group" role="group" style="margin-right: 10px;">
                     <button id="btnGroupDrop2" type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                       Perfomance
@@ -209,8 +201,8 @@
                 <ng-container matColumnDef="extended_members">
                   <th style="padding-left: 40px; padding-right: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef> Extended Members</th>
                   <td style="padding-left: 40px; padding-right: 10px;" mat-cell *matCellDef="let main_member">
-                    <a class="btn btn-md btn-dark m-2" *ngIf="noExtendedMembers(main_member) && isCurrentConsultant()" (click)="navigateToExtendedMembersListView(main_member.applicant.id)">View</a>
-                    <button class="btn btn-md btn-dark m-2" *ngIf="!noExtendedMembers(main_member) || !isCurrentConsultant()" matTooltip="This plan is only for principal members." [disabled]="true">View</button>
+                    <a class="btn btn-md btn-dark m-2" *ngIf="noExtendedMembers(main_member) && isCurrentConsultant(main_member)" (click)="navigateToExtendedMembersListView(main_member.applicant.id)">View</a>
+                    <button class="btn btn-md btn-dark m-2" *ngIf="!noExtendedMembers(main_member) || !isCurrentConsultant(main_member)" matTooltip="This plan is only for principal members." [disabled]="true">View</button>
                   </td>
                 </ng-container>
   
@@ -260,12 +252,13 @@
                   <th style="width: 330px;padding-left: 5%;" class="fs-6" mat-header-cell *matHeaderCellDef>Action</th>
                   <td mat-cell *matCellDef="let main_member">
 
-                    <button class="btn btn-md btn-dark m-2" (click)="navigateToMainMemberForm(main_member)" *ngIf="isCurrentConsultant()">Edit</button>
-                    <button class="btn btn-md btn-dark m-2" *ngIf="!isCurrentConsultant()" [disabled]="true">Edit</button>
-                    <a class="btn btn-md btn-dark m-2" (click)="navigateToPaymentForm(main_member)">Pay now</a>
+                    <button class="btn btn-md btn-dark m-2" (click)="navigateToMainMemberForm(main_member)" *ngIf="isCurrentConsultant(main_member)">Edit</button>
+                    <button class="btn btn-md btn-dark m-2" *ngIf="!isCurrentConsultant(main_member)" [disabled]="true">Edit</button>
+                    <a *ngIf="isCurrentConsultant(main_member)" class="btn btn-md btn-dark m-2" (click)="navigateToPaymentForm(main_member)">Pay now</a>
+                    <a *ngIf="!isCurrentConsultant(main_member)" id="payNow" class="btn btn-md btn-dark m-2" (click)="setMainmemberOtherConsultant(main_member)">Pay now</a>
                     <!-- <dialog-elements-example></dialog-elements-example> -->
-                    <button class="btn btn-md btn-dark" (click)="confirmDeleteApplicant(main_member)" *ngIf="isCurrentConsultant()">Delete</button>
-                    <button class="btn btn-md btn-dark"  *ngIf="!isCurrentConsultant()" [disabled]="true">Delete</button>
+                    <button class="btn btn-md btn-dark" (click)="confirmDeleteApplicant(main_member)" *ngIf="isCurrentConsultant(main_member)">Delete</button>
+                    <button class="btn btn-md btn-dark"  *ngIf="!isCurrentConsultant(main_member)" [disabled]="true">Delete</button>
                     <button class="btn btn-md btn-dark" style="display: none;" id="deleteApplicant" data-bs-toggle="modal" data-bs-target="#confirmDeleteApplicantModal"></button>
                     <button class="m-2" style="background-color: #fff; border: none;" *ngIf="main_member.age_limit_exceeded && !main_member.age_limit_exception" class="tooltip-test" title="This member exceeds the age limit set on current plan" (click)="ageLimitException(main_member)"><span class="material-icons"  style="font-size:30px;color:red;">
                       notifications
@@ -292,6 +285,41 @@
   <a id="viewFile" class="btn btn-md btn-dark" href="{{getOtherDocUrl()}}" target="_blank" style="margin-top: 5px;display: none;">Files</a>
 
 <!-- Modal -->
+<button id="openOtherConsultantModal" class="btn btn-md btn-danger" data-bs-toggle="modal" data-bs-target="#otherConsultantModal" style="display: none;"></button>
+<div *ngIf="main_member" class="modal fade" id="otherConsultantModal" tabindex="-1" aria-labelledby="otherConsultantModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fs-4" id="otherConsultantModalLabel">Make Payment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="">
+          <p class="mb-0 ml-3 fs-5" >
+            You are about to make a payment for a member belonging to:
+          </p>
+          <p class="mb-0 ml-3 fs-5" >
+            <strong>Consultant:</strong> {{ main_member.applicant.consultant.first_name | titlecase }} {{ main_member.applicant.consultant.last_name | titlecase }}
+            <br />
+            <strong>Branch:</strong> {{ main_member.applicant.consultant.branch | titlecase }}
+            <br />
+            <strong>email:</strong> {{ main_member.applicant.consultant.email }}
+          </p>
+        </div>
+        <br />
+        <div class="ml-3">
+          <p class="fs-5">Do you want to proceed?</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="navigateToPaymentForm(main_member)">proceed?</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Modal -->
 <div class="modal fade" id="confirmDeleteApplicantModal" tabindex="-1" aria-labelledby="confirmDeleteApplicantModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">

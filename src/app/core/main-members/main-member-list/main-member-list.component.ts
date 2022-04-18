@@ -38,7 +38,6 @@ export class MembersDataSource implements dd_source<any> {
                 sortDirection = 'asc', pageIndex = 0, pageSize = 3) {
 
         this.loadingSubject.next(true);
-        console.log("Call get")
         this.openService.findMembers(url, filter, sortDirection,
             pageIndex, pageSize).pipe(
             catchError(() => of([])),
@@ -242,8 +241,6 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
   }
 
   loadMembersPage() {
-    console.log("call load members...");
-
     let url = `${this.permission.toLowerCase()}s/${this.user.id}/main-members/all`;
     this.dataSource.loadMembers(url, '',  this.sort.direction, 
         this.paginator.pageIndex, this.paginator.pageSize);
@@ -522,10 +519,8 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
         });
   }
 
-  isCurrentConsultant() {
-    console.log("Is current consultant: ", this.consultant);
-  
-    return this.consultant ? this.consultant.id == this.user.id : true;
+  isCurrentConsultant(main_member: any) {
+    return main_member.applicant.consultant.id == this.user.id;
   }
 
   initConsultants(parlour_id) {
@@ -754,4 +749,9 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
     return main_member.extended_member_limit;
   }
 
+  setMainmemberOtherConsultant(main_member) {
+    this.main_member = main_member;
+    const btn = document.getElementById("openOtherConsultantModal");
+    btn.click();
+  }
 }
