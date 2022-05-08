@@ -139,13 +139,15 @@ export class MainMemberDataSource extends DataSource<any> {
 
 
 const dialogConfig = new MatDialogConfig();
+const LIMIT = 10;
+
 
 @Component({
   selector: 'app-main-member-list',
   templateUrl: './main-member-list.component.html',
   styleUrls: ['./main-member-list.component.css']
 })
-export class MainMemberListComponent implements AfterViewInit, OnInit {
+export class MainMemberListComponent implements OnInit {
 
   displayedColumns = ['full_name', 'id_number', 'contact', 'extended_members', 'premium', 'policy_num', 'policy', 'other', 'date_joined', 'status', 'actions'];
   main_members: Array<any> = [];
@@ -177,6 +179,10 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
   branches: Array<string> = [];
   filter: string;
   extendedMemberAgeLimit = false;
+  offset=0;
+  searchOffset=0;
+  searchLimit=LIMIT;
+  limit=LIMIT;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -214,36 +220,45 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
 
     this.initSMSForm(this.smsFields, this.parlour);
     this.initPerformanceForm(this.consultant);
-    this.initMainMembers(this.user.id)
-  }
-
-  ngAfterViewInit() {
-
-     // server-side search
-    //  fromEvent(this.input.nativeElement,'keyup')
-    //  .pipe(
-    //      debounceTime(150),
-    //      distinctUntilChanged(),
-    //      tap(() => {
-    //          this.paginator.pageIndex = 0;
-    //          this.loadMembersPage();
-    //      })
-    //  )
-    //  .subscribe();
-    // // reset the paginator after sorting
-    // this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-    // merge(this.sort.sortChange, this.paginator.page)
-    //     .pipe(
-    //         tap(() => this.loadMembersPage())
-    //     )
-    //     .subscribe();
+    this.initMainMembers()
   }
 
   loadMembersPage() {
-    let url = `${this.permission.toLowerCase()}s/${this.user.id}/main-members/all`;
+    let url = `${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?offset`;
     this.dataSource.loadMembers(url, '',  this.sort.direction, 
         this.paginator.pageIndex, this.paginator.pageSize);
+  }
+
+  loadMore() {
+    this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?offset=${this.offset}`)
+    .subscribe(
+      (main_members: Array<any>) => {
+        this.status = null;
+        this.searchField = null;
+        this.main_members = main_members;
+        this.offset += 20;
+        this.isAgeLimitExceeded(main_members);
+        this.configureMainMembers(main_members.reverse());
+        this.loadingState = 'complete';
+      },
+      error => {
+        let err = error['error'];
+        this.toastr.error(err['description'], error['title'], {timeOut: 3000});
+      });
+  }
+
+  getParams(offset: number = 0, limit: number = LIMIT) {
+    const params = {
+      'offset': offset,
+      'limit': limit
+    };
+    return params;
+  }
+
+  doMore() {
+    this.limit = this.offset+40
+    const params = this.getParams(this.offset, this.limit);
+    this.initMainMembers();
   }
 
   toDate(created) {
@@ -283,25 +298,26 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
     this.form = this.formBuilder.buildForm(searchField);
   }
 
-  initMainMembers(id) {
+  initMainMembers() {
     this.main_members = [];
     const permission = this.permission;
-    this.page = {
-      'pageSize': 5,
-      'pageIndex': 0,
-    };
 
     this.loadingState = 'loading';
-    this.dataSource = new MainMemberDataSource([], this.page);
 
-    this.openService.getUrl(`${permission.toLowerCase()}s/${id}/main-members/all`)
+    this.openService.getUrl(`${permission.toLowerCase()}s/${this.user.id}/main-members/all?offset=${this.offset}&limit=${this.limit}`)
       .subscribe(
-        (main_members: Array<any>) => {
+        (main_members: any) => {
+
           this.status = null;
           this.searchField = null;
-          this.main_members = main_members;
-          this.isAgeLimitExceeded(main_members);
-          this.configureMainMembers(main_members.reverse());
+          
+          if (main_members["result"].length > 0) {
+            this.main_members = main_members["result"].reverse();
+            this.isAgeLimitExceeded(main_members);
+            this.offset = 20;
+            this.limit = this.limit + 20;
+          }
+
           this.loadingState = 'complete';
         },
         error => {
@@ -315,7 +331,7 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
       .subscribe(
         (main: any) => {
           main_member = main;
-          this.initMainMembers(this.user.id);
+          this.initMainMembers();
           this.showExceptSuccess();
         },
       error => {
@@ -665,14 +681,17 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
   getBySearchField() {
     const formValue = this.form.value;
     this.filter = `search_string=${formValue["searchField"]}`;
-    this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?search_string=${formValue["searchField"]}`)
+  
+    this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?offset=${this.searchOffset}&limit=${this.searchLimit}&search_string=${formValue["searchField"]}`)
       .subscribe(
-        (main_members: Array<any>) => {
+        (main_members: any) => {
           this.status = null;
           this.searchField = formValue["searchField"];
-
-          this.main_members = main_members;
-          this.configureMainMembers(main_members.reverse());
+          if (main_members["result"].length > 0) {
+            this.main_members = main_members["result"].reverse();
+            this.searchOffset = main_members["result"].length;
+            this.limit = this.searchOffset + 20;
+          }
           this.loadingState = 'complete';
         },
         error => {
@@ -691,8 +710,8 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
   }
 
   getConsultantPaymentsExcel(consultant?: any) {
-    let queryString = consultant ? `?consultant_id=${consultant.id}` : ''
-    return `${this.openService.getBaseUrl()}/${this.user.id}/invoices/actions/export_to_excel${queryString}`;
+    let queryString = consultant ? `consultant_id=${consultant.id}` : ''
+    return `${this.openService.getBaseUrl()}/${this.user.id}/invoices/actions/export_to_excel?${queryString}`;
   }
 
   getExcel() {

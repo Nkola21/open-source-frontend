@@ -193,12 +193,16 @@ export class MainMemberArchivedListComponent implements OnInit {
   }
 
   navigateToExtendedMembersListView(id: number) {
-    this.router.navigate(['applicants', id,'extended-members', 'all']);
+    this.router.navigate(['applicants', id,'extended-members', 'archived']);
   }
 
   restoreMember() {
     const button = document.getElementById('restoreModal');
     button.click();
+  }
+
+  isActive(main_member) {
+    return main_member.state == 1;
   }
 
   setWaitingPeriod(main_member) {

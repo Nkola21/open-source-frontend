@@ -218,6 +218,7 @@ export class ExtendedMemberFormComponent extends CompareFormValue implements OnI
   submit() {
     const formValue = this.form.value;
     formValue["applicant_id"] = this.applicant_id;
+    console.log(formValue);
 
     if (this.extended_member) {
       this.openService.put(`extended-members/${this.extended_member.id}/update`, formValue)

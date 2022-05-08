@@ -96,19 +96,25 @@
               <table mat-table #table [dataSource]="dataSource" class="table" style="width: 100%">
                 <ng-container matColumnDef="full_name">
                     <th style="padding-right: 35px;" class="fs-6" mat-header-cell *matHeaderCellDef>Full Name</th>
-                    <td style="padding-right: 35px;" mat-cell *matCellDef="let main_member"> {{main_member.first_name}} {{main_member.last_name}}
+                    <td style="padding-right: 35px;" mat-cell *matCellDef="let main_member">
+                      <span *ngIf="isActive(main_member)"  class="text-muted" >{{main_member.first_name}} {{main_member.last_name}}</span>
+                      <span *ngIf="!isActive(main_member)">{{main_member.first_name}} {{main_member.last_name}}</span>
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="id_number">
                   <th style="padding-right: 35px;" class="fs-6" mat-header-cell *matHeaderCellDef>ID number</th>
-                  <td style="padding-right: 35px;" mat-cell *matCellDef="let main_member"> {{main_member.id_number}}
+                  <td style="padding-right: 35px;" mat-cell *matCellDef="let main_member">
+                      <span *ngIf="isActive(main_member)" class="text-muted" >{{main_member.id_number}}</span>
+                      <span *ngIf="!isActive(main_member)">{{main_member.id_number}}</span>
                   </td>
                 </ng-container>
   
                 <ng-container matColumnDef="contact">
                   <th style="padding-left: 40px; padding-right: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef> Contact</th>
                   <td style="padding-left: 40px; padding-right: 10px;" mat-cell *matCellDef="let main_member">
-                    {{main_member.contact}} </td>
+                    <span *ngIf="isActive(main_member)" class="text-muted" >{{main_member.contact}}</span>
+                    <span *ngIf="!isActive(main_member)">{{main_member.contact}}</span>
+                  </td>
                 </ng-container>
 
                 <ng-container matColumnDef="extended_members">
@@ -121,47 +127,72 @@
                 <ng-container matColumnDef="premium">
                   <th style="padding-left: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef>Premium</th>
                   <td style="padding-left: 10px;" mat-cell *matCellDef="let main_member">
-                    {{main_member.premium}}
+                    <span *ngIf="isActive(main_member)" class="text-muted" >{{main_member.applicant.plan.premium}}</span>
+                    <span *ngIf="!isActive(main_member)">{{main_member.applicant.plan.premium}}</span>
                   </td>
                 </ng-container>
 
                 <ng-container matColumnDef="policy_num">
                   <th style="padding-left: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef>Policy Num</th>
                   <td style="padding-left: 10px;" mat-cell *matCellDef="let main_member">
-                    {{main_member.applicant.policy_num}}
+                    <span *ngIf="isActive(main_member)" class="text-muted" >{{main_member.applicant.policy_num}}</span>
+                    <span *ngIf="!isActive(main_member)">{{main_member.applicant.policy_num}}</span>
                   </td>
                 </ng-container>
 
                 <ng-container matColumnDef="policy">
                   <th style="padding-left: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef>Policy</th>
                   <td style="padding-left: 10px;" mat-cell *matCellDef="let main_member">
-                    <a class="btn btn-md btn-dark" href="{{main_member.applicant.document}}" target="_blank" style="margin-top: 5px;">Document</a>
+                    <span *ngIf="!isActive(main_member)">
+                      <a class="btn btn-md btn-dark" href="{{main_member.applicant.document}}" target="_blank" style="margin-top: 5px;">Document</a>
+                    </span>
+                    <span *ngIf="isActive(main_member)">
+                      <button class="btn btn-md btn-dark" style="margin-top: 5px;" disabled="true">Document</button>
+                    </span>
                   </td>
                 </ng-container>
 
                 <ng-container matColumnDef="date_joined">
                   <th style="padding-left: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef>Date Joined</th>
                   <td style="padding-left: 10px;" mat-cell *matCellDef="let main_member">
-                    {{main_member.date_joined}}
+                    <span *ngIf="isActive(main_member)" class="text-muted" >{{main_member.date_joined}}</span>
+                    <span *ngIf="!isActive(main_member)">{{main_member.date_joined}}</span>
                   </td>
                 </ng-container>
   
                 <ng-container matColumnDef="status">
                   <th style="padding-left: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef>Status</th>
                   <td style="padding-left: 10px;" mat-cell *matCellDef="let main_member">
-                    {{main_member.applicant.status}}
+                    <span *ngIf="isActive(main_member)" class="text-muted" >{{main_member.applicant.status}}</span>
+                    <span *ngIf="!isActive(main_member)">{{main_member.applicant.status}}</span>
                   </td>
                 </ng-container>
 
                 <ng-container matColumnDef="actions">
                   <th style="width: 330px;padding-left: 5%;" class="fs-6" mat-header-cell *matHeaderCellDef>Action</th>
                   <td mat-cell *matCellDef="let main_member">
-                    <a class="btn btn-md btn-dark m-2" (click)="navigateToPaymentForm(main_member)">Pay now</a>
+                    <span *ngIf="!isActive(main_member)">
+                      <a class="btn btn-md btn-dark m-2" (click)="navigateToPaymentForm(main_member)">Pay Now</a>
+                    </span>
+                    <span *ngIf="isActive(main_member)">
+                      <button class="btn btn-md btn-dark m-2" disabled="true">Pay Now</button>
+                    </span>
                     <!-- <dialog-elements-example></dialog-elements-example> -->
-                    <button class="btn btn-md btn-dark m-2" (click)="setWaitingPeriod(main_member)" *ngIf="!main_member.is_deceased">Restore</button>
+                    <span *ngIf="!isActive(main_member) && !main_member.is_deceased">
+                      <button class="btn btn-md btn-dark m-2" (click)="setWaitingPeriod(main_member)">Restore</button>
+                    </span>
+                    <span *ngIf="isActive(main_member) || main_member.is_deceased">
+                      <button class="btn btn-md btn-dark m-2" disabled="true">Restore</button>
+                    </span>
                     <button class="btn btn-md btn-dark" style="display: none;" id="waitingPeriodModalBtn" data-bs-toggle="modal" data-bs-target="#waitingPeriodModal"></button>
                     <button class="btn btn-md btn-dark" style="display: none;" id="restoreModal" data-bs-toggle="modal" data-bs-target="#confirmRestoreApplicantModal"></button>
-                    <button class="btn btn-md btn-dark" (click)="confirmDeleteApplicant(main_member)">Delete</button>
+
+                    <span *ngIf="!isActive(main_member)">
+                      <button class="btn btn-md btn-dark" (click)="confirmDeleteApplicant(main_member)" *ngIf="!isActive(main_member)">Delete</button>
+                    </span>
+                    <span *ngIf="isActive(main_member)">
+                      <button class="btn btn-md btn-dark" disabled="true">Delete</button>
+                    </span>                    
                     <img class="align-middle m-2" src="{{openService.getClientUrl()}}/assets/images/coffin_image.jpeg" height="40" width="40" alt="Deceased image" *ngIf="main_member.is_deceased" />
                     <button class="btn btn-md btn-dark" style="display: none;" id="deleteApplicant" data-bs-toggle="modal" data-bs-target="#confirmDeleteApplicantModal"></button>
                   </td>

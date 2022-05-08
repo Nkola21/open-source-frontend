@@ -1,6 +1,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MainMemberArchivedListComponent } from './main-member-archived-list/main-member-archived-list.component';
+// import { ExtendedMemberArchivedListComponent } from './extended-member-archived-list/extended-member-archived-list.component';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from '../../material/material.module';
 import { MatListModule } from '@angular/material/list';
@@ -32,6 +33,7 @@ const MainMemberArchivedRouting: ModuleWithProviders<MainMembersArchivedModule> 
   ],
   exports: [
     MainMemberArchivedListComponent,
+    // ExtendedMemberArchivedListComponent,
     MatListModule,
     MatTooltipModule
   ],

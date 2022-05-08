@@ -170,7 +170,7 @@ export class ExtendedMemberListComponent implements OnInit {
       .subscribe(
         (extended_members: Array<any>) => {
           this.extended_members = extended_members;
-          this.configureMainMembers(extended_members.reverse());
+          this.configureExtendedMembers(extended_members.reverse());
           this.loadingState = 'complete';
         },
         error => {
@@ -178,7 +178,7 @@ export class ExtendedMemberListComponent implements OnInit {
         });
   }
 
-  configureMainMembers(extended_members: Array<any>): void {
+  configureExtendedMembers(extended_members: Array<any>): void {
     this.tableSize = this.extended_members.length
     this.dataSource = new MatTableDataSource(extended_members);
     this.initializePaginator()
@@ -205,7 +205,7 @@ export class ExtendedMemberListComponent implements OnInit {
           this.status = null;
           this.searchField = formValue["searchField"];
           this.extended_members = extended_members;
-          this.configureMainMembers(extended_members.reverse());
+          this.configureExtendedMembers(extended_members.reverse());
           this.loadingState = 'complete';
         },
         error => {
@@ -237,7 +237,7 @@ export class ExtendedMemberListComponent implements OnInit {
         (extended_members: Array<any>) => {
           if (extended_members) {
             this.extended_members = extended_members;
-            this.configureMainMembers(extended_members.reverse());
+            this.configureExtendedMembers(extended_members.reverse());
             this.loadingState = 'complete';
           }
         },
@@ -258,10 +258,35 @@ export class ExtendedMemberListComponent implements OnInit {
     button.click();
   }
 
+  handleArchive() {
+    this.openService.delete(`extended-members/${this.extended_member.id}/archive`)
+      .subscribe(
+        (extended_member: any) => {
+          console.log(extended_member);
+          
+          this.extended_members = this.extended_members.filter(val => {
+            if (val.id != extended_member.id) {
+              return val;
+            }
+          });
+          this.configureExtendedMembers(this.extended_members.reverse());
+          this.toastr.success('Applicant has been deleted!', 'Success');
+        },
+        error => {
+          console.log(error);
+        });
+  }
+
   handleDelete() {
     this.openService.delete(`extended-members/${this.extended_member.id}/delete`)
       .subscribe(
         (extended_member: any) => {
+          this.extended_members = this.extended_members.filter(val => {
+            if (val.id != extended_member.id) {
+              return val;
+            }
+          });
+          this.configureExtendedMembers(this.extended_members.reverse());
           this.toastr.success('Applicant has been deleted!', 'Success');
         },
         error => {

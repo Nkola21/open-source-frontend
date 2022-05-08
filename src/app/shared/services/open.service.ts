@@ -34,14 +34,14 @@ export class OpenService {
   }
 
   getBaseUrl(): any {
-    // return 'http://localhost:8009/open-source'
-    return 'https://staging.osource.co.za/open-source';
+    return 'http://localhost:8009/open-source'
+    // return 'https://staging.osource.co.za/open-source';
     // return 'https://backend.osource.co.za/open-source';
   }
 
   getClientUrl(): any {
-    // return 'http://localhost:5100'
-    return 'https://nkosana-citiq.github.io/open-source-frontend'
+    return 'http://localhost:5100'
+    // return 'https://nkosana-citiq.github.io/open-source-frontend'
     // return 'https://osource.co.za';
   }
 
