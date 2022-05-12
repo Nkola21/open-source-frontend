@@ -139,7 +139,7 @@ export class MainMemberDataSource extends DataSource<any> {
 
 
 const dialogConfig = new MatDialogConfig();
-const LIMIT = 10;
+const LIMIT = 20;
 
 
 @Component({
@@ -183,6 +183,8 @@ export class MainMemberListComponent implements OnInit {
   searchOffset=0;
   searchLimit=LIMIT;
   limit=LIMIT;
+  count=0;
+  total=0;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -220,31 +222,13 @@ export class MainMemberListComponent implements OnInit {
 
     this.initSMSForm(this.smsFields, this.parlour);
     this.initPerformanceForm(this.consultant);
-    this.initMainMembers()
+    this.do();
   }
 
   loadMembersPage() {
     let url = `${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?offset`;
     this.dataSource.loadMembers(url, '',  this.sort.direction, 
         this.paginator.pageIndex, this.paginator.pageSize);
-  }
-
-  loadMore() {
-    this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?offset=${this.offset}`)
-    .subscribe(
-      (main_members: Array<any>) => {
-        this.status = null;
-        this.searchField = null;
-        this.main_members = main_members;
-        this.offset += 20;
-        this.isAgeLimitExceeded(main_members);
-        this.configureMainMembers(main_members.reverse());
-        this.loadingState = 'complete';
-      },
-      error => {
-        let err = error['error'];
-        this.toastr.error(err['description'], error['title'], {timeOut: 3000});
-      });
   }
 
   getParams(offset: number = 0, limit: number = LIMIT) {
@@ -255,8 +239,43 @@ export class MainMemberListComponent implements OnInit {
     return params;
   }
 
+  rangeStart() {
+    if (this.offset == 0 || (this.offset - this.count) == 0) {
+      return 1;
+    }
+    return this.offset - this.count;
+  }
+
+  rangeEnd() {
+    return this.offset;
+  }
+
   doMore() {
-    this.limit = this.offset+40
+    this.limit = this.offset+20
+    const params = this.getParams(this.offset, this.limit);
+    this.initMainMembers();
+  }
+
+  do() {
+    const params = this.getParams(this.offset, this.limit);
+    this.initMainMembers();
+  }
+
+  goBack() {
+    return this.offset > 20;
+  }
+
+  goForward() {
+    return this.limit < this.total;
+  }
+
+  doLess() {
+    if (this.offset > 0 && this.offset >= 20) {
+      this.offset = this.offset-20;
+    }else{
+      this.offset = 0;
+    }
+
     const params = this.getParams(this.offset, this.limit);
     this.initMainMembers();
   }
@@ -310,12 +329,17 @@ export class MainMemberListComponent implements OnInit {
 
           this.status = null;
           this.searchField = null;
+          console.log(main_members);
           
+          this.count = main_members["count"];
+          this.total = main_members["total"];
           if (main_members["result"].length > 0) {
             this.main_members = main_members["result"].reverse();
-            this.isAgeLimitExceeded(main_members);
-            this.offset = 20;
-            this.limit = this.limit + 20;
+            this.limit = this.offset + this.count;
+            this.offset += this.count;
+            
+            this.isAgeLimitExceeded(this.main_members);
+            
           }
 
           this.loadingState = 'complete';

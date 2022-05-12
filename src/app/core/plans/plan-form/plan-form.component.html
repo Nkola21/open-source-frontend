@@ -105,23 +105,23 @@
 
             <!-- ============================================================  DEPENDANTS ================================================================================== -->
 
-            <label for="contact" class="col-form-label fs-3">Dependants</label>
+            <label for="contact" class="col-form-label fs-3">Dependents</label>
             <br>
-            <label for="dependants" class="col-form-label m-2 fs-6">Does this plan include dependants? If yes, how many does it consider?.<br> If it doesn't, leave it at 0</label>
+            <label for="dependants" class="col-form-label m-2 fs-6">Does this plan include dependents? If yes, how many does it consider?.<br> If it doesn't, leave it at 0</label>
             <div class="mb-5">
-                <label for="dependants" class="col-form-label m-2 fs-6">Number of dependants:</label>
+                <label for="dependants" class="col-form-label m-2 fs-6">Number of dependents:</label>
                 <input class="form-control-sm col-sm-2" type="number" id="dependants" formControlName="dependants" style="border: 1px solid #ced4da;" />
             </div>
 
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="consider_age" formControlName="consider_age" (change)="dependantCheck($event)">
                 <label class="form-check-label" for="consider_age">
-                    Consider age restriction of dependants
+                    Consider age restriction of dependents
                 </label>
               </div>
 
             <div *ngIf="dependant_checked">
-                <label for="dependant_minimum_age" class="col-form-label fs-5">Dependants age range:</label>
+                <label for="dependant_minimum_age" class="col-form-label fs-5">Dependents age range:</label>
 
                 <div class="mb-2">
                     <label for="dependant_minimum_age" class="col-form-label m-2 fs-6">Minimum age:</label>

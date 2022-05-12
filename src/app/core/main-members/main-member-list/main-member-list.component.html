@@ -167,26 +167,58 @@
             </mat-card-title>
 
             <mat-card-content>
+              <div class="container">
+                <div class="mat-paginator-page-size ng-star-inserted">
+                  <div class="mat-paginator-page-size-label" style="margin-left: 80%;">
+                    <span>Items per page: </span>
+                    <span>{{rangeStart() }} – {{limit}} of {{total}}</span>
+                    <span>
+                      <!-- <div class="mat-paginator-range-actions"> -->
+                        <button mat-icon-button="" type="button" class="mat-focus-indicator mat-tooltip-trigger mat-paginator-navigation-previous mat-icon-button mat-button-base mat-button-disabled" aria-label="Previous page" click="doLess()">
+                          <span class="mat-button-wrapper">
+                            <svg viewBox="0 0 30 30" focusable="false" class="mat-paginator-icon">
+                              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
+                            </svg>
+                          </span>
+                          <span matripple="" class="mat-ripple mat-button-ripple mat-button-ripple-round"></span>
+                          <span class="mat-button-focus-overlay"></span>
+                        </button>
+                        <!-- <button *ngIf="!goForward()" mat-icon-button="" type="button" class="mat-focus-indicator mat-tooltip-trigger mat-paginator-navigation-next mat-icon-button mat-button-base" aria-label="Next page" (click)="doMore()" disabled></button> -->
+                          <button mat-icon-button="" type="button" class="mat-focus-indicator mat-tooltip-trigger mat-paginator-navigation-next mat-icon-button mat-button-base" aria-label="Next page" (click)="doMore()">
+                          <span class="mat-button-wrapper">
+                            <svg viewBox="0 0 30 30" focusable="false" class="mat-paginator-icon">
+                              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
+                            </svg>
+                          </span>
+                          <span matripple="" class="mat-ripple mat-button-ripple mat-button-ripple-round"></span>
+                          <span class="mat-button-focus-overlay"></span>
+                        </button>
+                      <!-- </div> -->
+                    </span>
+                  </div>
+                </div>
+              </div>
+
               <div *ngIf="ageLimitExceeded">
               <button style="background-color: #fff; border: none;" (click)="getAgeLimitNotice()"><span class="material-icons"  style="font-size:48px;color:red;">
                 notifications
                 </span></button>
               </div>
-              <table #table>
-                <tr>
+              <table #table >
+                <tr style="border-bottom: 2px solid black;">
                   <th style="padding-right: 35px;" class="fs-6">Full Name</th>
                   <th style="padding-right: 35px;" class="fs-6">ID Number</th>
                   <th style="padding-left: 40px; padding-right: 10px;" class="fs-6">Contact</th>
                   <th style="padding-right: 35px;">Extended Members</th>
                   <th style="padding-right: 35px;">Premium</th>
-                  <th style="padding-right: 35px;">Policy Num</th>
+                  <th style="padding-right: 35px;">Policy Number</th>
                   <th style="padding-right: 35px;">Policy</th>
                   <th style="padding-right: 35px;">Other</th>
                   <th style="padding-right: 35px;">Date Created</th>
                   <th style="padding-right: 35px;">Status</th>
                   <th style="padding-right: 35px;">Action</th>
                 </tr>
-                <tr *ngFor="let main_member of main_members">
+                <tr *ngFor="let main_member of main_members" style="border-bottom: 1px solid rgba(0,0,0,.12);">
                   <td style="padding-right: 35px;">
                     {{main_member.first_name}} {{main_member.last_name}}
                   </td>
@@ -248,15 +280,6 @@
     </div>
     <div>
       <ng-content></ng-content>
-      <button [disabled]="false" class="btn btn-more btn-sm" (click)="doMore()">
-        <span class="is-more">
-          <span class="fa fa-retweet"></span>
-            View More
-          </span>
-          <span class="is-no-more">
-            End of results
-          </span>
-        </button>
     </div>
   </mat-card>
   
