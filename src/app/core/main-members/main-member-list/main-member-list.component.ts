@@ -419,8 +419,16 @@ export class MainMemberListComponent implements OnInit {
       .subscribe(
         (main_members: any) => {
           this.consultant = consultant;
-          this.main_members = main_members;
-          this.configureMainMembers(main_members.reverse());
+          // this.configureMainMembers(main_members.reverse());
+          if (main_members["result"].length > 0) {
+            this.main_members = main_members['result'];
+            this.main_members = main_members["result"].reverse();
+            // this.limit = this.offset + this.count;
+            // this.offset += this.count;
+            
+            // this.isAgeLimitExceeded(this.main_members);
+            
+          }
           this.loadingState = 'complete';
         },
       error => {
@@ -457,10 +465,18 @@ export class MainMemberListComponent implements OnInit {
     this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?${queryString}`)
       .subscribe(
         (main_members: any) => {
-          this.main_members = main_members;
           this.consultant = null;
           this.initPerformanceForm(undefined);
-          this.configureMainMembers(main_members.reverse());
+          if (main_members["result"].length > 0) {
+            this.main_members = main_members['result'];
+            this.main_members = main_members["result"].reverse();
+            // this.limit = this.offset + this.count;
+            // this.offset += this.count;
+            
+            // this.isAgeLimitExceeded(this.main_members);
+            
+          }
+          // this.configureMainMembers(main_members.reverse());
           this.loadingState = 'complete';
         },
       error => {
@@ -497,11 +513,19 @@ export class MainMemberListComponent implements OnInit {
     this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?${queryString}`)
       .subscribe(
         (main_members: any) => {
-          this.main_members = main_members;
+          if (main_members["result"].length > 0) {
+            this.main_members = main_members['result'];
+            this.main_members = main_members["result"].reverse();
+            // this.limit = this.offset + this.count;
+            // this.offset += this.count;
+            
+            // this.isAgeLimitExceeded(this.main_members);
+            
+          }
           this.branch = null;
           this.consultant = null;
-          this.initPerformanceForm(undefined);
-          this.configureMainMembers(main_members.reverse());
+          // this.initPerformanceForm();
+          // this.configureMainMembers(main_members.reverse());
           this.loadingState = 'complete';
         },
       error => {
@@ -795,6 +819,14 @@ export class MainMemberListComponent implements OnInit {
   setMainmemberOtherConsultant(main_member) {
     this.main_member = main_member;
     const btn = document.getElementById("openOtherConsultantModal");
+    btn.click();
+  }
+
+  loadPerformanceModal(consultant: any) {
+    this.setConsultant(consultant);
+
+    const btn = document.getElementById("openConsultantPerfomanceModal");
+    // btn.setAttribute("id", `${consultant.first_name} ${consultant.last_name}`);
     btn.click();
   }
 }

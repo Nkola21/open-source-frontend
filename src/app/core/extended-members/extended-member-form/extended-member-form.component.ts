@@ -27,7 +27,8 @@ export class ExtendedMemberFormBuilder {
       'date_joined': [details.date_joined, [Validators.required]],
       'date_of_birth': [details.date_of_birth],
       'waiting_period': [details.waiting_period, [Validators.required]],
-      'relation_to_main_member': [details.relation_to_main_member, [Validators.required]]
+      'relation_to_main_member': [details.relation_to_main_member, [Validators.required]],
+      'is_deceased': [details.is_deceased]
     });
   }
 
@@ -315,5 +316,23 @@ export class ExtendedMemberFormComponent extends CompareFormValue implements OnI
 
   onRelationshipSelected(event){
     this.relationshipSelected =  event;
+  }
+
+  makeMemberDeceasedTrue() {
+    this.form.controls.is_deceased.setValue(true)
+  }
+
+  makeMemberDeceasedFalse() {
+    this.form.controls.is_deceased.setValue(false);
+  }
+
+  deceasedModal() {
+    const btn = document.getElementById("deceasedMember")
+
+    if (this.form.controls.is_deceased.value == 0) {
+      this.makeMemberDeceasedFalse();
+    } else {
+      btn.click()
+    }
   }
 }

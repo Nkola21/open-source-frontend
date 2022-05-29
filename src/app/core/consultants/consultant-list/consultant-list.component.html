@@ -23,8 +23,11 @@
         <div fxFlex="100">
           <mat-card style="margin-top: 30px" class="line-top">
             <mat-card-title class="mat-card-title-alt" fxLayout="row" fxLayoutAlign="center">
-              <div style="margin-right: 90%; margin-bottom: -30px;">
+              <div style="margin-right: 90%; margin-bottom: -38px;">
                 <a class="btn btn-md btn-dark" [routerLink]="['/consultants/form']">Add Consultant</a>
+              </div>
+              <div *ngIf="permission == 'Parlour'" style="margin-right: 75%; margin-bottom: -30px;">
+                <a class="btn btn-md btn-dark" [routerLink]="['/parlours', user.id, 'notifications']">Notifications</a>
               </div>
               <p class="fs-1"><strong>Consultants</strong></p>
             </mat-card-title>

@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { MatCardModule } from '@angular/material/card';
-
+import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { ParloursModule } from './core/parlours/parlours.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -32,6 +32,7 @@ import { TermsandconditionsModule } from './termsandconditions/termsandcondition
 import { InvoiceModule } from './core/invoices/invoices.module';
 import { ForgotPasswordModule } from './core/forgot-password/forgot-password.module';
 import { ResetPasswordModule } from './core/reset-password/reset-password.module';
+import { NotificationsModule } from './core/notifications/notifications.module';
 
 
 const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
@@ -52,6 +53,7 @@ const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
     HttpClientModule,
     MatCardModule,
     RouterModule,
+    FormsModule,
     ParloursModule,
     ConsultantModule,
     PlansModule,
@@ -74,6 +76,7 @@ const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
     InvoiceModule,
     ForgotPasswordModule,
     ResetPasswordModule,
+    NotificationsModule,
     rootRouting,
     ToastrModule.forRoot()
   ],

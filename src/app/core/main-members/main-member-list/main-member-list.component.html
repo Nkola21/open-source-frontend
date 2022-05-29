@@ -130,7 +130,7 @@
                       </li>
                       <li>Consultants
                         <ul>
-                          <li *ngFor="let consultant of consultants"><a class="dropdown-item" (click)="setConsultant(consultant)" data-bs-toggle="modal" data-bs-target="#consultantPerformanceModal">{{ consultant.first_name }} {{ consultant.last_name }}</a></li>
+                          <li *ngFor="let consultant of consultants"><a class="dropdown-item" (click)="loadPerformanceModal(consultant)">{{ consultant.first_name }} {{ consultant.last_name }}</a></li>
                         </ul>
                       </li>
                       <li>Branch
@@ -284,6 +284,7 @@
   </mat-card>
   
   <button id="openModal" class="btn btn-md btn-danger" data-toggle="modal" data-modal="#confirmDeleteApplicantModal" style="display: none;"></button>
+  <button id="openConsultantPerfomanceModal" class="btn btn-md btn-danger" data-bs-toggle="modal" data-bs-target="#consultantPerformanceModal" style="display: none;"></button>
 
 
   <a id="viewFile" class="btn btn-md btn-dark" href="{{getOtherDocUrl()}}" target="_blank" style="margin-top: 5px;display: none;">Files</a>
@@ -414,7 +415,7 @@
           <div class="mb-3">
             <span style="color: red;position:relative; bottom: -5rem; right: 20px;max-width: 10px">*</span>
             <label for="entity" class="col-form-label fs-4 d-flex justify-content-center">Consultant:</label>
-            <input type="text" class="form-control" id="entity" formControlName="entity" [(ngModel)]="consultant_full_name" >
+            <input type="text" class="form-control" id="entity" formControlName="entity">
         </div>
         <div class="mb-3">
           <label for="start_date" class="col-form-label fs-4 d-flex justify-content-center">Start Date:</label>

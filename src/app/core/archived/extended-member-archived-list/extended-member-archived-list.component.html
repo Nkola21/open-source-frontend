@@ -121,15 +121,13 @@
                 <ng-container matColumnDef="actions">
                   <th style="width: 330px;" mat-header-cell *matHeaderCellDef></th>
                   <td mat-cell *matCellDef="let extended_member">
-                    <a class="btn btn-md btn-dark m-2" (click)="openRestoreModal(extended_member)">Restore</a>
+                    <a class="btn btn-md btn-dark m-2" (click)="openRestoreModal(extended_member)" *ngIf="!extended_member.is_deceased">Restore</a>
+
                     <button class="btn btn-md btn-dark" style="display: none;" id="restoreExtendedMemberModalBtn" data-bs-toggle="modal" data-bs-target="#restoreExtendedMemberModal"></button>
                     <button class="btn btn-md btn-dark m-2" (click)="confirmDeleteMember(extended_member)">Delete</button>
                     <button class="btn btn-md btn-dark m-2" (click)="confirmPromoteMember(extended_member)" *ngIf="canPromote(extended_member)">Promote</button>
                     <button class="btn btn-md btn-dark" style="display: none;" id="deleteMember" data-bs-toggle="modal" data-bs-target="#confirmDeleteMemberModal"></button>
                     <button class="btn btn-md btn-dark" style="display: none;" id="promoteMember" data-bs-toggle="modal" data-bs-target="#promoteToMainMemberMemberModal"></button>
-                    <button class="m-2" style="background-color: #fff; border: none;" *ngIf="extended_member.age_limit_exceeded && !extended_member.age_limit_exception" (click)="ageLimitException(extended_member)"><span class="material-icons"  style="font-size:30px;color:red;">
-                      notifications
-                      </span></button>
                       <img class="align-middle m-2" src="{{openService.getClientUrl()}}/assets/images/coffin_image.jpeg" height="40" width="40" alt="Deceased image" *ngIf="extended_member.is_deceased" />
                   </td>
                 </ng-container>
