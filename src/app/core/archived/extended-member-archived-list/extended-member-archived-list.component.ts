@@ -179,6 +179,10 @@ export class ExtendedMemberArchivedListComponent implements OnInit {
         });
   }
 
+  isActive(extended_member) {
+    return extended_member.state == 1;
+  }
+
   configureExtendedMembers(extended_members: Array<any>): void {
     this.tableSize = this.extended_members.length
     this.dataSource = new MatTableDataSource(extended_members);

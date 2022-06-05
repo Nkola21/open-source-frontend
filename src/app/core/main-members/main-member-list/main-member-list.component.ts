@@ -160,7 +160,7 @@ export class MainMemberListComponent implements OnInit {
   searchField: null;
   performanceForm: FormGroup;
   smsFields: null;
-  status: null;
+  status = null;
   dataSource: any;
   page: any;
   loadingState: any;
@@ -244,7 +244,7 @@ export class MainMemberListComponent implements OnInit {
   //   if (this.offset == 0 || (this.offset - this.count) == 0) {
   //     return 1;
   //   }
-    return this.offset - this.count;
+    return this.offset;
   }
 
   rangeEnd() {
@@ -252,8 +252,9 @@ export class MainMemberListComponent implements OnInit {
   }
 
   doMore() {
-    this.offset += 20;
-    this.limit += 20;
+    this.offset = this.accumulated_total;
+    this.limit = 20;
+    
     this.do(this.offset, this.limit, "forward");
     // this.initMainMembers("forward");
   }
@@ -273,7 +274,7 @@ export class MainMemberListComponent implements OnInit {
   doLess() {
     console.log("DO LESS");
     this.offset -= this.count < 20 ? (20 + this.count ) : 20;
-    this.limit -= 20;
+    this.limit = 20;
     this.do(this.offset, this.limit, "backward");
     // this.initMainMembers("backward");
   }
@@ -318,44 +319,34 @@ export class MainMemberListComponent implements OnInit {
   initMainMembers(offset?: any, limit?: any, direction?: any) {
     this.main_members = [];
     const permission = this.permission;
-
+    let queryString = this.setQueryParams();
     this.loadingState = 'loading';
-    if (!offset) {
-      offset=0
+
+    if (!direction) {
+      direction="forward";
     }
-    if (!limit) {
-      limit=20
-    }
-    this.openService.getUrl(`${permission.toLowerCase()}s/${this.user.id}/main-members/all?offset=${offset}&limit=${limit}`)
+
+    this.openService.getUrl(`${permission.toLowerCase()}s/${this.user.id}/main-members/all?${queryString}`)
       .subscribe(
         (main_members: any) => {
 
           this.status = null;
           this.searchField = null;
-          
-
+          // this.searchField = formValue["searchField"];
           this.count = main_members["count"];
           this.total = main_members["total"];
-          if (direction && direction == "forward"){
+          if (direction && direction == "forward") {
             this.accumulated_total += this.count;
-            this.limit += 20;
-            this.offset += this.count;
-          }else if (direction && direction == "backward") {
+          } else if (direction && direction == "backward") {
             this.accumulated_total -= this.count;
-            this.limit -= 20;
-            this.offset -= 20;
           }
 
-          console.log("Accumulated total: ", this.accumulated_total);
-          
-
           if (main_members["result"].length > 0) {
-            this.main_members = main_members["result"];
-            
-            
+            this.main_members = main_members["result"].reverse();
+
             this.isAgeLimitExceeded(this.main_members);
-            
-          }else {
+
+          } else {
             this.main_member == 0;
           }
 
@@ -381,174 +372,60 @@ export class MainMemberListComponent implements OnInit {
       });
   }
 
+ setQueryParams() {
+   let queryString = ``;
+   const formValue = this.performanceForm.value;
+   const searchForm = this.form.value;
+
+   if (this.offset) {
+     queryString += `offset=${this.offset}&`;
+   }
+   if (this.limit){
+     queryString += `limit=${this.limit}&`
+   }
+   if (this.status) {
+     queryString += `status=${this.status}&`;
+   }
+   if (this.searchField) {
+     queryString += `searchField=${this.searchField}&`
+   }
+   if (this.consultant) {
+     queryString += `consultant=${this.consultant.id}&`
+   }
+   if (this.branch){
+    queryString += `branch=${this.branch}&`
+   }
+
+  //  if (searchForm) {
+  //   queryString += `search_string=${searchForm["searchField"]}`;
+  //  }
+
+   if(formValue) {
+    if (formValue['start_date']) {
+      const start_date = formValue['start_date'];
+      queryString += `start_date=${start_date}&`;
+    }
+
+    if (formValue['end_date']) {
+      const end_date = formValue['end_date'];
+      queryString += `end_date=${end_date}`;
+    }
+  }
+  return queryString;
+ }
+
   setConsultant(consultant) {
     this.consultant = consultant;
     this.consultant_full_name = `${this.consultant.first_name} ${this.consultant.last_name}`;
+    this.initPerformanceForm(this.consultant);
+    const btn = document.getElementById("openConsultantPerfomanceModal");
+    btn.click();
   }
 
-  setBranch(branch) {
+  setBranch(branch: any) {
+    let btn = document.getElementById("openBranchPerfomanceModal")
     this.branch = branch;
-  }
-
-  getByConsultant() {
-    let queryString= '';
-    const formValue = this.performanceForm.value;
-    if (this.status) {
-      queryString = `status=${this.status}`
-    }
-
-    if (this.searchField) {
-      queryString = queryString ? `${queryString}&search_string=${this.searchField}` : `search_string=${this.searchField}`;
-    }
-
-    let filter = `consultant=${this.consultant.id}`
-    if (formValue['start_date']) {
-      const start_date = formValue['start_date'];
-      filter = `${filter}&start_date=${start_date}`;
-    }
-
-    if (formValue['end_date']) {
-      const end_date = formValue['end_date'];
-      filter = `${filter}&end_date=${end_date}`;
-    }
-
-    queryString = queryString ? `${queryString}&${filter}` : `${filter}`;
-    this.filter = queryString;
-
-    this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?${queryString}`)
-      .subscribe(
-        (main_members: any) => {
-          this.main_members = main_members;
-          this.branch = null;
-          this.initPerformanceForm(undefined);
-          this.configureMainMembers(main_members.reverse());
-          this.loadingState = 'complete';
-        },
-      error => {
-          let err = error['error'];
-          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
-      });
-  }
-
-  getByBranchConsultant(consultant: any) {
-    let filter = `consultant_id=${consultant.id}`
-    this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?${filter}`)
-      .subscribe(
-        (main_members: any) => {
-          this.consultant = consultant;
-          // this.configureMainMembers(main_members.reverse());
-          if (main_members["result"].length > 0) {
-            this.main_members = main_members['result'];
-            this.main_members = main_members["result"].reverse();
-            // this.limit = this.offset + this.count;
-            // this.offset += this.count;
-            
-            // this.isAgeLimitExceeded(this.main_members);
-            
-          }
-          this.loadingState = 'complete';
-        },
-      error => {
-          let err = error['error'];
-          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
-      });
-  }
-
-  getByBranch(branch: any) {
-    let queryString: string;
-    const formValue = this.performanceForm.value;
-
-    if (this.status) {
-      queryString = `status=${this.status}`
-    }
-
-    if (this.searchField) {
-      queryString = queryString ? `${queryString}&search_string=${this.searchField}` : `search_string=${this.searchField}`;
-    }
-
-    let filter = `branch=${this.branch}`
-    if (formValue['start_date']) {
-      const start_date = formValue['start_date'];
-      filter = `${filter}&start_date=${start_date}`;
-    }
-
-    if (formValue['end_date']) {
-      const end_date = formValue['end_date'];
-      filter = `${filter}&end_date=${end_date}`;
-    }
-
-    queryString = queryString ? `${queryString}&${filter}` : `${filter}`;
-    this.filter = queryString;
-    this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?${queryString}`)
-      .subscribe(
-        (main_members: any) => {
-          this.consultant = null;
-          this.initPerformanceForm(undefined);
-          if (main_members["result"].length > 0) {
-            this.main_members = main_members['result'];
-            this.main_members = main_members["result"].reverse();
-            // this.limit = this.offset + this.count;
-            // this.offset += this.count;
-            
-            // this.isAgeLimitExceeded(this.main_members);
-            
-          }
-          // this.configureMainMembers(main_members.reverse());
-          this.loadingState = 'complete';
-        },
-      error => {
-          let err = error['error'];
-          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
-      });
-  }
-
-  getByParlour() {
-    let queryString: string;
-    const formValue = this.performanceForm.value;
-
-    if (this.status) {
-      queryString = `status=${this.status}`
-    }
-
-    if (this.searchField) {
-      queryString = queryString ? `${queryString}&search_string=${this.searchField}` : `search_string=${this.searchField}`;
-    }
-
-    let filter = ``;
-    if (formValue['start_date']) {
-      const start_date = formValue['start_date'];
-      filter = `${filter}&start_date=${start_date}`;
-    }
-
-    if (formValue['end_date']) {
-      const end_date = formValue['end_date'];
-      filter = `${filter}&end_date=${end_date}`;
-    }
-
-    queryString = queryString ? `${queryString}&${filter}` : `${filter}`;
-    this.filter = queryString;
-    this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?${queryString}`)
-      .subscribe(
-        (main_members: any) => {
-          if (main_members["result"].length > 0) {
-            this.main_members = main_members['result'];
-            this.main_members = main_members["result"].reverse();
-            // this.limit = this.offset + this.count;
-            // this.offset += this.count;
-            
-            // this.isAgeLimitExceeded(this.main_members);
-            
-          }
-          this.branch = null;
-          this.consultant = null;
-          // this.initPerformanceForm();
-          // this.configureMainMembers(main_members.reverse());
-          this.loadingState = 'complete';
-        },
-      error => {
-          let err = error['error'];
-          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
-      });
+    btn.click();
   }
 
   showExceptSuccess() {
@@ -627,12 +504,6 @@ export class MainMemberListComponent implements OnInit {
     this.service.switchHeader(user);
   }
 
-  configureMainMembers(main_members: Array<any>): void {
-    this.tableSize = this.main_members ? this.main_members.length : 0;
-    this.dataSource = new MatTableDataSource(main_members);
-    // this.initializePaginator()
-  }
-
   navigateToPaymentForm(main_member: any) {
     this.router.navigate(['main-members', main_member.id, 'payment', 'form']);
   }
@@ -674,14 +545,12 @@ export class MainMemberListComponent implements OnInit {
   handleDelete(main_member) {
     this.openService.delete(`main-members/${main_member.id}/archive`)
       .subscribe(
-        (main: any) => {
-          this.main_members = this.main_members.filter(val => {
+        (main_members: any) => {
+          this.main_members = main_members['result'].filter(val => {
             if (val.id != main_member.id) {
               return val;
             }
           });
-          this.configureMainMembers(this.main_members.reverse());
-          this.toastr.success('Main member has been deleted!', 'Success');
         },
         error => {
           let err = error['error'];
@@ -699,45 +568,52 @@ export class MainMemberListComponent implements OnInit {
   }
 
   getByPaymentPaid() {
-    this.getByPaymentStatus('paid');  
+    this.status = 'paid';
+    this.do();
+
   }
 
   getByPaymentUnpaid() {
-    this.getByPaymentStatus('unpaid');
+    this.status = 'unpaid';
+    this.do();
   }
 
   getByPaymentSkipped() {
-    this.getByPaymentStatus('Skipped');
+    this.status = 'Skipped';
+    this.do();
   }
   
   getByPaymentLapsed() {
-    this.getByPaymentStatus('lapsed');
+    this.status = 'lapsed';
+    this.do();
   }
 
-  getByPaymentStatus(status) {
-    this.filter = `status=${status}`
-    this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?status=${status}`)
-      .subscribe(
-        (main_members: Array<any>) => {
-          this.status = status;
-          this.searchField = null;
-          this.main_members = main_members['result'];
-          this.configureMainMembers(main_members.reverse());
-          this.loadingState = 'complete';
-        },
-        error => {
-          let err = error['error'];
-          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
-        });
-  }
+  // getByPaymentStatus(status) {
+  //   this.filter = `status=${status}&limit=20`
+  //   this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?status=${status}`)
+  //     .subscribe(
+  //       (main_members: Array<any>) => {
+  //         this.status = status;
+  //         this.searchField = null;
+  //         console.log(main_members);
+  //         this.total = main_members['total']
+          
+  //         this.main_members = main_members['result'].reverse();
+  //         // this.configureMainMembers(main_members.reverse());
+  //         this.loadingState = 'complete';
+  //       },
+  //       error => {
+  //         let err = error['error'];
+  //         this.toastr.error(err['description'], error['title'], {timeOut: 3000});
+  //       });
+  // }
 
   getAgeLimitNotice() {
     this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?notice=1`)
       .subscribe(
         (main_members: Array<any>) => {
           if (main_members) {
-            this.main_members = main_members;
-            this.configureMainMembers(main_members.reverse());
+            this.main_members = main_members.reverse();
             this.loadingState = 'complete';
           }
         },
@@ -747,29 +623,30 @@ export class MainMemberListComponent implements OnInit {
         });
   }
 
-  getBySearchField() {
-    const formValue = this.form.value;
-    this.filter = `search_string=${formValue["searchField"]}`;
+  // getBySearchField() {
+  //   const formValue = this.form.value;
+  //   this.filter = `search_string=${formValue["searchField"]}`;
+  // this.searchField = formValue["searchField"];
     
-    this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?offset=${this.searchOffset}&limit=${this.searchLimit}&${this.filter}`)
-      .subscribe(
-        (main_members: any) => {
-          this.status = null;
-          this.searchField = formValue["searchField"];
-          if (main_members["result"].length > 0) {
-            this.main_members = main_members["result"].reverse();
-            this.searchOffset = main_members["result"].length;
-            this.limit = this.searchOffset + 20;
-          }else{
-            this.main_members = [];
-          }
-          this.loadingState = 'complete';
-        },
-        error => {
-          let err = error['error'];
-          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
-        });
-  }
+  //   this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?offset=${this.searchOffset}&limit=${this.searchLimit}&${this.filter}`)
+  //     .subscribe(
+  //       (main_members: any) => {
+  //         this.status = null;
+  //         this.searchField = formValue["searchField"];
+  //         if (main_members["result"].length > 0) {
+  //           this.main_members = main_members["result"].reverse();
+  //           this.searchOffset = main_members["result"].length;
+  //           this.limit = this.searchOffset + 20;
+  //         }else{
+  //           this.main_members = [];
+  //         }
+  //         this.loadingState = 'complete';
+  //       },
+  //       error => {
+  //         let err = error['error'];
+  //         this.toastr.error(err['description'], error['title'], {timeOut: 3000});
+  //       });
+  // }
 
   showSuccess() {
     this.toastr.success('Success', 'Toastr fun!');
@@ -845,11 +722,4 @@ export class MainMemberListComponent implements OnInit {
     btn.click();
   }
 
-  loadPerformanceModal(consultant: any) {
-    this.setConsultant(consultant);
-
-    const btn = document.getElementById("openConsultantPerfomanceModal");
-    // btn.setAttribute("id", `${consultant.first_name} ${consultant.last_name}`);
-    btn.click();
-  }
 }
