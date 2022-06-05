@@ -140,7 +140,7 @@
                       </li>
                     </ul>
                   </div>
-                  <div *ngIf="isParlour()">
+                  <div *ngIf="isParlour()" style="margin-right: 10px;">
                     <button id="consultantPaymnents" type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                       Payments
                     </button>
@@ -149,7 +149,7 @@
                       <li><a class="dropdown-item" href="{{getConsultantPaymentsExcel()}}" target="_blank">{{ user.parlour_name }}</a></li>
                     </ul>
                   </div>
-                  <div *ngIf="isParlour()">
+                  <div *ngIf="false">
                     <button id="consultantNotifications" type="button" class="btn btn-dark" (click)="navigateToNotifications()">
                       Emails
                     </button>

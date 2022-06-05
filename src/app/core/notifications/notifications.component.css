@@ -11,7 +11,7 @@
     margin-left:-4px;
     margin-right: 0;
   }
-  .form-check label {
+  .list-group-item .form-check label {
     padding:.75rem 1.25rem;
     margin-bottom:0;
   }

@@ -28,6 +28,7 @@ export class NotificationsComponent implements OnInit  {
   form: FormGroup;
   parlour_id: any;
   user: any;
+  permission: any;
   consultants: any = [];
   days_selected: any = [];
   notify_consultants = []
@@ -46,6 +47,7 @@ export class NotificationsComponent implements OnInit  {
   ngOnInit(): void {
     this.parlour_id = this.openService.getParlourId();
     this.user = this.openService.getUser()
+    this.permission = this.openService.getPermissions();
     this.transition(this.user);
 
     // input.addEventListener('input', updateValue);
@@ -81,6 +83,10 @@ export class NotificationsComponent implements OnInit  {
     } else {
        return false;
     }
+  }
+
+  getParlourName() {
+    return this.permission == "Parlour" ? this.user.parlour_name : this.user.parlour.parlour_name
   }
 
   submit() {

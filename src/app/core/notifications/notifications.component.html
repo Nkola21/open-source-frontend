@@ -15,7 +15,7 @@
         <label for="email" class="fs-4 d-flex justify-content-start mb-2"><strong>Add Email:</strong></label>
         <input type="email" class="form-control mb-2" placeholder="Email" aria-label="email" [(ngModel)]="email">
         
-        <a class="mt-4" (click)="addMore()" >Add more</a>
+        <button  class="btn btn-dark" (click)="addMore()">Add more</button>
       </div>
 
       <div id="recipientEmails" class="mb-3">
@@ -41,7 +41,7 @@
 
         <div class="form-check">
           <input class="form-check-input" type="checkbox" value="" id="{{user.email}}" />
-          <label class="form-check-label" for="{{user.email}}"><strong>{{user.parlour.parlour_name}}</strong></label>
+          <label class="form-check-label" for="{{user.email}}"><strong>{{getParlourName()}}</strong></label>
         </div>
 
       </fieldset>

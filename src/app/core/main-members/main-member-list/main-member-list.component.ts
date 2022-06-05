@@ -223,6 +223,7 @@ export class MainMemberListComponent implements OnInit {
 
     this.initSMSForm(this.smsFields, this.parlour);
     this.initPerformanceForm(this.consultant);
+    this.clearParams();
     this.do();
   }
 
@@ -342,7 +343,7 @@ export class MainMemberListComponent implements OnInit {
           }
 
           if (main_members["result"].length > 0) {
-            this.main_members = main_members["result"].reverse();
+            this.main_members = main_members["result"];
 
             this.isAgeLimitExceeded(this.main_members);
 
@@ -372,6 +373,14 @@ export class MainMemberListComponent implements OnInit {
       });
   }
 
+ clearParams() {
+    this.offset = 0;
+    this.limit = 20;
+    this.status = null;
+    this.consultant = null;
+    this.branch = null;
+ }
+
  setQueryParams() {
    let queryString = ``;
    const formValue = this.performanceForm.value;
@@ -386,8 +395,8 @@ export class MainMemberListComponent implements OnInit {
    if (this.status) {
      queryString += `status=${this.status}&`;
    }
-   if (this.searchField) {
-     queryString += `searchField=${this.searchField}&`
+   if (searchForm && searchForm["searchField"]) {
+     queryString += `search_string=${searchForm["searchField"]}&`
    }
    if (this.consultant) {
      queryString += `consultant=${this.consultant.id}&`
@@ -416,6 +425,7 @@ export class MainMemberListComponent implements OnInit {
 
   setConsultant(consultant) {
     this.consultant = consultant;
+    this.branch = null;
     this.consultant_full_name = `${this.consultant.first_name} ${this.consultant.last_name}`;
     this.initPerformanceForm(this.consultant);
     const btn = document.getElementById("openConsultantPerfomanceModal");
@@ -423,6 +433,7 @@ export class MainMemberListComponent implements OnInit {
   }
 
   setBranch(branch: any) {
+    this.consultant = null;
     let btn = document.getElementById("openBranchPerfomanceModal")
     this.branch = branch;
     btn.click();
