@@ -329,17 +329,18 @@ export class MainMemberListComponent implements OnInit {
 
           this.status = null;
           this.searchField = null;
-          console.log(main_members);
           
           this.count = main_members["count"];
           this.total = main_members["total"];
           if (main_members["result"].length > 0) {
-            this.main_members = main_members["result"].reverse();
+            this.main_members = main_members["result"];
             this.limit = this.offset + this.count;
             this.offset += this.count;
             
             this.isAgeLimitExceeded(this.main_members);
             
+          }else {
+            this.main_member == 0;
           }
 
           this.loadingState = 'complete';
@@ -704,7 +705,7 @@ export class MainMemberListComponent implements OnInit {
         (main_members: Array<any>) => {
           this.status = status;
           this.searchField = null;
-          this.main_members = main_members;
+          this.main_members = main_members['result'];
           this.configureMainMembers(main_members.reverse());
           this.loadingState = 'complete';
         },
@@ -733,8 +734,8 @@ export class MainMemberListComponent implements OnInit {
   getBySearchField() {
     const formValue = this.form.value;
     this.filter = `search_string=${formValue["searchField"]}`;
-  
-    this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?offset=${this.searchOffset}&limit=${this.searchLimit}&search_string=${formValue["searchField"]}`)
+    
+    this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?offset=${this.searchOffset}&limit=${this.searchLimit}&${this.filter}`)
       .subscribe(
         (main_members: any) => {
           this.status = null;
@@ -743,6 +744,8 @@ export class MainMemberListComponent implements OnInit {
             this.main_members = main_members["result"].reverse();
             this.searchOffset = main_members["result"].length;
             this.limit = this.searchOffset + 20;
+          }else{
+            this.main_members = [];
           }
           this.loadingState = 'complete';
         },
