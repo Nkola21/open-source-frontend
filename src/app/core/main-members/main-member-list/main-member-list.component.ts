@@ -624,6 +624,10 @@ export class MainMemberListComponent implements OnInit {
     this.router.navigate(['main-members', 'form']);
   }
 
+  navigateToNotifications() {
+    this.router.navigate(['parlours', this.user.id, 'notifications']);
+  }
+
   navigateToMainMemberBulkAddForm() {
     this.router.navigate(['main-members', 'bulk-add']);
   }
