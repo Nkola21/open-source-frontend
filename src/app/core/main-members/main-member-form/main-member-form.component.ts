@@ -220,12 +220,15 @@ export class MainMemberFormComponent implements OnInit  {
   isAgeLimitExceeded() {
     const formValue = this.form.value;
 
-    let queryString = `&id_number=${formValue['id_number']}`
+    let queryString = `id_number=${formValue['id_number']}`
 
     this.openService.getUrl(`plans/${formValue['plan_id']}/check-age-limit?${queryString}`)
         .subscribe(
           (res: any) => {
-            if (res['result'] != 'OK!') {
+            if (res['id_number_exists'] == true) {
+              let btn = document.getElementById("idNumberExist");
+              btn.click();
+            }else if(res['age_limit_exceeded'] == true) {
               let btn = document.getElementById("ageExceededModal");
               btn.click();
             }else{

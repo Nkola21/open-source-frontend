@@ -113,8 +113,32 @@
     </mat-card>
   </mat-card>
 
-<button id="ageExceededModal" class="btn btn-md btn-danger" data-bs-toggle="modal" data-bs-target="#ageLimitExceededModal" style="display: none;"></button>
 
+<button id="idNumberExist" class="btn btn-md btn-danger" data-bs-toggle="modal" data-bs-target="#idNumberExistModal" style="display: none;"></button>
+  <!-- Modal -->
+  <div class="modal fade" id="idNumberExistModal" tabindex="-1" aria-labelledby="idNumberExistModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fs-4" id="idNumberExistModalLabel">ID Number Already Exists</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="">
+            <p class="mb-0 ml-3 fs-5">
+                ID number already exists for this parlour, do you want to continue?
+            </p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="submit()">Proceed</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button id="ageExceededModal" class="btn btn-md btn-danger" data-bs-toggle="modal" data-bs-target="#ageLimitExceededModal" style="display: none;"></button>
   <!-- Modal -->
 <div class="modal fade" id="ageLimitExceededModal" tabindex="-1" aria-labelledby="ageLimitExceededModalLabel" aria-hidden="true">
   <div class="modal-dialog">

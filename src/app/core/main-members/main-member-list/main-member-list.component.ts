@@ -584,7 +584,7 @@ export class MainMemberListComponent implements OnInit {
   }
 
   isCurrentConsultant(main_member: any) {
-    return main_member.applicant.consultant.id == this.user.id;
+    return main_member.applicant.consultant.id == this.user.id || this.isParlour();
   }
 
   initConsultants(parlour_id) {

@@ -81,6 +81,10 @@ export class InvoiceListComponent implements OnInit {
       });
   }
 
+  isConsultant() {
+    return this.permission == 'Consultant';
+  }
+
   getUrl(invoice) {
     const base_url = this.openService.getBaseUrl()
     return `${base_url}/${invoice.path}`
