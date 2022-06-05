@@ -185,6 +185,7 @@ export class MainMemberListComponent implements OnInit {
   limit=LIMIT;
   count=0;
   total=0;
+  accumulated_total = 0
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -240,25 +241,25 @@ export class MainMemberListComponent implements OnInit {
   }
 
   rangeStart() {
-    if (this.offset == 0 || (this.offset - this.count) == 0) {
-      return 1;
-    }
+  //   if (this.offset == 0 || (this.offset - this.count) == 0) {
+  //     return 1;
+  //   }
     return this.offset - this.count;
   }
 
   rangeEnd() {
-    return this.offset;
+    return this.accumulated_total;
   }
 
   doMore() {
-    this.limit = this.offset+20
-    const params = this.getParams(this.offset, this.limit);
-    this.initMainMembers();
+    this.offset += 20;
+    this.limit += 20;
+    this.do(this.offset, this.limit, "forward");
+    // this.initMainMembers("forward");
   }
 
-  do() {
-    const params = this.getParams(this.offset, this.limit);
-    this.initMainMembers();
+  do(offset?: number, limit?: number, direction?: string) {
+    this.initMainMembers(offset, limit, direction);
   }
 
   goBack() {
@@ -270,14 +271,11 @@ export class MainMemberListComponent implements OnInit {
   }
 
   doLess() {
-    if (this.offset > 0 && this.offset >= 20) {
-      this.offset = this.offset-20;
-    }else{
-      this.offset = 0;
-    }
-
-    const params = this.getParams(this.offset, this.limit);
-    this.initMainMembers();
+    console.log("DO LESS");
+    this.offset -= this.count < 20 ? (20 + this.count ) : 20;
+    this.limit -= 20;
+    this.do(this.offset, this.limit, "backward");
+    // this.initMainMembers("backward");
   }
 
   toDate(created) {
@@ -317,25 +315,43 @@ export class MainMemberListComponent implements OnInit {
     this.form = this.formBuilder.buildForm(searchField);
   }
 
-  initMainMembers() {
+  initMainMembers(offset?: any, limit?: any, direction?: any) {
     this.main_members = [];
     const permission = this.permission;
 
     this.loadingState = 'loading';
-
-    this.openService.getUrl(`${permission.toLowerCase()}s/${this.user.id}/main-members/all?offset=${this.offset}&limit=${this.limit}`)
+    if (!offset) {
+      offset=0
+    }
+    if (!limit) {
+      limit=20
+    }
+    this.openService.getUrl(`${permission.toLowerCase()}s/${this.user.id}/main-members/all?offset=${offset}&limit=${limit}`)
       .subscribe(
         (main_members: any) => {
 
           this.status = null;
           this.searchField = null;
           
+
           this.count = main_members["count"];
           this.total = main_members["total"];
+          if (direction && direction == "forward"){
+            this.accumulated_total += this.count;
+            this.limit += 20;
+            this.offset += this.count;
+          }else if (direction && direction == "backward") {
+            this.accumulated_total -= this.count;
+            this.limit -= 20;
+            this.offset -= 20;
+          }
+
+          console.log("Accumulated total: ", this.accumulated_total);
+          
+
           if (main_members["result"].length > 0) {
             this.main_members = main_members["result"];
-            this.limit = this.offset + this.count;
-            this.offset += this.count;
+            
             
             this.isAgeLimitExceeded(this.main_members);
             

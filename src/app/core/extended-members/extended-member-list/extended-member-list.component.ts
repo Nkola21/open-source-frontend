@@ -13,7 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 
 const relation_types = {
   4: 'Spouse',
-  1: 'Dependant',
+  1: 'Dependent',
   2: 'Extended Member',
   3: 'Additional Extended Member',
   0: 'Select Member Type'

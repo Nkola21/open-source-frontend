@@ -176,10 +176,10 @@
                 <div class="mat-paginator-page-size ng-star-inserted">
                   <div class="mat-paginator-page-size-label" style="margin-left: 80%;">
                     <span>Items per page: </span>
-                    <span>{{rangeStart() }} – {{limit}} of {{total}}</span>
+                    <span>{{rangeStart() }} – {{rangeEnd()}} of {{total}}</span>
                     <span>
                       <!-- <div class="mat-paginator-range-actions"> -->
-                        <button mat-icon-button="" type="button" class="mat-focus-indicator mat-tooltip-trigger mat-paginator-navigation-previous mat-icon-button mat-button-base mat-button-disabled" aria-label="Previous page" click="doLess()">
+                        <button mat-icon-button="" type="button" class="mat-focus-indicator mat-tooltip-trigger mat-paginator-navigation-previous mat-icon-button mat-button-base" aria-label="Previous page" (click)="doLess()" [disabled]="accumulated_total == 0">
                           <span class="mat-button-wrapper">
                             <svg viewBox="0 0 30 30" focusable="false" class="mat-paginator-icon">
                               <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
@@ -189,7 +189,7 @@
                           <span class="mat-button-focus-overlay"></span>
                         </button>
                         <!-- <button *ngIf="!goForward()" mat-icon-button="" type="button" class="mat-focus-indicator mat-tooltip-trigger mat-paginator-navigation-next mat-icon-button mat-button-base" aria-label="Next page" (click)="doMore()" disabled></button> -->
-                          <button mat-icon-button="" type="button" class="mat-focus-indicator mat-tooltip-trigger mat-paginator-navigation-next mat-icon-button mat-button-base" aria-label="Next page" (click)="doMore()">
+                          <button mat-icon-button="" type="button" class="mat-focus-indicator mat-tooltip-trigger mat-paginator-navigation-next mat-icon-button mat-button-base" aria-label="Next page" (click)="doMore()"  [disabled]="accumulated_total == total">
                           <span class="mat-button-wrapper">
                             <svg viewBox="0 0 30 30" focusable="false" class="mat-paginator-icon">
                               <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
