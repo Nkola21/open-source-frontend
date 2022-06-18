@@ -331,7 +331,6 @@ export class MainMemberListComponent implements OnInit {
       .subscribe(
         (main_members: any) => {
 
-          this.status = null;
           this.searchField = null;
           // this.searchField = formValue["searchField"];
           this.count = main_members["count"];
@@ -396,6 +395,7 @@ export class MainMemberListComponent implements OnInit {
      queryString += `status=${this.status}&`;
    }
    if (searchForm && searchForm["searchField"]) {
+    this.clearParams();
      queryString += `search_string=${searchForm["searchField"]}&`
    }
    if (this.consultant) {
@@ -557,11 +557,7 @@ export class MainMemberListComponent implements OnInit {
     this.openService.delete(`main-members/${main_member.id}/archive`)
       .subscribe(
         (main_members: any) => {
-          this.main_members = main_members['result'].filter(val => {
-            if (val.id != main_member.id) {
-              return val;
-            }
-          });
+          document.getElementById(`${main_member.id}`).remove();
         },
         error => {
           let err = error['error'];
@@ -599,26 +595,6 @@ export class MainMemberListComponent implements OnInit {
     this.do();
   }
 
-  // getByPaymentStatus(status) {
-  //   this.filter = `status=${status}&limit=20`
-  //   this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?status=${status}`)
-  //     .subscribe(
-  //       (main_members: Array<any>) => {
-  //         this.status = status;
-  //         this.searchField = null;
-  //         console.log(main_members);
-  //         this.total = main_members['total']
-          
-  //         this.main_members = main_members['result'].reverse();
-  //         // this.configureMainMembers(main_members.reverse());
-  //         this.loadingState = 'complete';
-  //       },
-  //       error => {
-  //         let err = error['error'];
-  //         this.toastr.error(err['description'], error['title'], {timeOut: 3000});
-  //       });
-  // }
-
   getAgeLimitNotice() {
     this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?notice=1`)
       .subscribe(
@@ -633,31 +609,6 @@ export class MainMemberListComponent implements OnInit {
           this.toastr.error(err['description'], error['title'], {timeOut: 3000});
         });
   }
-
-  // getBySearchField() {
-  //   const formValue = this.form.value;
-  //   this.filter = `search_string=${formValue["searchField"]}`;
-  // this.searchField = formValue["searchField"];
-    
-  //   this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?offset=${this.searchOffset}&limit=${this.searchLimit}&${this.filter}`)
-  //     .subscribe(
-  //       (main_members: any) => {
-  //         this.status = null;
-  //         this.searchField = formValue["searchField"];
-  //         if (main_members["result"].length > 0) {
-  //           this.main_members = main_members["result"].reverse();
-  //           this.searchOffset = main_members["result"].length;
-  //           this.limit = this.searchOffset + 20;
-  //         }else{
-  //           this.main_members = [];
-  //         }
-  //         this.loadingState = 'complete';
-  //       },
-  //       error => {
-  //         let err = error['error'];
-  //         this.toastr.error(err['description'], error['title'], {timeOut: 3000});
-  //       });
-  // }
 
   showSuccess() {
     this.toastr.success('Success', 'Toastr fun!');

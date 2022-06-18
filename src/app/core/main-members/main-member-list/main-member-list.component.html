@@ -142,16 +142,16 @@
                   </div>
                   <div *ngIf="isParlour()" style="margin-right: 10px;">
                     <button id="consultantPaymnents" type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                      Payments
+                      Monthly Payments
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="btnGroupDrop2">
                       <li *ngFor="let consultant of consultants"><a class="dropdown-item" href="{{getConsultantPaymentsExcel(consultant)}}" target="_blank">{{ consultant.first_name }} {{ consultant.last_name }}</a></li>
                       <li><a class="dropdown-item" href="{{getConsultantPaymentsExcel()}}" target="_blank">{{ user.parlour_name }}</a></li>
                     </ul>
                   </div>
-                  <div *ngIf="false">
+                  <div *ngIf="isParlour()">
                     <button id="consultantNotifications" type="button" class="btn btn-dark" (click)="navigateToNotifications()">
-                      Emails
+                      DPN
                     </button>
                   </div>
                 </div>
@@ -223,7 +223,7 @@
                   <th style="padding-right: 35px;">Status</th>
                   <th style="padding-right: 35px;">Action</th>
                 </tr>
-                <tr *ngFor="let main_member of main_members" style="border-bottom: 1px solid rgba(0,0,0,.12);">
+                <tr *ngFor="let main_member of main_members" id="{{main_member.id}}" style="border-bottom: 1px solid rgba(0,0,0,.12);">
                   <td style="padding-right: 35px;">
                     {{main_member.first_name}} {{main_member.last_name}}
                   </td>
@@ -256,14 +256,38 @@
                     {{main_member.applicant.status}}
                   </td>
                   <td style="padding-left: 10px;">
-
-                    <button class="btn btn-md btn-dark m-2" (click)="navigateToMainMemberForm(main_member)" *ngIf="isCurrentConsultant(main_member) || isParlour()">Edit</button>
-                    <button class="btn btn-md btn-dark m-2" *ngIf="!isCurrentConsultant(main_member) && isConsultant()" [disabled]="true">Edit</button>
-                    <a *ngIf="isCurrentConsultant(main_member) || isParlour()" class="btn btn-md btn-dark m-2" (click)="navigateToPaymentForm(main_member)">Pay now</a>
-                    <a *ngIf="!isCurrentConsultant(main_member) && isConsultant()" id="payNow" class="btn btn-md btn-dark m-2" (click)="setMainmemberOtherConsultant(main_member)">Pay now</a>
+                    <div class="btn-group" role="group" style="margin-right: 10px;">
+                      <button id="btnGroupDrop2" type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        Actions
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="btnGroupDrop2">
+                        <li *ngIf="isCurrentConsultant(main_member) || isParlour()">
+                          <a class="dropdown-item" (click)="navigateToMainMemberForm(main_member)">Edit</a>
+                        </li>
+                        <li *ngIf="!isCurrentConsultant(main_member) && isConsultant()">
+                          <a class="dropdown-item" >Edit</a>
+                        </li>
+                        <li  *ngIf="isCurrentConsultant(main_member) || isParlour()">
+                          <a class="dropdown-item" (click)="navigateToPaymentForm(main_member)">Pay Now</a>
+                        </li>
+                        <li *ngIf="!isCurrentConsultant(main_member) && isConsultant()">
+                          <a class="dropdown-item" (click)="setMainmemberOtherConsultant(main_member)">Pay Now</a>
+                        </li>
+                        <li *ngIf="isCurrentConsultant(main_member) || isParlour()">
+                          <a class="dropdown-item" (click)="confirmDeleteApplicant(main_member)">Delete</a>
+                        </li>
+                        <li *ngIf="!isCurrentConsultant(main_member) && isConsultant()">
+                          <a class="dropdown-item">Delete</a>
+                        </li>
+                      </ul>
+                    </div>
+                    <!-- <button class="btn btn-md btn-dark m-2" (click)="navigateToMainMemberForm(main_member)" *ngIf="isCurrentConsultant(main_member) || isParlour()">Edit</button>
+                    <button class="btn btn-md btn-dark m-2" *ngIf="!isCurrentConsultant(main_member) && isConsultant()" [disabled]="true">Edit</button> -->
+                    <!-- <a *ngIf="isCurrentConsultant(main_member) || isParlour()" class="btn btn-md btn-dark m-2" (click)="navigateToPaymentForm(main_member)">Pay now</a>
+                    <a *ngIf="!isCurrentConsultant(main_member) && isConsultant()" id="payNow" class="btn btn-md btn-dark m-2" (click)="setMainmemberOtherConsultant(main_member)">Pay now</a> -->
                     <!-- <dialog-elements-example></dialog-elements-example> -->
-                    <button class="btn btn-md btn-dark" (click)="confirmDeleteApplicant(main_member)" *ngIf="isCurrentConsultant(main_member) || isParlour()">Delete</button>
-                    <button class="btn btn-md btn-dark"  *ngIf="!isCurrentConsultant(main_member) && isConsultant()" [disabled]="true">Delete</button>
+                    <!-- <button class="btn btn-md btn-dark" (click)="confirmDeleteApplicant(main_member)" *ngIf="isCurrentConsultant(main_member) || isParlour()">Delete</button>
+                    <button class="btn btn-md btn-dark"  *ngIf="!isCurrentConsultant(main_member) && isConsultant()" [disabled]="true">Delete</button> -->
                     <button class="btn btn-md btn-dark" style="display: none;" id="deleteApplicant" data-bs-toggle="modal" data-bs-target="#confirmDeleteApplicantModal"></button>
                     <button class="m-2" style="background-color: #fff; border: none;" *ngIf="main_member.age_limit_exceeded && !main_member.age_limit_exception" class="tooltip-test" title="This member exceeds the age limit set on current plan" (click)="ageLimitException(main_member)">
                       <span class="material-icons"  style="font-size:30px;color:red;">

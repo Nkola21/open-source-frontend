@@ -121,8 +121,8 @@
                 <ng-container matColumnDef="actions">
                   <th style="width: 330px;" mat-header-cell *matHeaderCellDef></th>
                   <td mat-cell *matCellDef="let extended_member">
+                    <a class="btn btn-md btn-dark m-2" (click)="navigateToExtendedMemberForm(extended_member)">Edit</a>
                     <a class="btn btn-md btn-dark m-2" (click)="openRestoreModal(extended_member)" *ngIf="!extended_member.is_deceased && !isActive(extended_member)">Restore</a>
-
                     <button class="btn btn-md btn-dark" style="display: none;" id="restoreExtendedMemberModalBtn" data-bs-toggle="modal" data-bs-target="#restoreExtendedMemberModal"></button>
                     <button class="btn btn-md btn-dark m-2" (click)="confirmDeleteMember(extended_member)">Delete</button>
                     <button class="btn btn-md btn-dark m-2" (click)="confirmPromoteMember(extended_member)" *ngIf="canPromote(extended_member)">Promote</button>
