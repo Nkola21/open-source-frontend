@@ -75,7 +75,7 @@ export class ApplicantFormComponent implements OnInit  {
 
   submit() {
     const formValue = this.form.value;
-    console.log(formValue);
+
     if (this.applicant) {
       this.openService.put(`applicants/${this.applicant.id}/update`, formValue)
         .subscribe(

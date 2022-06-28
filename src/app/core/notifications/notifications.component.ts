@@ -301,6 +301,7 @@ export class NotificationsComponent implements OnInit  {
           this.toastr.error(err['description'], error['title'], {timeOut: 3000});
         });
   }
+
   addDayOfWeek(){
     let checked_elements = document.getElementsByClassName("list-group-item");
     

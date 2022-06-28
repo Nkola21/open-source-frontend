@@ -92,8 +92,7 @@ export class ApplicantListComponent implements OnInit {
 
     this.openService.getUrl(`${permission.toLowerCase()}s/${id}/applicants/all`)
       .subscribe(
-        (applicants: Array<any>) => {
-          console.log(applicants);         
+        (applicants: Array<any>) => {    
           this.applicants = applicants;
           this.configureApplicants(applicants);
           this.loadingState = 'complete';

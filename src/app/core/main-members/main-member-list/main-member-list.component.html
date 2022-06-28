@@ -234,26 +234,26 @@
                     {{main_member.contact}}
                   </td>
                   <td style="padding-left: 40px; padding-right: 10px;">
-                    <a class="btn btn-md btn-dark m-2" *ngIf="noExtendedMembers(main_member) && (isCurrentConsultant(main_member) || isParlour())" (click)="navigateToExtendedMembersListView(main_member.applicant.id)">View</a>
+                    <a class="btn btn-md btn-dark m-2" *ngIf="noExtendedMembers(main_member) && (isCurrentConsultant(main_member) || isParlour())" (click)="navigateToExtendedMembersListView(main_member.id)">View</a>
                     <button class="btn btn-md btn-dark m-2" *ngIf="!noExtendedMembers(main_member) || (!isCurrentConsultant(main_member) && isConsultant())" matTooltip="This plan is only for principal members." [disabled]="true">View</button>
                   </td>
                   <td style="padding-left: 10px;">
-                    {{main_member.applicant.plan.premium}}
+                    {{main_member.plan.premium}}
                   </td>
                   <td style="padding-left: 10px;">
-                    {{main_member.applicant.policy_num}}
+                    {{main_member.policy_num}}
                   </td>
                   <td style="padding-left: 10px;">
                     <a class="btn btn-md btn-dark" href="{{getDocUrl(main_member)}}" target="_blank" style="margin-top: 5px;">Document</a>
                   </td>
                   <td style="padding-left: 10px;">
-                    <button class="btn btn-md btn-dark" (click)="hasPersonalFiles(main_member)" target="_blank" style="margin-top: 5px;" [disabled]="!main_member.applicant.personal_docs">File</button>
+                    <button class="btn btn-md btn-dark" (click)="hasPersonalFiles(main_member)" target="_blank" style="margin-top: 5px;" [disabled]="!main_member.personal_docs">File</button>
                   </td>
                   <td style="padding-left: 10px;">
                     {{toDate(main_member.created_at)}}
                   </td>
                   <td style="padding-left: 10px;">
-                    {{main_member.applicant.status}}
+                    {{main_member.status}}
                   </td>
                   <td style="padding-left: 10px;">
                     <div class="btn-group" role="group" style="margin-right: 10px;">
@@ -333,11 +333,11 @@
             You are about to make a payment for a member created by:
           </p>
           <p class="mb-0 ml-3 fs-5" >
-            <strong>Consultant:</strong> {{ main_member.applicant.consultant.first_name | titlecase }} {{ main_member.applicant.consultant.last_name | titlecase }}
+            <strong>Consultant:</strong> {{ main_member.consultant.first_name | titlecase }} {{ main_member.consultant.last_name | titlecase }}
             <br />
-            <strong>Branch:</strong> {{ main_member.applicant.consultant.branch | titlecase }}
+            <strong>Branch:</strong> {{ main_member.consultant.branch | titlecase }}
             <br />
-            <strong>email:</strong> {{ main_member.applicant.consultant.email }}
+            <strong>email:</strong> {{ main_member.consultant.email }}
           </p>
         </div>
         <br />

@@ -212,13 +212,12 @@ export class MainMemberListComponent implements OnInit {
     this.user = this.openService.getUser();
     this.transition(this.user);
 
-    if (this.permission == "Consultant") {
-      this.parlour = this.user.parlour;
-    }
+    this.parlour = this.user.parlour;
+  
     this.parlour_id = this.openService.getParlourId()
     this.dataSource = new MembersDataSource(this.openService);
     this.initParlour(this.parlour_id);
-    this.initConsultants(this.parlour_id);
+    this.initConsultants(this.parlour.id);
     this.initSearchForm(this.searchField);
 
     this.initSMSForm(this.smsFields, this.parlour);
@@ -228,7 +227,7 @@ export class MainMemberListComponent implements OnInit {
   }
 
   loadMembersPage() {
-    let url = `${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?offset`;
+    let url = `users/${this.user.id}/main-members/all?offset`;
     this.dataSource.loadMembers(url, '',  this.sort.direction, 
         this.paginator.pageIndex, this.paginator.pageSize);
   }
@@ -273,7 +272,6 @@ export class MainMemberListComponent implements OnInit {
   }
 
   doLess() {
-    console.log("DO LESS");
     this.offset -= this.count < 20 ? (20 + this.count ) : 20;
     this.limit = 20;
     this.do(this.offset, this.limit, "backward");
@@ -293,7 +291,7 @@ export class MainMemberListComponent implements OnInit {
   }
 
   isMemberConsultant(main_member: any) {
-    return this.permission == 'Consultant' && main_member && this.user.id == main_member.applicant.consultant.id;
+    return this.permission == 'Consultant' && main_member && this.user.id == main_member.consultant.id;
   }
 
   initializePaginator() {
@@ -327,12 +325,11 @@ export class MainMemberListComponent implements OnInit {
       direction="forward";
     }
 
-    this.openService.getUrl(`${permission.toLowerCase()}s/${this.user.id}/main-members/all?${queryString}`)
+    this.openService.getUrl(`users/${this.user.id}/main-members/all?${queryString}`)
       .subscribe(
         (main_members: any) => {
 
           this.searchField = null;
-          // this.searchField = formValue["searchField"];
           this.count = main_members["count"];
           this.total = main_members["total"];
           if (direction && direction == "forward") {
@@ -398,8 +395,8 @@ export class MainMemberListComponent implements OnInit {
     this.clearParams();
      queryString += `search_string=${searchForm["searchField"]}&`
    }
-   if (this.consultant) {
-     queryString += `consultant=${this.consultant.id}&`
+   if (this.isConsultant()) {
+     queryString += `consultant=${this.user.id}&`
    }
    if (this.branch){
     queryString += `branch=${this.branch}&`
@@ -445,10 +442,10 @@ export class MainMemberListComponent implements OnInit {
 
   getDocUrl(main_member) {
     const id = main_member.id;
-    const applicant = main_member.applicant
+  
     const base_url = this.openService.getBaseUrl();
-    if (applicant.old_url) {
-      return applicant.document;
+    if (main_member.old_url) {
+      return main_member.document;
     }
     return `${base_url}/main-members/${id}/document`;
   }
@@ -456,7 +453,6 @@ export class MainMemberListComponent implements OnInit {
   getOtherDocUrl() {
     if (this.main_member) {
       const id = this.main_member.id;
-      const applicant = this.main_member.applicant
       const base_url = this.openService.getBaseUrl();
 
       return `${base_url}/main-members/${id}/personal_docs`;
@@ -466,12 +462,12 @@ export class MainMemberListComponent implements OnInit {
 
   hasPersonalFiles(main_member) {
     const id = main_member.id;
-    const applicant = main_member.applicant;
+  
     this.main_member = main_member;
     const base_url = this.openService.getBaseUrl();
-    if(applicant.personal_docs) {
+    if(main_member.personal_docs) {
       const anchor = <HTMLAnchorElement>document.getElementById("viewFile")
-      anchor.href = applicant.personal_docs.search("opensource.cutag.co.za") == -1 ? `${base_url}/main-members/${id}/personal_docs` : applicant.personal_docs;
+      anchor.href = main_member.personal_docs.search("opensource.cutag.co.za") == -1 ? `${base_url}/main-members/${id}/personal_docs` : main_member.personal_docs;
       anchor.click()
     }
   }
@@ -489,7 +485,7 @@ export class MainMemberListComponent implements OnInit {
   }
 
   isCurrentConsultant(main_member: any) {
-    return main_member.applicant.consultant.id == this.user.id || this.isParlour();
+    return main_member.consultant.id == this.user.id || this.isParlour();
   }
 
   initConsultants(parlour_id) {
@@ -534,16 +530,16 @@ export class MainMemberListComponent implements OnInit {
     this.router.navigate(['main-members', main_member.id,'form']);
   }
 
-  navigateToExtendedMembersListView(id: number) {
-    this.router.navigate(['applicants', id,'extended-members', 'all']);
+  navigateToExtendedMembersListView(id: number) {    
+    this.router.navigate(['main-members', id,'extended-members', 'all']);
   }
 
   navigateToPaymentsForm(id: number) {
-    this.router.navigate(['applicants', id,'extended-members', 'all']);
+    this.router.navigate(['main-members', id,'extended-members', 'all']);
   }
 
   navigateToInvoiceList(main_member) {
-    const id = main_member.applicant.id;
+    const id = main_member.id;
     this.router.navigate(['applicants', id,'invoices']);
   }
 
@@ -596,7 +592,7 @@ export class MainMemberListComponent implements OnInit {
   }
 
   getAgeLimitNotice() {
-    this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?notice=1`)
+    this.openService.getUrl(`users/${this.user.id}/main-members/all?notice=1`)
       .subscribe(
         (main_members: Array<any>) => {
           if (main_members) {
@@ -664,8 +660,9 @@ export class MainMemberListComponent implements OnInit {
   }
 
   noExtendedMembers(main_member) {
+    
     if (main_member) {
-      let plan = main_member.applicant.plan;
+      let plan = main_member.plan;
 
       if (!plan.extended_members && !plan.consider_age && !plan.additional_extended_members && !plan.spouse){
         return false;

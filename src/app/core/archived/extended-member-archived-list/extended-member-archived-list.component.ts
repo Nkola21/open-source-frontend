@@ -167,7 +167,7 @@ export class ExtendedMemberArchivedListComponent implements OnInit {
     this.loadingState = 'loading';
     this.dataSource = new ExtendedMemberDataSource([], this.page);
 
-    this.openService.getUrl(`applicants/${id}/extended-members/archived`)
+    this.openService.getUrl(`main-members/${id}/extended-members/archived`)
       .subscribe(
         (extended_members: Array<any>) => {
           this.extended_members = extended_members;
@@ -190,21 +190,21 @@ export class ExtendedMemberArchivedListComponent implements OnInit {
   }
 
   navigateToExtendedMemberView(extended_members: any) {
-    this.router.navigate(['applicants', this.applicant_id, 'main-members', extended_members.id,'view']);
+    this.router.navigate(['users', this.applicant_id, 'main-members', extended_members.id,'view']);
   }
 
   navigateToExtendedMemberForm(extended_member: any) {
-    this.router.navigate(['applicants', this.applicant_id, 'extended-members', extended_member.id,'form']);
+    this.router.navigate(['main-memebrs', this.applicant_id, 'extended-members', extended_member.id,'form']);
   }
 
   navigateToExtendedMemberAddForm() {
-    this.router.navigate(['applicants', this.applicant_id, 'extended-members', 'form']);
+    this.router.navigate(['main-members', this.applicant_id, 'extended-members', 'form']);
   }
 
   getBySearchField() {
     const formValue = this.form.value;
 
-    this.openService.getUrl(`applicants/${this.applicant_id}/extended-members/all?search_string=${formValue["searchField"]}`)
+    this.openService.getUrl(`main-members/${this.applicant_id}/extended-members/all?search_string=${formValue["searchField"]}`)
       .subscribe(
         (extended_members: Array<any>) => {
           this.status = null;

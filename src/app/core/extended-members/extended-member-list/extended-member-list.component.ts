@@ -166,7 +166,7 @@ export class ExtendedMemberListComponent implements OnInit {
     this.loadingState = 'loading';
     this.dataSource = new ExtendedMemberDataSource([], this.page);
 
-    this.openService.getUrl(`applicants/${id}/extended-members/all`)
+    this.openService.getUrl(`main-members/${id}/extended-members/all`)
       .subscribe(
         (extended_members: Array<any>) => {
           this.extended_members = extended_members;
@@ -185,21 +185,21 @@ export class ExtendedMemberListComponent implements OnInit {
   }
 
   navigateToExtendedMemberView(extended_members: any) {
-    this.router.navigate(['applicants', this.applicant_id, 'main-members', extended_members.id,'view']);
+    this.router.navigate(['main-members', this.applicant_id, 'main-members', extended_members.id,'view']);
   }
 
   navigateToExtendedMemberForm(extended_member: any) {
-    this.router.navigate(['applicants', this.applicant_id, 'extended-members', extended_member.id,'form']);
+    this.router.navigate(['main-members', this.applicant_id, 'extended-members', extended_member.id,'form']);
   }
 
   navigateToExtendedMemberAddForm() {
-    this.router.navigate(['applicants', this.applicant_id, 'extended-members', 'form']);
+    this.router.navigate(['main-members', this.applicant_id, 'extended-members', 'form']);
   }
 
   getBySearchField() {
     const formValue = this.form.value;
 
-    this.openService.getUrl(`applicants/${this.applicant_id}/extended-members/all?search_string=${formValue["searchField"]}`)
+    this.openService.getUrl(`main-members/${this.applicant_id}/extended-members/all?search_string=${formValue["searchField"]}`)
       .subscribe(
         (extended_members: Array<any>) => {
           this.status = null;
@@ -232,7 +232,7 @@ export class ExtendedMemberListComponent implements OnInit {
   }
 
   getAgeLimitNotice() {
-    this.openService.getUrl(`applicants/${this.applicant_id}/extended-members/all?notice=1`)
+    this.openService.getUrl(`main-members/${this.applicant_id}/extended-members/all?notice=1`)
       .subscribe(
         (extended_members: Array<any>) => {
           if (extended_members) {
@@ -262,7 +262,6 @@ export class ExtendedMemberListComponent implements OnInit {
     this.openService.delete(`extended-members/${this.extended_member.id}/archive`)
       .subscribe(
         (extended_member: any) => {
-          console.log(extended_member);
           
           this.extended_members = this.extended_members.filter(val => {
             if (val.id != extended_member.id) {
@@ -270,7 +269,7 @@ export class ExtendedMemberListComponent implements OnInit {
             }
           });
           this.configureExtendedMembers(this.extended_members.reverse());
-          this.toastr.success('Applicant has been deleted!', 'Success');
+          this.toastr.success('Member has been deleted!', 'Success');
         },
         error => {
           console.log(error);
@@ -287,7 +286,7 @@ export class ExtendedMemberListComponent implements OnInit {
             }
           });
           this.configureExtendedMembers(this.extended_members.reverse());
-          this.toastr.success('Applicant has been deleted!', 'Success');
+          this.toastr.success('Member has been deleted!', 'Success');
         },
         error => {
           console.log(error);
@@ -296,7 +295,7 @@ export class ExtendedMemberListComponent implements OnInit {
 
   getCVSFile(event) {
     event.preventDefault();
-    this.openService.getUrl(`applicants/${this.applicant_id}/extended-members/file`)
+    this.openService.getUrl(`main-members/${this.applicant_id}/extended-members/file`)
       .subscribe(
         (main_members: Array<any>) => {
           this.downloadFile(main_members);

@@ -114,13 +114,15 @@ export class ExtendedMemberFormComponent extends CompareFormValue implements OnI
     this.transition(this.user);
     this.route.params.forEach((params: Params) => {
       const id = +params['id'];
+      
       if (params['id'] !== undefined) {
         this.getExtendedMember(id);
       }else{
         this.initForm(this.extended_member);
       }
-      if (params['applicant_id'] !== undefined) {
-        const id = +params['applicant_id'];
+      
+      if (params['main_id'] !== undefined) {
+        const id = +params['main_id'];
         this.applicant_id = id
       }
   });
@@ -199,7 +201,7 @@ export class ExtendedMemberFormComponent extends CompareFormValue implements OnI
   }
 
   getApplicant(id) {
-    this.openService.getOne(`applicant/${id}/get`)
+    this.openService.getOne(`main-members/${id}/get`)
       .subscribe(
         applicant => {
           this.applicant = applicant;
@@ -218,7 +220,7 @@ export class ExtendedMemberFormComponent extends CompareFormValue implements OnI
 
   submit() {
     const formValue = this.form.value;
-    formValue["applicant_id"] = this.applicant_id;
+    formValue["main_member_id"] = this.applicant_id;
     console.log(formValue);
 
     if (this.extended_member) {
@@ -294,7 +296,7 @@ export class ExtendedMemberFormComponent extends CompareFormValue implements OnI
       const dob = new Date(formValue['date_of_birth']).toISOString();
       queryString += `&date_of_birth=${dob}`
     }
-    this.openService.getUrl(`applicants/${this.applicant_id}/extended-members/age-limit?${queryString}`)
+    this.openService.getUrl(`main-members/${this.applicant_id}/extended-members/age-limit?${queryString}`)
         .subscribe(
           (res: any) => {
             if (res['result'] != 'OK!') {

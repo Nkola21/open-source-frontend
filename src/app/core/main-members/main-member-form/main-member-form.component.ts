@@ -32,7 +32,12 @@ export class MainMemberFormBuilder {
       'contact': [details.contact, [Validators.required, validateMSISDN]],
       'is_deceased': [details.is_deceased],
       'waiting_period': [details.waiting_period, [Validators.required]],
-      'applicant': this.buildApplicantForm(details.applicant),
+      'policy_num': [details.policy_num, [Validators.required]],
+      'document': [details.document],
+      'cancelled': [details.cancelled],
+      'status': [details.status],
+      'date': [details.date],
+      'address': [details.address, [Validators.required]],
       'plan_id': [details.plan_id, [Validators.required]]
     });
   }
@@ -41,20 +46,6 @@ export class MainMemberFormBuilder {
     details = details === undefined ? {'id': null, 'name': null} : details;
     return this.formBuilder.group({
       'id': [details.id],
-    });
-  }
-
-  buildApplicantForm(details) {
-    details = details === undefined ? newApplicant() : details;
-    return this.formBuilder.group({
-        'id': [details.id],
-        'policy_num': [details.policy_num, [Validators.required]],
-        'document': [details.document],
-        'cancelled': [details.cancelled],
-        'status': [details.status],
-        'date': [details.date],
-        'address': [details.address, [Validators.required]],
-        'plan': this.buildPlan(details.plan)
     });
   }
 }
@@ -156,7 +147,6 @@ export class MainMemberFormComponent implements OnInit  {
 
   onFileSelected(e: any) {
     let files = e.target.files;
-    // console.log(files.item(0));
     this.selectedFile = <File>files.item(0);
   }
 
@@ -199,7 +189,7 @@ export class MainMemberFormComponent implements OnInit  {
           this.toastr.error(err['description'], error['title'], {timeOut: 3000});
         });
     }else {
-      this.openService.post(`consultants/${this.user.id}/main-members`, formValue)
+      this.openService.post(`users/${this.user.id}/main-members`, formValue)
         .subscribe(
           (main_member: any) => {
             if (this.selectedFile){
@@ -307,9 +297,10 @@ export class MainMemberFormComponent implements OnInit  {
   initPlans() {
     this.openService.getUrl(`parlours/${this.parlour_id}/plans/all`)
     .subscribe((plans: any) => {
-
+      console.log(plans);
+      
       this.plans = plans.map((plan: any) => {
-          if (this.main_member && plan.id == this.main_member.applicant.plan.id) {
+          if (this.main_member && plan.id == this.main_member.plan.id) {
             this.optionSelected = plan.id;
           }
           return {
