@@ -107,7 +107,7 @@ export class ConsultantListComponent implements OnInit {
     this.loadingState = 'loading';
     this.dataSource = new ConsultantDataSource([], this.page);
 
-    this.openService.getUrl(`parlours/${id}/consultants/`)
+    this.openService.getUrl(`parlours/${this.user.parlour.id}/consultants/`)
       .subscribe(
         (consultants: Array<any>) => {
           this.consultants = consultants;
