@@ -53,12 +53,6 @@ export class NotificationsComponent implements OnInit  {
     private toastr: ToastrService) {
 
     }
-  // ngAfterViewInit(): void {
-  //   this.things.changes.subscribe(t => {
-  //     this.setConsultants(this.consultants);
-  //   })
-    
-  // }
 
   ngOnInit(): void {
     this.parlour_id = this.openService.getParlourId();
@@ -113,19 +107,19 @@ export class NotificationsComponent implements OnInit  {
     let days_list = days.split(", ");
     for(let i of days_list) {
       if (i == "0") {
-        this.sunday = true;
-      }else if(i == "1") {
         this.monday = true;
-      }else if(i == "2") {
+      }else if(i == "1") {
         this.tuesday = true;
-      }else if(i == "3") {
+      }else if(i == "2") {
         this.wednesday = true;
+      }else if(i == "3") {
+        this.thursday = true;
       }else if (i == "4") {
-        this.thursday = true;        
-      }else if (i == "5") {
         this.friday = true;
-      }else if(i == "6") {
+      }else if (i == "5") {
         this.saturday = true;
+      }else if(i == "6") {
+        this.sunday = true;
       }
     }
   }
@@ -304,7 +298,7 @@ export class NotificationsComponent implements OnInit  {
 
   addDayOfWeek(){
     let checked_elements = document.getElementsByClassName("list-group-item");
-    
+    this.days_selected = [];
     for (var i = 0; i < checked_elements.length; i++) {
       let val = checked_elements.item(i) as HTMLInputElement;
 
