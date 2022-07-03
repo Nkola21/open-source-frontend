@@ -69,9 +69,8 @@
           <input type="checkbox" [(ngModel)]="saturday" class="form-check list-group-item" id="5">Sat
         </label>
       </div>
-      <label class="col-form-label fs-6 d-flex justify-content-start"><strong>Add Time</strong></label>
       <div class="mb-3">
-        <input type="time" id="timeToSend" name="appt" min="00:00" max="23:59">
+        <p class="fs-6">You will receive an email @18:30 on your selected days.</p>
       </div>
       <div class="mb-3">
         <button type="button" class="btn btn-dark" (click)="submit()">Submit</button>

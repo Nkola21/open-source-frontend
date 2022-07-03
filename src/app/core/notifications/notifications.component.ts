@@ -90,17 +90,12 @@ export class NotificationsComponent implements OnInit  {
             this.setWeekdays(notification["week_days"]);     
             this.notification = notification;
             this.setRecipients(notification["recipients"]);
-            this.setTime(notification["scheduled_time"]);
             this.setConsultants(notification["consultants"]);
           }
         },
         error => {
           this.toastr.error(error["error"].title, error["error"].description);
         });
-  }
-
-  setTime(scheduled_time: any) {
-    (<HTMLInputElement>document.getElementById("timeToSend")).value = scheduled_time;
   }
 
   setWeekdays(days: string) {
@@ -173,7 +168,6 @@ export class NotificationsComponent implements OnInit  {
   submit() {
     this.addDayOfWeek();
     this.consultantEmails();
-    let timeToSend = document.getElementById("timeToSend") as HTMLInputElement;
 
     if(this.recipients == []) {
       this.toastr.error("No users selected", "Error", {timeOut: 3000});
@@ -184,13 +178,9 @@ export class NotificationsComponent implements OnInit  {
       return;
     }
 
-    if(timeToSend.value == null) {
-      this.toastr.error("Time not set", "Error", {timeOut: 3000});
-      return;
-    }
     if (this.notification) {
 
-      this.openService.put(`notifications/${this.notification.id}/edit_notifications`, {"recipients": this.recipients, "days": this.days_selected, "time": timeToSend.value, "consultants": this.notify_consultants})
+      this.openService.put(`notifications/${this.notification.id}/edit_notifications`, {"recipients": this.recipients, "days": this.days_selected, "consultants": this.notify_consultants})
         .subscribe(
           (result: any) => {
             this.showSuccess();
@@ -201,7 +191,7 @@ export class NotificationsComponent implements OnInit  {
           this.toastr.error(err['description'], error['title'], {timeOut: 3000});
         });
     } else {
-      this.openService.post(`parlours/${this.user.id}/add_notifications`, {"recipients": this.recipients, "days": this.days_selected, "time": timeToSend.value, "consultants": this.notify_consultants})
+      this.openService.post(`parlours/${this.user.id}/add_notifications`, {"recipients": this.recipients, "days": this.days_selected, "consultants": this.notify_consultants})
         .subscribe(
           (result: any) => {
             this.showSuccess();
