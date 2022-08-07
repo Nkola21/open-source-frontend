@@ -166,7 +166,7 @@ export class MainMemberArchivedListComponent implements OnInit {
     this.loadingState = 'loading';
     this.dataSource = new MainMemberDataSource([], this.page);
 
-    this.openService.getUrl(`users/${id}/main-members/archived`)
+    this.openService.getUrl(`${this.permission.toLowerCase()}s/${id}/main-members/archived`)
       .subscribe(
         (main_members: Array<any>) => {
           this.main_members = main_members;

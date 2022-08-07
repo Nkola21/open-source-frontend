@@ -68,7 +68,8 @@
             </div>
             <mat-form-field appearance="fill">
                 <mat-label>Choose a date</mat-label>
-                <input [readonly]="true" mandatory class="form-control" id="form.controls.date_joined" formControlName="date_joined" matInput [matDatepicker]="picker" [disabled]="main_member">
+                <input [readonly]="true" mandatory *ngIf="!isParlour()" class="form-control" id="form.controls.date_joined" formControlName="date_joined" matInput [matDatepicker]="picker" [disabled]="main_member">
+                <input [readonly]="true" mandatory *ngIf="isParlour()" class="form-control" id="form.controls.date_joined" formControlName="date_joined" matInput [matDatepicker]="picker">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
                 <app-input-error [control]="form.controls.date_joined"></app-input-error>

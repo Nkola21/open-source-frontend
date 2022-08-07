@@ -166,7 +166,7 @@ export class ExtendedMemberListComponent implements OnInit {
     this.loadingState = 'loading';
     this.dataSource = new ExtendedMemberDataSource([], this.page);
 
-    this.openService.getUrl(`main-members/${id}/extended-members/all`)
+    this.openService.getUrl(`applicants/${id}/extended-members/all`)
       .subscribe(
         (extended_members: Array<any>) => {
           this.extended_members = extended_members;
@@ -199,7 +199,7 @@ export class ExtendedMemberListComponent implements OnInit {
   getBySearchField() {
     const formValue = this.form.value;
 
-    this.openService.getUrl(`main-members/${this.applicant_id}/extended-members/all?search_string=${formValue["searchField"]}`)
+    this.openService.getUrl(`applicants/${this.applicant_id}/extended-members/all?search_string=${formValue["searchField"]}`)
       .subscribe(
         (extended_members: Array<any>) => {
           this.status = null;
@@ -232,7 +232,7 @@ export class ExtendedMemberListComponent implements OnInit {
   }
 
   getAgeLimitNotice() {
-    this.openService.getUrl(`main-members/${this.applicant_id}/extended-members/all?notice=1`)
+    this.openService.getUrl(`applicants/${this.applicant_id}/extended-members/all?notice=1`)
       .subscribe(
         (extended_members: Array<any>) => {
           if (extended_members) {

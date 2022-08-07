@@ -63,7 +63,6 @@ export function validateMSISDN(c: FormControl) {
   }
 }
 
-
 export function validateOptionalMSISDN(c: FormControl) {
   const REGEXP = new RegExp('^(\\+27\\d{9}?|0\\d{9}?)$');
 

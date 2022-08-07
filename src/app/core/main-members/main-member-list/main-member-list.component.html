@@ -67,7 +67,7 @@
                       <input type="text" class="form-control" id="searchField" formControlName="searchField" placeholder="Search">
                     </div>
                     <div>
-                      <button id="btnGroupDrop1" type="button" class="btn btn-dark" (click)="do()" >
+                      <button id="btnGroupDrop1" type="button" class="btn btn-dark" (click)="getBySearchField()" >
                         Search
                       </button>
                     </div>
@@ -157,12 +157,12 @@
                 </div>
 
                 <div class="d-flex justify-content-between">
-                  <form [formGroup]="form" (ngSubmit)="do()" *ngIf="form" class="row row-cols-lg-auto g-3 align-items-center">
+                  <form [formGroup]="form" (ngSubmit)="getBySearchField()" *ngIf="form" class="row row-cols-lg-auto g-3 align-items-center">
                     <div style="margin-right: 10px;">
                       <input type="text" class="form-control" id="searchField" formControlName="searchField" placeholder="Search">
                     </div>
                     <div>
-                      <button id="btnGroupDrop1" type="button" class="btn btn-dark" (click)="do()" >
+                      <button id="btnGroupDrop1" type="button" class="btn btn-dark" (click)="getBySearchField()" >
                         Search
                       </button>
                     </div>
@@ -170,93 +170,92 @@
                 </div>
             </div>
             </mat-card-title>
-
             <mat-card-content>
-              <div class="container">
-                <div class="mat-paginator-page-size ng-star-inserted">
-                  <div class="mat-paginator-page-size-label" style="margin-left: 79%;">
-                    <span>Items per page: </span>
-                    <span>{{rangeStart() }} – {{rangeEnd()}} of {{total}}</span>
-                    <span>
-                      <!-- <div class="mat-paginator-range-actions"> -->
-                        <button mat-icon-button="" type="button" class="mat-focus-indicator mat-tooltip-trigger mat-paginator-navigation-previous mat-icon-button mat-button-base" aria-label="Previous page" (click)="doLess()" [disabled]="accumulated_total == 0">
-                          <span class="mat-button-wrapper">
-                            <svg viewBox="0 0 30 30" focusable="false" class="mat-paginator-icon">
-                              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
-                            </svg>
-                          </span>
-                          <span matripple="" class="mat-ripple mat-button-ripple mat-button-ripple-round"></span>
-                          <span class="mat-button-focus-overlay"></span>
-                        </button>
-                        <!-- <button *ngIf="!goForward()" mat-icon-button="" type="button" class="mat-focus-indicator mat-tooltip-trigger mat-paginator-navigation-next mat-icon-button mat-button-base" aria-label="Next page" (click)="doMore()" disabled></button> -->
-                          <button mat-icon-button="" type="button" class="mat-focus-indicator mat-tooltip-trigger mat-paginator-navigation-next mat-icon-button mat-button-base" aria-label="Next page" (click)="doMore()"  [disabled]="accumulated_total == total">
-                          <span class="mat-button-wrapper">
-                            <svg viewBox="0 0 30 30" focusable="false" class="mat-paginator-icon">
-                              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
-                            </svg>
-                          </span>
-                          <span matripple="" class="mat-ripple mat-button-ripple mat-button-ripple-round"></span>
-                          <span class="mat-button-focus-overlay"></span>
-                        </button>
-                      <!-- </div> -->
-                    </span>
-                  </div>
-                </div>
-              </div>
-
               <div *ngIf="ageLimitExceeded">
               <button style="background-color: #fff; border: none;" (click)="getAgeLimitNotice()"><span class="material-icons"  style="font-size:48px;color:red;">
                 notifications
                 </span></button>
               </div>
-              <table #table >
-                <tr style="border-bottom: 2px solid black;">
-                  <th style="padding-right: 35px;" class="fs-6">Full Name</th>
-                  <th style="padding-right: 35px;" class="fs-6">ID Number</th>
-                  <th style="padding-left: 40px; padding-right: 10px;" class="fs-6">Contact</th>
-                  <th style="padding-right: 35px;">Extended Members</th>
-                  <th style="padding-right: 35px;">Premium</th>
-                  <th style="padding-right: 35px;">Policy Number</th>
-                  <th style="padding-right: 35px;">Policy</th>
-                  <th style="padding-right: 35px;">Other</th>
-                  <th style="padding-right: 35px;">Date Created</th>
-                  <th style="padding-right: 35px;">Status</th>
-                  <th style="padding-right: 35px;">Action</th>
-                </tr>
-                <tr *ngFor="let main_member of main_members" id="{{main_member.id}}" style="border-bottom: 1px solid rgba(0,0,0,.12);">
-                  <td style="padding-right: 35px;">
-                    {{main_member.first_name}} {{main_member.last_name}}
+              <div style="margin-left: 85%">
+                Total number of main members: {{total_count}}
+              </div>
+              <mat-paginator
+              [length]="200" [pageSizeOptions]="[10, 50, 100]" aria-label="Select page"
+                  (page)="onPaginatorChange($event)"
+                  ></mat-paginator>
+              <table mat-table #table [dataSource]="dataSource" class="table" style="width: 100%">
+                <ng-container matColumnDef="full_name">
+                    <th style="padding-right: 35px;" class="fs-6" mat-header-cell *matHeaderCellDef>Full Name</th>
+                    <td style="padding-right: 35px;" mat-cell *matCellDef="let main_member"> {{main_member.first_name}} {{main_member.last_name}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="id_number">
+                  <th style="padding-right: 35px;" class="fs-6" mat-header-cell *matHeaderCellDef>ID number</th>
+                  <td style="padding-right: 35px;" mat-cell *matCellDef="let main_member"> {{main_member.id_number}}
                   </td>
-                  <td style="padding-right: 35px;">
-                    {{main_member.id_number}}
+                </ng-container>
+  
+                <ng-container matColumnDef="contact">
+                  <th style="padding-left: 40px; padding-right: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef> Contact</th>
+                  <td style="padding-left: 40px; padding-right: 10px;" mat-cell *matCellDef="let main_member">
+                    {{main_member.contact}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="extended_members">
+                  <th style="padding-left: 40px; padding-right: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef> Extended Members</th>
+                  <td style="padding-left: 40px; padding-right: 10px;" mat-cell *matCellDef="let main_member">
+                    <a class="btn btn-md btn-dark m-2" *ngIf="noExtendedMembers(main_member) && isCurrentConsultant(main_member)" (click)="navigateToExtendedMembersListView(main_member.applicant.id)">View</a>
+                    <button class="btn btn-md btn-dark m-2" *ngIf="!noExtendedMembers(main_member) || !isCurrentConsultant(main_member)" matTooltip="This plan is only for principal members." [disabled]="true">View</button>
                   </td>
-                  <td style="padding-left: 40px; padding-right: 10px;">
-                    {{main_member.contact}}
+                </ng-container>
+  
+                <ng-container matColumnDef="premium">
+                  <th style="padding-left: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef>Premium</th>
+                  <td style="padding-left: 10px;" mat-cell *matCellDef="let main_member">
+                    {{main_member.applicant.plan.premium}}
                   </td>
-                  <td style="padding-left: 40px; padding-right: 10px;">
-                    <a class="btn btn-md btn-dark m-2" *ngIf="noExtendedMembers(main_member) && (isCurrentConsultant(main_member) || isParlour())" (click)="navigateToExtendedMembersListView(main_member.id)">View</a>
-                    <button class="btn btn-md btn-dark m-2" *ngIf="!noExtendedMembers(main_member) || (!isCurrentConsultant(main_member) && isConsultant())" matTooltip="This plan is only for principal members." [disabled]="true">View</button>
+                </ng-container>
+
+                <ng-container matColumnDef="policy_num">
+                  <th style="padding-left: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef>Policy Num</th>
+                  <td style="padding-left: 10px;" mat-cell *matCellDef="let main_member">
+                    {{main_member.applicant.policy_num}}
                   </td>
-                  <td style="padding-left: 10px;">
-                    {{main_member.plan.premium}}
-                  </td>
-                  <td style="padding-left: 10px;">
-                    {{main_member.policy_num}}
-                  </td>
-                  <td style="padding-left: 10px;">
+                </ng-container>
+
+                <ng-container matColumnDef="policy">
+                  <th style="padding-left: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef>Policy</th>
+                  <td style="padding-left: 10px;" mat-cell *matCellDef="let main_member">
                     <a class="btn btn-md btn-dark" href="{{getDocUrl(main_member)}}" target="_blank" style="margin-top: 5px;">Document</a>
                   </td>
-                  <td style="padding-left: 10px;">
-                    <button class="btn btn-md btn-dark" (click)="hasPersonalFiles(main_member)" target="_blank" style="margin-top: 5px;" [disabled]="!main_member.personal_docs">File</button>
+                </ng-container>
+
+                <ng-container matColumnDef="other">
+                  <th style="padding-left: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef>Other</th>
+                  <td style="padding-left: 10px;" mat-cell *matCellDef="let main_member">
+                    <button class="btn btn-md btn-dark" (click)="hasPersonalFiles(main_member)" target="_blank" style="margin-top: 5px;" [disabled]="!main_member.applicant.personal_docs">File</button>
                   </td>
-                  <td style="padding-left: 10px;">
+                </ng-container>
+
+                <ng-container matColumnDef="date_joined">
+                  <th style="padding-left: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef>Date Created</th>
+                  <td style="padding-left: 10px;" mat-cell *matCellDef="let main_member">
                     {{toDate(main_member.created_at)}}
                   </td>
-                  <td style="padding-left: 10px;">
-                    {{main_member.status}}
+                </ng-container>
+  
+                <ng-container matColumnDef="status">
+                  <th style="padding-left: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef>Status</th>
+                  <td style="padding-left: 10px;" mat-cell *matCellDef="let main_member">
+                    {{main_member.applicant.status}}
                   </td>
-                  <td style="padding-left: 10px;">
-                    <div class="btn-group" role="group" style="margin-right: 10px;">
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                  <th style="width: 330px;padding-left: 5%;" class="fs-6" mat-header-cell *matHeaderCellDef>Action</th>
+                  <td mat-cell *matCellDef="let main_member">
+
+                    <div class="btn-group" role="group" style="margin-right: 10px;padding-top: 2%;">
                       <button id="btnGroupDrop2" type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         Actions
                       </button>
@@ -300,15 +299,15 @@
                         </span>
                       </button>
                   </td>
-                </tr>
+                </ng-container>
+  
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
               </table>
             </mat-card-content>
           </mat-card>
         </div>
       </div>
-    </div>
-    <div>
-      <ng-content></ng-content>
     </div>
   </mat-card>
   
@@ -458,7 +457,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="do()" >Search</button>
+        <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="getByConsultant()" >Search</button>
       </div>
     </div>
   </div>
@@ -492,7 +491,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="do()" >Search</button>
+        <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="getByBranch(branch)" >Search</button>
       </div>
     </div>
   </div>
@@ -519,7 +518,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="do()" >Search</button>
+        <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="getByParlour()" >Search</button>
         <!-- <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="getByParlour()" >Search</button> -->
       </div>
     </div>

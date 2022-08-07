@@ -23,6 +23,7 @@ export class MainMemberFormBuilder {
 
   buildMainMemberForm(details) {
     details = details === undefined ? newMainMember() : details;
+
     return this.formBuilder.group({
       'id': [details.id],
       'first_name': [details.first_name, [Validators.required]],
@@ -32,13 +33,13 @@ export class MainMemberFormBuilder {
       'contact': [details.contact, [Validators.required, validateMSISDN]],
       'is_deceased': [details.is_deceased],
       'waiting_period': [details.waiting_period, [Validators.required]],
-      'policy_num': [details.policy_num, [Validators.required]],
-      'document': [details.document],
+      'policy_num': [details.applicant.policy_num, [Validators.required]],
+      'document': [details.applicant.document],
       'cancelled': [details.cancelled],
       'status': [details.status],
       'date': [details.date],
-      'address': [details.address, [Validators.required]],
-      'plan_id': [details.plan_id, [Validators.required]]
+      'address': [details.applicant.address, [Validators.required]],
+      'plan_id': [details.applicant.plan.id, [Validators.required]]
     });
   }
 
@@ -84,6 +85,7 @@ export class MainMemberFormComponent implements OnInit  {
   form: FormGroup;
   parlour_id: any;
   user: any;
+  permission: any;
   plans: Array<any> = [];
   plan: any;
   optionSelected: any;
@@ -101,18 +103,23 @@ export class MainMemberFormComponent implements OnInit  {
   ngOnInit(): void {
     this.parlour_id = this.openService.getParlourId();
     this.user = this.openService.getUser()
+    this.permission = this.openService.getPermissions()
     this.transition(this.user);
+    this.initPlans();
     this.route.params.subscribe(
       (params) => {
         const id = +params['id'];
         if (id){
           this.getMainMember(id);
         }else{
-          this.initPlans();
           this.initForm(this.main_member);
         }
       }
     )
+  }
+
+  isParlour() {
+    return this.permission == 'Parlour';
   }
 
   transition(user: any) {
@@ -297,10 +304,9 @@ export class MainMemberFormComponent implements OnInit  {
   initPlans() {
     this.openService.getUrl(`parlours/${this.parlour_id}/plans/all`)
     .subscribe((plans: any) => {
-      console.log(plans);
       
       this.plans = plans.map((plan: any) => {
-          if (this.main_member && plan.id == this.main_member.plan.id) {
+          if (this.main_member && plan.id == this.main_member.applicant.plan.id) {
             this.optionSelected = plan.id;
           }
           return {

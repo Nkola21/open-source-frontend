@@ -127,16 +127,16 @@
                 <ng-container matColumnDef="premium">
                   <th style="padding-left: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef>Premium</th>
                   <td style="padding-left: 10px;" mat-cell *matCellDef="let main_member">
-                    <span *ngIf="isActive(main_member)" class="text-muted" >{{main_member.plan.premium}}</span>
-                    <span *ngIf="!isActive(main_member)">{{main_member.plan.premium}}</span>
+                    <span *ngIf="isActive(main_member)" class="text-muted" >{{main_member.applicant.plan.premium}}</span>
+                    <span *ngIf="!isActive(main_member)">{{main_member.applicant.plan.premium}}</span>
                   </td>
                 </ng-container>
 
                 <ng-container matColumnDef="policy_num">
                   <th style="padding-left: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef>Policy Num</th>
                   <td style="padding-left: 10px;" mat-cell *matCellDef="let main_member">
-                    <span *ngIf="isActive(main_member)" class="text-muted" >{{main_member.policy_num}}</span>
-                    <span *ngIf="!isActive(main_member)">{{main_member.policy_num}}</span>
+                    <span *ngIf="isActive(main_member)" class="text-muted" >{{main_member.applicant.policy_num}}</span>
+                    <span *ngIf="!isActive(main_member)">{{main_member.applicant.policy_num}}</span>
                   </td>
                 </ng-container>
 
@@ -144,7 +144,7 @@
                   <th style="padding-left: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef>Policy</th>
                   <td style="padding-left: 10px;" mat-cell *matCellDef="let main_member">
                     <span *ngIf="!isActive(main_member)">
-                      <a class="btn btn-md btn-dark" href="{{main_member.document}}" target="_blank" style="margin-top: 5px;">Document</a>
+                      <a class="btn btn-md btn-dark" href="{{main_member.applicant.document}}" target="_blank" style="margin-top: 5px;">Document</a>
                     </span>
                     <span *ngIf="isActive(main_member)">
                       <button class="btn btn-md btn-dark" style="margin-top: 5px;" disabled="true">Document</button>
@@ -163,8 +163,8 @@
                 <ng-container matColumnDef="status">
                   <th style="padding-left: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef>Status</th>
                   <td style="padding-left: 10px;" mat-cell *matCellDef="let main_member">
-                    <span *ngIf="isActive(main_member)" class="text-muted" >{{main_member.status}}</span>
-                    <span *ngIf="!isActive(main_member)">{{main_member.status}}</span>
+                    <span *ngIf="isActive(main_member)" class="text-muted" >{{main_member.applicant.status}}</span>
+                    <span *ngIf="!isActive(main_member)">{{main_member.applicant.status}}</span>
                   </td>
                 </ng-container>
 

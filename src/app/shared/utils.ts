@@ -32,7 +32,6 @@ export function isValidEmail(email) {
   return EMAIL_REGEXP.test(email);
 }
 
-
 export function getErrorMessage(control) {
     if (control.errors.required)
       return 'Field is required';

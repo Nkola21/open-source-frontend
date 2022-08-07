@@ -61,7 +61,11 @@ export class LoginComponent implements OnInit {
 
     this.openservice.setPermissions(event.permission);
     this.user = event.user;
-    parlour_id = this.user.parlour.id
+    if (event.permission == "Consultant"){
+      parlour_id = this.user.parlour.id
+    }else{
+      parlour_id = this.user.id
+    }
     this.openservice.setParlourId(parlour_id)
     this.transition(event.user, parlour_id, event.permission);
     this.redirectToView(this.user.id, event.permission)
@@ -100,7 +104,7 @@ export class LoginComponent implements OnInit {
 
   postSignin() {
     const formValue = this.form.value
-    this.openservice.post(`users/signin`,formValue)
+    this.openservice.post(`parlours/signin`,formValue)
       .subscribe(
         result => {
           this.handleSignIn(result)

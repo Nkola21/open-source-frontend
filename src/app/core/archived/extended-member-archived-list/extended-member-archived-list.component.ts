@@ -167,7 +167,7 @@ export class ExtendedMemberArchivedListComponent implements OnInit {
     this.loadingState = 'loading';
     this.dataSource = new ExtendedMemberDataSource([], this.page);
 
-    this.openService.getUrl(`main-members/${id}/extended-members/archived`)
+    this.openService.getUrl(`applicants/${id}/extended-members/archived`)
       .subscribe(
         (extended_members: Array<any>) => {
           this.extended_members = extended_members;
@@ -204,7 +204,7 @@ export class ExtendedMemberArchivedListComponent implements OnInit {
   getBySearchField() {
     const formValue = this.form.value;
 
-    this.openService.getUrl(`main-members/${this.applicant_id}/extended-members/all?search_string=${formValue["searchField"]}`)
+    this.openService.getUrl(`applicants/${this.applicant_id}/extended-members/all?search_string=${formValue["searchField"]}`)
       .subscribe(
         (extended_members: Array<any>) => {
           this.status = null;

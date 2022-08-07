@@ -220,7 +220,7 @@ export class ExtendedMemberFormComponent extends CompareFormValue implements OnI
 
   submit() {
     const formValue = this.form.value;
-    formValue["main_member_id"] = this.applicant_id;
+    formValue["applicant_id"] = this.applicant_id;
     console.log(formValue);
 
     if (this.extended_member) {
@@ -296,7 +296,7 @@ export class ExtendedMemberFormComponent extends CompareFormValue implements OnI
       const dob = new Date(formValue['date_of_birth']).toISOString();
       queryString += `&date_of_birth=${dob}`
     }
-    this.openService.getUrl(`main-members/${this.applicant_id}/extended-members/age-limit?${queryString}`)
+    this.openService.getUrl(`applicants/${this.applicant_id}/extended-members/age-limit?${queryString}`)
         .subscribe(
           (res: any) => {
             if (res['result'] != 'OK!') {
