@@ -49,7 +49,7 @@ export class ChangePasswordComponent implements OnInit {
 
   postChangePassword() {
     const formValue = this.form.value
-    console.log(formValue);
+
     this.openservice.put(`consultants/${this.user.id}/change_password`,formValue)
       .subscribe(
         result => {

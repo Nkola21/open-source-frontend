@@ -1,0 +1,84 @@
+<mat-card>
+  <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="20px">
+    <div fxFlex="100">
+      <mat-card style="margin-top: 30px" class="line-top">
+        <mat-card-title class="mat-card-title-alt">
+          <p class="fs-1"><strong>Receive Payment Notifications On Email</strong></p>
+        </mat-card-title>
+      </mat-card>
+    </div>
+  </div>
+
+  <mat-card class="d-flex justify-content-start"> 
+    <div cass="container col-md-3">
+      <div class="mb-3">
+        <label for="email" class="fs-4 d-flex justify-content-start mb-2"><strong>Add Email: <span class="text-secondary fs-6">(You can add more than one email)</span></strong></label>
+        <input type="email" class="form-control mb-2" placeholder="Email" aria-label="email" [(ngModel)]="email">
+        
+        <button  class="btn btn-dark" (click)="addMore()">Add</button>
+      </div>
+
+      <div id="recipientEmails" class="mb-3">
+        <ul id="emailList">
+        </ul>
+        
+      </div>
+
+
+      <label class="col-form-label fs-4 d-flex justify-content-start"><strong>Select User</strong></label>
+
+
+      <fieldset id="users">
+        <div #loadConsultants class="form-check" *ngFor="let consultant of consultants">
+          <input class="form-check-input" type="checkbox" value="" id="{{consultant.id}}"/>
+          <label class="form-check-label" for="{{consultant.id}}"><strong>{{consultant.first_name}} {{consultant.last_name}}</strong></label>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="all" />
+          <label class="form-check-label" for="all"><strong>{{getParlourName()}}</strong></label>
+        </div>
+
+      </fieldset>
+    </div>
+
+    <div class="col-md-5"></div>
+
+    <div cass="container col-md-2">
+      <label class="col-form-label fs-4 d-flex justify-content-start"><strong>Add days and times to receive payment notifications</strong></label>
+      <div class="list-inline list-group-horizontal btn-group" role="group" data-toggle="buttons">
+        <label class="btn btn-dark">
+          <input type="checkbox" [(ngModel)]="sunday" class="form-check list-group-item" id="6">Sun
+        </label>
+        <label class="btn btn-dark">
+          <input type="checkbox" [(ngModel)]="monday" class="form-check list-group-item" id="0">Mon
+        </label>
+        <label class="btn btn-dark">
+          <input type="checkbox" [(ngModel)]="tuesday" class="form-check list-group-item" id="1">Tues
+        </label>
+        <label class="btn btn-dark">
+          <input type="checkbox" [(ngModel)]="wednesday" class="form-check list-group-item" id="2">Wed
+        </label>
+        <label class="btn btn-dark">
+          <input type="checkbox" [(ngModel)]="thursday" class="form-check list-group-item" id="3">Thur
+        </label>
+        <label class="btn btn-dark">
+          <input type="checkbox" [(ngModel)]="friday" class="form-check list-group-item" id="4">Fri
+        </label>
+        <label class="btn btn-dark">
+          <input type="checkbox" [(ngModel)]="saturday" class="form-check list-group-item" id="5">Sat
+        </label>
+      </div>
+      <div class="mb-3">
+        <p class="fs-6">You will receive an email @18:30 on your selected days.</p>
+      </div>
+      <div class="mb-3">
+        <button type="button" class="btn btn-dark" (click)="submit()">Submit</button>
+        <button type="button" class="btn btn-dark m-2" (click)="reset()">Clear</button>
+      </div>
+      <div>
+        <button type="button" class="btn btn-dark" (click)="sendEmail()">Send manually</button>
+      </div>
+      </div>
+  </mat-card>
+</mat-card>

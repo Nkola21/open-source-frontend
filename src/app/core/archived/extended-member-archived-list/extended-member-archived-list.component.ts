@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataSource } from '@angular/cdk/collections';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -87,11 +87,11 @@ export class ExtendedMemberDataSource extends DataSource<any> {
 const dialogConfig = new MatDialogConfig();
 
 @Component({
-  selector: 'app-extended-member-list',
-  templateUrl: './extended-member-list.component.html',
-  styleUrls: ['./extended-member-list.component.css']
+  selector: 'app-extended-member-archived-list',
+  templateUrl: './extended-member-archived-list.component.html',
+  styleUrls: ['./extended-member-archived-list.component.css']
 })
-export class ExtendedMemberListComponent implements OnInit {
+export class ExtendedMemberArchivedListComponent implements OnInit {
 
   displayedColumns = ['full_name', 'type', 'relation', 'contact', 'date_of_birth', 'date_joined', 'actions'];
   extended_members: Array<any> = [];
@@ -117,7 +117,8 @@ export class ExtendedMemberListComponent implements OnInit {
     private route: ActivatedRoute,
     public router: Router,
     private fb: FormBuilder,
-    private toastr: ToastrService) { 
+    private toastr: ToastrService,
+    private changeDetectorRefs: ChangeDetectorRef) { 
       this.formBuilder = new SearchFormBuilder(fb);
     }
 
@@ -166,7 +167,7 @@ export class ExtendedMemberListComponent implements OnInit {
     this.loadingState = 'loading';
     this.dataSource = new ExtendedMemberDataSource([], this.page);
 
-    this.openService.getUrl(`applicants/${id}/extended-members/all`)
+    this.openService.getUrl(`applicants/${id}/extended-members/archived`)
       .subscribe(
         (extended_members: Array<any>) => {
           this.extended_members = extended_members;
@@ -178,6 +179,10 @@ export class ExtendedMemberListComponent implements OnInit {
         });
   }
 
+  isActive(extended_member) {
+    return extended_member.state == 1;
+  }
+
   configureExtendedMembers(extended_members: Array<any>): void {
     this.tableSize = this.extended_members.length
     this.dataSource = new MatTableDataSource(extended_members);
@@ -185,11 +190,11 @@ export class ExtendedMemberListComponent implements OnInit {
   }
 
   navigateToExtendedMemberView(extended_members: any) {
-    this.router.navigate(['main-members', this.applicant_id, 'main-members', extended_members.id,'view']);
+    this.router.navigate(['users', this.applicant_id, 'main-members', extended_members.id,'view']);
   }
 
   navigateToExtendedMemberForm(extended_member: any) {
-    this.router.navigate(['main-members', this.applicant_id, 'extended-members', extended_member.id,'form']);
+    this.router.navigate(['main-memebrs', this.applicant_id, 'extended-members', extended_member.id,'form']);
   }
 
   navigateToExtendedMemberAddForm() {
@@ -258,24 +263,6 @@ export class ExtendedMemberListComponent implements OnInit {
     button.click();
   }
 
-  handleArchive() {
-    this.openService.delete(`extended-members/${this.extended_member.id}/archive`)
-      .subscribe(
-        (extended_member: any) => {
-          
-          this.extended_members = this.extended_members.filter(val => {
-            if (val.id != extended_member.id) {
-              return val;
-            }
-          });
-          this.configureExtendedMembers(this.extended_members.reverse());
-          this.toastr.success('Member has been deleted!', 'Success');
-        },
-        error => {
-          console.log(error);
-        });
-  }
-
   handleDelete() {
     this.openService.delete(`extended-members/${this.extended_member.id}/delete`)
       .subscribe(
@@ -286,16 +273,41 @@ export class ExtendedMemberListComponent implements OnInit {
             }
           });
           this.configureExtendedMembers(this.extended_members.reverse());
-          this.toastr.success('Member has been deleted!', 'Success');
+          this.toastr.success('Applicant has been deleted!', 'Success');
         },
         error => {
           console.log(error);
         });
   }
 
+  handleRestore(extended_member) {
+    extended_member.state=1;
+    this.openService.put(`extended-members/${extended_member.id}/restore`, extended_member)
+      .subscribe(
+        (extended_member: any) => {
+          this.extended_members = this.extended_members.filter(val => { 
+            if (val.id != extended_member.id) {
+              return val;
+            }
+          });
+          this.configureExtendedMembers(this.extended_members.reverse());
+          this.toastr.success('Applicant has been restored!', 'Success');
+          this.changeDetectorRefs.detectChanges();
+        },
+        error => {
+          this.toastr.error(error['message'], error['statusText']);
+        });
+  }
+
+  openRestoreModal(extended_member) {
+    this.extended_member = extended_member;
+    const button = document.getElementById('restoreExtendedMemberModalBtn');
+    button.click();
+  }
+
   getCVSFile(event) {
     event.preventDefault();
-    this.openService.getUrl(`main-members/${this.applicant_id}/extended-members/file`)
+    this.openService.getUrl(`applicants/${this.applicant_id}/extended-members/file`)
       .subscribe(
         (main_members: Array<any>) => {
           this.downloadFile(main_members);

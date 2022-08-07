@@ -110,7 +110,7 @@ export class MainMemberBulkAddComponent implements OnInit {
       fileReader.onload = (e) => {
         this.submitted = true;
         let content = JSON.stringify(fileReader.result).split('data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,')[1]
-        this.openService.postFile(`consultants/${this.user.id}/actions/import_members`, {'plan': plan_id, 'csv': content})
+        this.openService.postFile(`users/${this.user.id}/actions/import_members`, {'plan': plan_id, 'csv': content})
         .subscribe(result => {
           if (Object(result).length > 0) {
             for(let res of Object(result)) {

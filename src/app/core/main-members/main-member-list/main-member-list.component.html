@@ -8,8 +8,7 @@
           <mat-card style="margin-top: 30px" class="line-top">
             <mat-card-title class="mat-card-title-alt" fxLayout="row" fxLayoutAlign="center">
               <div class="d-flex justify-content-between">
-                <div class="d-flex justify-content-between">            
-                  
+                <div class="d-flex justify-content-between">
                   <div class="btn-group" role="group" style="margin-right: 10px;" *ngIf="isConsultant()">
                     <button id="btnGroupDrop1" type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                       Add Member
@@ -19,7 +18,7 @@
                       <li><a class="dropdown-item" (click)="navigateToMainMemberBulkAddForm()">Import</a></li>
                     </ul>
                   </div>
-                  <!-- <div class="btn-group" role="group" style="margin-right: 10px;"><a class="btn btn-md btn-dark" *ngIf="isConsultant()" (click)="navigateToMainMemberAddForm()">Add Member</a></div> -->
+
                   <div class="btn-group" role="group" style="margin-right: 10px;"><a class="btn btn-md btn-dark" href="{{getExcel()}}" target="_blank">Export to Excel</a></div>
                   <div class="btn-group" role="group" style="margin-right: 10px;" *ngIf="!parlour.number_of_sms">
                     <button class="btn btn-md btn-dark" data-bs-toggle="modal" data-bs-target="#sendSMSModal" matTooltip="You do not have any SMSes left"
@@ -50,12 +49,12 @@
                       </li>
                       <li>Consultants
                         <ul>
-                          <li *ngFor="let consultant of consultants"><a class="dropdown-item" (click)="setConsultant(consultant)" data-bs-toggle="modal" data-bs-target="#consultantPerformanceModal" >{{ consultant.first_name }} {{ consultant.last_name }}</a></li>
+                          <li *ngFor="let con of consultants"><a class="dropdown-item" (click)="setConsultant(con)" >{{ con.first_name }} {{ con.last_name }}</a></li>
                         </ul>
                       </li>
                       <li>Branch
                         <ul>
-                          <li *ngFor="let branch of branches"><a class="dropdown-item" (click)="setBranch(branch)" data-bs-toggle="modal" data-bs-target="#branchPerformanceModal">{{ branch }}</a></li>
+                          <li *ngFor="let brn of branches"><a class="dropdown-item" (click)="setBranch(brn)" data-bs-toggle="modal" data-bs-target="#branchPerformanceModal">{{ brn }}</a></li>
                         </ul>
                       </li>
                     </ul>
@@ -84,7 +83,7 @@
       </div>
     </div>
 
-    <div *ngIf="dataSource && main_members && main_members.length > 0" [ngClass]="{'animated fadeIn': dataSource}">
+    <div *ngIf="main_members && main_members.length > 0" [ngClass]="{'animated fadeIn': main_members}">
       <div fxLayout="row" fxLayoutAlign="center start">
         <div fxFlex="100">
           <mat-card style="margin-top: 30px" class="line-top">
@@ -131,24 +130,29 @@
                       </li>
                       <li>Consultants
                         <ul>
-                          <li *ngFor="let consultant of consultants"><a class="dropdown-item" (click)="setConsultant(consultant)" data-bs-toggle="modal" data-bs-target="#consultantPerformanceModal">{{ consultant.first_name }} {{ consultant.last_name }}</a></li>
+                          <li *ngFor="let con of consultants"><a class="dropdown-item" (click)="setConsultant(con)">{{ con.first_name }} {{ con.last_name }}</a></li>
                         </ul>
                       </li>
                       <li>Branch
                         <ul>
-                          <li *ngFor="let branch of branches"><a class="dropdown-item" (click)="setBranch(branch)" data-bs-toggle="modal" data-bs-target="#branchPerformanceModal">{{ branch }}</a></li>
+                          <li *ngFor="let brn of branches"><a class="dropdown-item" (click)="setBranch(brn)">{{ brn }}</a></li>
                         </ul>
                       </li>
                     </ul>
                   </div>
-                  <div *ngIf="isParlour()">
+                  <div *ngIf="isParlour()" style="margin-right: 10px;">
                     <button id="consultantPaymnents" type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                      Payments
+                      Monthly Payments
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="btnGroupDrop2">
                       <li *ngFor="let consultant of consultants"><a class="dropdown-item" href="{{getConsultantPaymentsExcel(consultant)}}" target="_blank">{{ consultant.first_name }} {{ consultant.last_name }}</a></li>
-                      <li><a class="dropdown-item" href="{{getConsultantPaymentsExcel(consultant)}}" target="_blank">{{ user.parlour_name }}</a></li>
+                      <li><a class="dropdown-item" href="{{getConsultantPaymentsExcel()}}" target="_blank">{{ user.parlour_name }}</a></li>
                     </ul>
+                  </div>
+                  <div *ngIf="isParlour()">
+                    <button id="consultantNotifications" type="button" class="btn btn-dark" (click)="navigateToNotifications()">
+                      DPN
+                    </button>
                   </div>
                 </div>
 
@@ -166,19 +170,18 @@
                 </div>
             </div>
             </mat-card-title>
-
             <mat-card-content>
               <div *ngIf="ageLimitExceeded">
               <button style="background-color: #fff; border: none;" (click)="getAgeLimitNotice()"><span class="material-icons"  style="font-size:48px;color:red;">
                 notifications
                 </span></button>
               </div>
+              <div style="margin-left: 85%">
+                Total number of main members: {{total_count}}
+              </div>
               <mat-paginator
-                  [length]="tableSize"
-                  [pageSize]="15"
-                  [pageSizeOptions]="[15, 30, 50, 100]"
+              [length]="200" [pageSizeOptions]="[10, 50, 100]" aria-label="Select page"
                   (page)="onPaginatorChange($event)"
-                  showFirstLastButtons
                   ></mat-paginator>
               <table mat-table #table [dataSource]="dataSource" class="table" style="width: 100%">
                 <ng-container matColumnDef="full_name">
@@ -252,20 +255,49 @@
                   <th style="width: 330px;padding-left: 5%;" class="fs-6" mat-header-cell *matHeaderCellDef>Action</th>
                   <td mat-cell *matCellDef="let main_member">
 
-                    <button class="btn btn-md btn-dark m-2" (click)="navigateToMainMemberForm(main_member)" *ngIf="isCurrentConsultant(main_member)">Edit</button>
-                    <button class="btn btn-md btn-dark m-2" *ngIf="!isCurrentConsultant(main_member)" [disabled]="true">Edit</button>
-                    <a *ngIf="isCurrentConsultant(main_member)" class="btn btn-md btn-dark m-2" (click)="navigateToPaymentForm(main_member)">Pay now</a>
-                    <a *ngIf="!isCurrentConsultant(main_member)" id="payNow" class="btn btn-md btn-dark m-2" (click)="setMainmemberOtherConsultant(main_member)">Pay now</a>
+                    <div class="btn-group" role="group" style="margin-right: 10px;padding-top: 2%;">
+                      <button id="btnGroupDrop2" type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        Actions
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="btnGroupDrop2">
+                        <li *ngIf="isCurrentConsultant(main_member) || isParlour()">
+                          <a class="dropdown-item" (click)="navigateToMainMemberForm(main_member)">Edit</a>
+                        </li>
+                        <li *ngIf="!isCurrentConsultant(main_member) && isConsultant()">
+                          <a class="dropdown-item" >Edit</a>
+                        </li>
+                        <li  *ngIf="isCurrentConsultant(main_member) || isParlour()">
+                          <a class="dropdown-item" (click)="navigateToPaymentForm(main_member)">Pay Now</a>
+                        </li>
+                        <li *ngIf="!isCurrentConsultant(main_member) && isConsultant()">
+                          <a class="dropdown-item" (click)="setMainmemberOtherConsultant(main_member)">Pay Now</a>
+                        </li>
+                        <li *ngIf="isCurrentConsultant(main_member) || isParlour()">
+                          <a class="dropdown-item" (click)="confirmDeleteApplicant(main_member)">Delete</a>
+                        </li>
+                        <li *ngIf="!isCurrentConsultant(main_member) && isConsultant()">
+                          <a class="dropdown-item">Delete</a>
+                        </li>
+                      </ul>
+                    </div>
+                    <!-- <button class="btn btn-md btn-dark m-2" (click)="navigateToMainMemberForm(main_member)" *ngIf="isCurrentConsultant(main_member) || isParlour()">Edit</button>
+                    <button class="btn btn-md btn-dark m-2" *ngIf="!isCurrentConsultant(main_member) && isConsultant()" [disabled]="true">Edit</button> -->
+                    <!-- <a *ngIf="isCurrentConsultant(main_member) || isParlour()" class="btn btn-md btn-dark m-2" (click)="navigateToPaymentForm(main_member)">Pay now</a>
+                    <a *ngIf="!isCurrentConsultant(main_member) && isConsultant()" id="payNow" class="btn btn-md btn-dark m-2" (click)="setMainmemberOtherConsultant(main_member)">Pay now</a> -->
                     <!-- <dialog-elements-example></dialog-elements-example> -->
-                    <button class="btn btn-md btn-dark" (click)="confirmDeleteApplicant(main_member)" *ngIf="isCurrentConsultant(main_member)">Delete</button>
-                    <button class="btn btn-md btn-dark"  *ngIf="!isCurrentConsultant(main_member)" [disabled]="true">Delete</button>
+                    <!-- <button class="btn btn-md btn-dark" (click)="confirmDeleteApplicant(main_member)" *ngIf="isCurrentConsultant(main_member) || isParlour()">Delete</button>
+                    <button class="btn btn-md btn-dark"  *ngIf="!isCurrentConsultant(main_member) && isConsultant()" [disabled]="true">Delete</button> -->
                     <button class="btn btn-md btn-dark" style="display: none;" id="deleteApplicant" data-bs-toggle="modal" data-bs-target="#confirmDeleteApplicantModal"></button>
-                    <button class="m-2" style="background-color: #fff; border: none;" *ngIf="main_member.age_limit_exceeded && !main_member.age_limit_exception" class="tooltip-test" title="This member exceeds the age limit set on current plan" (click)="ageLimitException(main_member)"><span class="material-icons"  style="font-size:30px;color:red;">
-                      notifications
-                      </span></button>
-                      <button class="m-2" style="background-color: #fff; border: none;" *ngIf="getExtendedMemberAgeLimitNotice(main_member)" class="tooltip-test" title="One or more of this principal's extended members exceed the age limit set on current plan" (click)="ageLimitException(main_member)"><span class="material-icons"  style="font-size:30px;color: #212529">
+                    <button class="m-2" style="background-color: #fff; border: none;" *ngIf="main_member.age_limit_exceeded && !main_member.age_limit_exception" class="tooltip-test" title="This member exceeds the age limit set on current plan" (click)="ageLimitException(main_member)">
+                      <span class="material-icons"  style="font-size:30px;color:red;">
                         notifications
-                        </span></button>
+                      </span>
+                    </button>
+                      <button class="m-2" style="background-color: #fff; border: none;" *ngIf="getExtendedMemberAgeLimitNotice(main_member)" class="tooltip-test" title="One or more of this principal's extended members exceed the age limit set on current plan" (click)="ageLimitException(main_member)">
+                        <span class="material-icons"  style="font-size:30px;color: #212529">
+                          notifications
+                        </span>
+                      </button>
                   </td>
                 </ng-container>
   
@@ -280,7 +312,8 @@
   </mat-card>
   
   <button id="openModal" class="btn btn-md btn-danger" data-toggle="modal" data-modal="#confirmDeleteApplicantModal" style="display: none;"></button>
-
+  <button id="openConsultantPerfomanceModal" class="btn btn-md btn-danger" data-bs-toggle="modal" data-bs-target="#consultantPerformanceModal" style="display: none;"></button>
+  <button id="openBranchPerfomanceModal" class="btn btn-md btn-danger" data-bs-toggle="modal" data-bs-target="#branchPerformanceModal" style="display: none;"></button>
 
   <a id="viewFile" class="btn btn-md btn-dark" href="{{getOtherDocUrl()}}" target="_blank" style="margin-top: 5px;display: none;">Files</a>
 
@@ -296,14 +329,14 @@
       <div class="modal-body">
         <div class="">
           <p class="mb-0 ml-3 fs-5" >
-            You are about to make a payment for a member belonging to:
+            You are about to make a payment for a member created by:
           </p>
           <p class="mb-0 ml-3 fs-5" >
-            <strong>Consultant:</strong> {{ main_member.applicant.consultant.first_name | titlecase }} {{ main_member.applicant.consultant.last_name | titlecase }}
+            <strong>Consultant:</strong> {{ main_member.consultant.first_name | titlecase }} {{ main_member.consultant.last_name | titlecase }}
             <br />
-            <strong>Branch:</strong> {{ main_member.applicant.consultant.branch | titlecase }}
+            <strong>Branch:</strong> {{ main_member.consultant.branch | titlecase }}
             <br />
-            <strong>email:</strong> {{ main_member.applicant.consultant.email }}
+            <strong>email:</strong> {{ main_member.consultant.email }}
           </p>
         </div>
         <br />
@@ -313,7 +346,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="navigateToPaymentForm(main_member)">proceed?</button>
+        <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="navigateToPaymentForm(main_member)">Proceed?</button>
       </div>
     </div>
   </div>
@@ -410,7 +443,7 @@
           <div class="mb-3">
             <span style="color: red;position:relative; bottom: -5rem; right: 20px;max-width: 10px">*</span>
             <label for="entity" class="col-form-label fs-4 d-flex justify-content-center">Consultant:</label>
-            <input type="text" class="form-control" id="entity" formControlName="entity" [(ngModel)]="consultant_full_name" >
+            <input type="text" class="form-control" id="entity" formControlName="entity" [(ngModel)]="consultant_full_name">
         </div>
         <div class="mb-3">
           <label for="start_date" class="col-form-label fs-4 d-flex justify-content-center">Start Date:</label>
@@ -486,6 +519,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="getByParlour()" >Search</button>
+        <!-- <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="getByParlour()" >Search</button> -->
       </div>
     </div>
   </div>

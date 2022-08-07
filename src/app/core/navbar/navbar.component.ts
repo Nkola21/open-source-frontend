@@ -70,11 +70,7 @@ export class NavbarComponent implements OnInit {
   }
 
   getParlour() {
-    if (this.isParlour()) {
-      this.parlour = this.user
-    }else if (this.isConsultant()) {
-      this.parlour = this.user.parlour;
-    }
+    this.parlour = this.user.parlour;
   }
 
   ngOnDestroy() {

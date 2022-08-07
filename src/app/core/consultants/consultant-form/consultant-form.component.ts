@@ -56,7 +56,7 @@ export class ConsultantFormComponent implements OnInit {
     this.permission = this.openService.getPermissions();
     this.user = this.openService.getUser();
     this.transition(this.user);
-    this.parlour_id = this.permission == "Parlour" ? this.user.id : this.user.parlour_id;
+    this.parlour_id = this.user.id;
     this.route.params.subscribe(
       (params) => {
         const id = +params['id'];

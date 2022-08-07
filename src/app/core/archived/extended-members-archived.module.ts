@@ -1,7 +1,6 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MainMemberArchivedListComponent } from './main-member-archived-list/main-member-archived-list.component';
-// import { ExtendedMemberArchivedListComponent } from './extended-member-archived-list/extended-member-archived-list.component';
+import { ExtendedMemberArchivedListComponent } from './extended-member-archived-list/extended-member-archived-list.component';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from '../../material/material.module';
 import { MatListModule } from '@angular/material/list';
@@ -9,11 +8,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ReactiveFormsModule } from '@angular/forms';
 
 
-const MainMemberArchivedRouting: ModuleWithProviders<MainMembersArchivedModule> = RouterModule.forChild([
+const ExtendedMemberArchivedRouting: ModuleWithProviders<ExtendedMembersArchivedModule> = RouterModule.forChild([
   {
     path: 'parlours/:id/archived-applicants',
     pathMatch: 'full',
-    component: MainMemberArchivedListComponent,
+    component: ExtendedMemberArchivedListComponent,
     canActivate: []
   },
 
@@ -22,21 +21,20 @@ const MainMemberArchivedRouting: ModuleWithProviders<MainMembersArchivedModule> 
 @NgModule({
   imports: [
     CommonModule,
-    MainMemberArchivedRouting,
+    ExtendedMemberArchivedRouting,
     MaterialModule,
     MatListModule,
     // MatTooltipModule,
     ReactiveFormsModule
   ],
   declarations: [
-    MainMemberArchivedListComponent,
+    ExtendedMemberArchivedListComponent,
   ],
   exports: [
-    MainMemberArchivedListComponent,
-    // ExtendedMemberArchivedListComponent,
+    ExtendedMemberArchivedListComponent,
     MatListModule,
     MatTooltipModule
   ],
-  entryComponents: [MainMemberArchivedListComponent]
+  entryComponents: [ExtendedMemberArchivedListComponent]
 })
-export class MainMembersArchivedModule { }
+export class ExtendedMembersArchivedModule { }

@@ -40,8 +40,8 @@ export class OpenService {
   }
 
   getClientUrl(): any {
-    // return 'http://localhost:5100'
-    return 'https://nkosana-citiq.github.io/open-source-frontend'
+    return 'http://localhost:5100'
+    // return 'https://nkosana-citiq.github.io/open-source-frontend'
     // return 'https://osource.co.za';
   }
 

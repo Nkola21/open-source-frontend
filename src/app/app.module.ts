@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { MatCardModule } from '@angular/material/card';
-
+import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { ParloursModule } from './core/parlours/parlours.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -24,6 +24,7 @@ import { NavbarModule } from './core/navbar/navbar.module';
 import { NavbuttonsModule } from './core/nav-buttons/nav-buttons.module';
 import { ToastrModule } from 'ngx-toastr';
 import { MainMembersArchivedModule } from './core/archived/main-members-archived.module';
+import { ExtendedMembersArchivedModule } from './core/archived/extended-members-archived.module';
 import { ChangePasswordModule } from './core/change-password/change-password.module'
 import { ContactsModule } from './core/contacts/contacts.module';
 import { TermsandconditionsComponent } from './termsandconditions/termsandconditions.component';
@@ -31,6 +32,7 @@ import { TermsandconditionsModule } from './termsandconditions/termsandcondition
 import { InvoiceModule } from './core/invoices/invoices.module';
 import { ForgotPasswordModule } from './core/forgot-password/forgot-password.module';
 import { ResetPasswordModule } from './core/reset-password/reset-password.module';
+import { NotificationsModule } from './core/notifications/notifications.module';
 
 
 const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
@@ -51,6 +53,7 @@ const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
     HttpClientModule,
     MatCardModule,
     RouterModule,
+    FormsModule,
     ParloursModule,
     ConsultantModule,
     PlansModule,
@@ -68,10 +71,12 @@ const rootRouting: ModuleWithProviders<AppModule> = RouterModule.forRoot([
     NavbarModule,
     NavbuttonsModule,
     MainMembersArchivedModule,
+    ExtendedMembersArchivedModule,
     ChangePasswordModule,
     InvoiceModule,
     ForgotPasswordModule,
     ResetPasswordModule,
+    NotificationsModule,
     rootRouting,
     ToastrModule.forRoot()
   ],

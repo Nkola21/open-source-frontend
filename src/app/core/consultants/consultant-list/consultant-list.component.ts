@@ -60,6 +60,7 @@ export class ConsultantListComponent implements OnInit {
   tableSize: number;
   consultant: any;
   user: any;
+  permission: any
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -73,6 +74,7 @@ export class ConsultantListComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.openService.getUser();
+    this.permission = this.openService.getPermissions();
     this.transition(this.user);
     this.route.params.subscribe(
       (params) => {
@@ -105,7 +107,7 @@ export class ConsultantListComponent implements OnInit {
     this.loadingState = 'loading';
     this.dataSource = new ConsultantDataSource([], this.page);
 
-    this.openService.getUrl(`parlours/${id}/consultants/`)
+    this.openService.getUrl(`parlours/${this.user.id}/consultants/`)
       .subscribe(
         (consultants: Array<any>) => {
           this.consultants = consultants;

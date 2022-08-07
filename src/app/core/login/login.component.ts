@@ -61,10 +61,10 @@ export class LoginComponent implements OnInit {
 
     this.openservice.setPermissions(event.permission);
     this.user = event.user;
-    if (event.permission == "Parlour") {
-      parlour_id = this.user.id
-    }else if (event.permission == "Consultant"){
+    if (event.permission == "Consultant"){
       parlour_id = this.user.parlour.id
+    }else{
+      parlour_id = this.user.id
     }
     this.openservice.setParlourId(parlour_id)
     this.transition(event.user, parlour_id, event.permission);

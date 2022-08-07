@@ -145,7 +145,7 @@ const dialogConfig = new MatDialogConfig();
   templateUrl: './main-member-list.component.html',
   styleUrls: ['./main-member-list.component.css']
 })
-export class MainMemberListComponent implements AfterViewInit, OnInit {
+export class MainMemberListComponent implements OnInit {
 
   displayedColumns = ['full_name', 'id_number', 'contact', 'extended_members', 'premium', 'policy_num', 'policy', 'other', 'date_joined', 'status', 'actions'];
   main_members: Array<any> = [];
@@ -176,6 +176,7 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
   consultants: Array<Consultant> = [];
   branches: Array<string> = [];
   filter: string;
+  total_count = 0;
   extendedMemberAgeLimit = false;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -215,29 +216,19 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
     this.initSMSForm(this.smsFields, this.parlour);
     this.initPerformanceForm(this.consultant);
     this.initMainMembers(this.user.id)
+    this.totalCount();
   }
 
-  ngAfterViewInit() {
-
-     // server-side search
-    //  fromEvent(this.input.nativeElement,'keyup')
-    //  .pipe(
-    //      debounceTime(150),
-    //      distinctUntilChanged(),
-    //      tap(() => {
-    //          this.paginator.pageIndex = 0;
-    //          this.loadMembersPage();
-    //      })
-    //  )
-    //  .subscribe();
-    // // reset the paginator after sorting
-    // this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-    // merge(this.sort.sortChange, this.paginator.page)
-    //     .pipe(
-    //         tap(() => this.loadMembersPage())
-    //     )
-    //     .subscribe();
+  totalCount() {
+    this.openService.getUrl(`parlours/${this.parlour_id}/main-members/actions/count?permission=${this.permission}&user_id=${this.user.id}`)
+      .subscribe(
+        (count: any) => {
+          this.total_count = count["count"];
+        },
+      error => {
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
+      });
   }
 
   loadMembersPage() {
@@ -301,7 +292,7 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
           this.searchField = null;
           this.main_members = main_members;
           this.isAgeLimitExceeded(main_members);
-          this.configureMainMembers(main_members.reverse());
+          this.configureMainMembers(main_members);
           this.loadingState = 'complete';
         },
         error => {
@@ -364,7 +355,7 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
           this.main_members = main_members;
           this.branch = null;
           this.initPerformanceForm(undefined);
-          this.configureMainMembers(main_members.reverse());
+          this.configureMainMembers(main_members);
           this.loadingState = 'complete';
         },
       error => {
@@ -380,7 +371,7 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
         (main_members: any) => {
           this.consultant = consultant;
           this.main_members = main_members;
-          this.configureMainMembers(main_members.reverse());
+          this.configureMainMembers(main_members);
           this.loadingState = 'complete';
         },
       error => {
@@ -420,7 +411,7 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
           this.main_members = main_members;
           this.consultant = null;
           this.initPerformanceForm(undefined);
-          this.configureMainMembers(main_members.reverse());
+          this.configureMainMembers(main_members);
           this.loadingState = 'complete';
         },
       error => {
@@ -461,7 +452,7 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
           this.branch = null;
           this.consultant = null;
           this.initPerformanceForm(undefined);
-          this.configureMainMembers(main_members.reverse());
+          this.configureMainMembers(main_members);
           this.loadingState = 'complete';
         },
       error => {
@@ -520,7 +511,11 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
   }
 
   isCurrentConsultant(main_member: any) {
-    return main_member.applicant.consultant.id == this.user.id || this.isParlour();
+    return main_member.applicant.consultant.id == this.user.id;
+  }
+
+  navigateToNotifications() {
+    this.router.navigate(['parlours', this.user.id, 'notifications']);
   }
 
   initConsultants(parlour_id) {
@@ -547,9 +542,8 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
   }
 
   configureMainMembers(main_members: Array<any>): void {
-    this.tableSize = this.main_members ? this.main_members.length : 0;
     this.dataSource = new MatTableDataSource(main_members);
-    // this.initializePaginator()
+    this.initializePaginator()
   }
 
   navigateToPaymentForm(main_member: any) {
@@ -568,7 +562,7 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
   }
 
   navigateToExtendedMembersListView(id: number) {
-    this.router.navigate(['applicants', id,'extended-members', 'all']);
+    this.router.navigate(['main-members', id,'extended-members', 'all']);
   }
 
   navigateToPaymentsForm(id: number) {
@@ -595,7 +589,7 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
               return val;
             }
           });
-          this.configureMainMembers(this.main_members.reverse());
+          this.configureMainMembers(this.main_members);
           this.toastr.success('Main member has been deleted!', 'Success');
         },
         error => {
@@ -634,10 +628,11 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
     this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?status=${status}`)
       .subscribe(
         (main_members: Array<any>) => {
+          console.log(main_members.length);
           this.status = status;
           this.searchField = null;
           this.main_members = main_members;
-          this.configureMainMembers(main_members.reverse());
+          this.configureMainMembers(main_members);
           this.loadingState = 'complete';
         },
         error => {
@@ -652,7 +647,7 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
         (main_members: Array<any>) => {
           if (main_members) {
             this.main_members = main_members;
-            this.configureMainMembers(main_members.reverse());
+            this.configureMainMembers(main_members);
             this.loadingState = 'complete';
           }
         },
@@ -672,7 +667,7 @@ export class MainMemberListComponent implements AfterViewInit, OnInit {
           this.searchField = formValue["searchField"];
 
           this.main_members = main_members;
-          this.configureMainMembers(main_members.reverse());
+          this.configureMainMembers(main_members);
           this.loadingState = 'complete';
         },
         error => {

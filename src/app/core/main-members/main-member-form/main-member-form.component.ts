@@ -23,6 +23,7 @@ export class MainMemberFormBuilder {
 
   buildMainMemberForm(details) {
     details = details === undefined ? newMainMember() : details;
+
     return this.formBuilder.group({
       'id': [details.id],
       'first_name': [details.first_name, [Validators.required]],
@@ -32,8 +33,13 @@ export class MainMemberFormBuilder {
       'contact': [details.contact, [Validators.required, validateMSISDN]],
       'is_deceased': [details.is_deceased],
       'waiting_period': [details.waiting_period, [Validators.required]],
-      'applicant': this.buildApplicantForm(details.applicant),
-      'plan_id': [details.plan_id, [Validators.required]]
+      'policy_num': [details.applicant.policy_num, [Validators.required]],
+      'document': [details.applicant.document],
+      'cancelled': [details.cancelled],
+      'status': [details.status],
+      'date': [details.date],
+      'address': [details.applicant.address, [Validators.required]],
+      'plan_id': [details.applicant.plan.id, [Validators.required]]
     });
   }
 
@@ -41,20 +47,6 @@ export class MainMemberFormBuilder {
     details = details === undefined ? {'id': null, 'name': null} : details;
     return this.formBuilder.group({
       'id': [details.id],
-    });
-  }
-
-  buildApplicantForm(details) {
-    details = details === undefined ? newApplicant() : details;
-    return this.formBuilder.group({
-        'id': [details.id],
-        'policy_num': [details.policy_num, [Validators.required]],
-        'document': [details.document],
-        'cancelled': [details.cancelled],
-        'status': [details.status],
-        'date': [details.date],
-        'address': [details.address, [Validators.required]],
-        'plan': this.buildPlan(details.plan)
     });
   }
 }
@@ -93,6 +85,7 @@ export class MainMemberFormComponent implements OnInit  {
   form: FormGroup;
   parlour_id: any;
   user: any;
+  permission: any;
   plans: Array<any> = [];
   plan: any;
   optionSelected: any;
@@ -110,18 +103,23 @@ export class MainMemberFormComponent implements OnInit  {
   ngOnInit(): void {
     this.parlour_id = this.openService.getParlourId();
     this.user = this.openService.getUser()
+    this.permission = this.openService.getPermissions()
     this.transition(this.user);
+    this.initPlans();
     this.route.params.subscribe(
       (params) => {
         const id = +params['id'];
         if (id){
           this.getMainMember(id);
         }else{
-          this.initPlans();
           this.initForm(this.main_member);
         }
       }
     )
+  }
+
+  isParlour() {
+    return this.permission == 'Parlour';
   }
 
   transition(user: any) {
@@ -156,7 +154,6 @@ export class MainMemberFormComponent implements OnInit  {
 
   onFileSelected(e: any) {
     let files = e.target.files;
-    // console.log(files.item(0));
     this.selectedFile = <File>files.item(0);
   }
 
@@ -199,7 +196,7 @@ export class MainMemberFormComponent implements OnInit  {
           this.toastr.error(err['description'], error['title'], {timeOut: 3000});
         });
     }else {
-      this.openService.post(`consultants/${this.user.id}/main-members`, formValue)
+      this.openService.post(`users/${this.user.id}/main-members`, formValue)
         .subscribe(
           (main_member: any) => {
             if (this.selectedFile){
@@ -307,7 +304,7 @@ export class MainMemberFormComponent implements OnInit  {
   initPlans() {
     this.openService.getUrl(`parlours/${this.parlour_id}/plans/all`)
     .subscribe((plans: any) => {
-
+      
       this.plans = plans.map((plan: any) => {
           if (this.main_member && plan.id == this.main_member.applicant.plan.id) {
             this.optionSelected = plan.id;

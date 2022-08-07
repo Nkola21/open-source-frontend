@@ -74,10 +74,8 @@ export class PaymentFormComponent implements OnInit {
     this.openService.getOne(`main-members/${id}/get`)
       .subscribe(
         main_member => {
-          console.log(main_member);
-          
           this.main_member = main_member;
-          this.applicant_id = this.main_member.applicant.id;
+          this.applicant_id = this.main_member.id;
           this.getPreviousPayment(main_member);
         },
         error => {
@@ -93,7 +91,7 @@ export class PaymentFormComponent implements OnInit {
           this.last_payment = last_payment;
 
           const payment = {
-            "applicant_id": main_member.applicant.id,
+            "main_member_id": main_member.id,
             "cover": main_member.applicant.plan.cover,
             "premium": main_member.applicant.plan.premium,
             "date": new Date(),
@@ -116,7 +114,8 @@ export class PaymentFormComponent implements OnInit {
     formValue['date'] = moment(start_date).format('DD/MM/YYYY');
     formValue['end_date'] = moment(end_date).format('DD/MM/YYYY');
     formValue["user"] = this.user;
-
+    formValue["applicant_id"] = this.main_member.applicant.id;
+    
     this.openService.post(`parlours/${this.parlour_id}/payments`, formValue)
       .subscribe(
         (invoice: any) => {

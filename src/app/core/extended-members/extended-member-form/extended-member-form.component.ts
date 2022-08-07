@@ -27,7 +27,8 @@ export class ExtendedMemberFormBuilder {
       'date_joined': [details.date_joined, [Validators.required]],
       'date_of_birth': [details.date_of_birth],
       'waiting_period': [details.waiting_period, [Validators.required]],
-      'relation_to_main_member': [details.relation_to_main_member, [Validators.required]]
+      'relation_to_main_member': [details.relation_to_main_member, [Validators.required]],
+      'is_deceased': [details.is_deceased]
     });
   }
 
@@ -113,13 +114,15 @@ export class ExtendedMemberFormComponent extends CompareFormValue implements OnI
     this.transition(this.user);
     this.route.params.forEach((params: Params) => {
       const id = +params['id'];
+      
       if (params['id'] !== undefined) {
         this.getExtendedMember(id);
       }else{
         this.initForm(this.extended_member);
       }
-      if (params['applicant_id'] !== undefined) {
-        const id = +params['applicant_id'];
+      
+      if (params['main_id'] !== undefined) {
+        const id = +params['main_id'];
         this.applicant_id = id
       }
   });
@@ -198,7 +201,7 @@ export class ExtendedMemberFormComponent extends CompareFormValue implements OnI
   }
 
   getApplicant(id) {
-    this.openService.getOne(`applicant/${id}/get`)
+    this.openService.getOne(`main-members/${id}/get`)
       .subscribe(
         applicant => {
           this.applicant = applicant;
@@ -218,6 +221,7 @@ export class ExtendedMemberFormComponent extends CompareFormValue implements OnI
   submit() {
     const formValue = this.form.value;
     formValue["applicant_id"] = this.applicant_id;
+    console.log(formValue);
 
     if (this.extended_member) {
       this.openService.put(`extended-members/${this.extended_member.id}/update`, formValue)
@@ -314,5 +318,23 @@ export class ExtendedMemberFormComponent extends CompareFormValue implements OnI
 
   onRelationshipSelected(event){
     this.relationshipSelected =  event;
+  }
+
+  makeMemberDeceasedTrue() {
+    this.form.controls.is_deceased.setValue(true)
+  }
+
+  makeMemberDeceasedFalse() {
+    this.form.controls.is_deceased.setValue(false);
+  }
+
+  deceasedModal() {
+    const btn = document.getElementById("deceasedMember")
+
+    if (this.form.controls.is_deceased.value == 0) {
+      this.makeMemberDeceasedFalse();
+    } else {
+      btn.click()
+    }
   }
 }

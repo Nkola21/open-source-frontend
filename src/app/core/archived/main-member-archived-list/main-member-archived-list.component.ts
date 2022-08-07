@@ -166,7 +166,7 @@ export class MainMemberArchivedListComponent implements OnInit {
     this.loadingState = 'loading';
     this.dataSource = new MainMemberDataSource([], this.page);
 
-    this.openService.getUrl(`${permission.toLowerCase()}s/${id}/main-members/archived`)
+    this.openService.getUrl(`${this.permission.toLowerCase()}s/${id}/main-members/archived`)
       .subscribe(
         (main_members: Array<any>) => {
           this.main_members = main_members;
@@ -193,12 +193,16 @@ export class MainMemberArchivedListComponent implements OnInit {
   }
 
   navigateToExtendedMembersListView(id: number) {
-    this.router.navigate(['applicants', id,'extended-members', 'all']);
+    this.router.navigate(['main-members', id,'extended-members', 'archived']);
   }
 
   restoreMember() {
     const button = document.getElementById('restoreModal');
     button.click();
+  }
+
+  isActive(main_member) {
+    return main_member.state == 1;
   }
 
   setWaitingPeriod(main_member) {

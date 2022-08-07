@@ -51,17 +51,16 @@
                 <app-input-error [control]="form.controls.contact"></app-input-error>
             </div>
 
-            <fieldset formGroupName="applicant">
-              <div class="form-group row">
-                  <span style="color: red;position:relative; bottom: -5rem; right: 20px;max-width: 10px">*</span>
-                  <label class="col-xs-3 col-form-label fs-4 d-flex justify-content-center">Physical Address:</label>
+            <div class="form-group row mb-3">
+                <span style="color: red;position:relative; bottom: -5rem; right: 20px;max-width: 10px">*</span>
+                <label class="col-xs-3 col-form-label fs-4 d-flex justify-content-center">Physical Address:</label>
 
-                  <div class="col-xs-9">
-                    <input mandatory class="form-control" type="text"  placeholder="Physical Address" id="form.controls.applicant.controls.address" formControlName="address" />
-                  </div>
-                  <app-input-error [control]="form.controls.address"></app-input-error>
+                <div class="col-xs-9">
+                  <input mandatory class="form-control" type="text"  placeholder="Physical Address" id="form.controls.address" formControlName="address" />
                 </div>
-              </fieldset>
+                <app-input-error [control]="form.controls.address"></app-input-error>
+              </div>
+
 
             <div class="mt-3">
                 <span style="color: red;position:relative; bottom: -5rem; right: 20px;max-width: 10px">*</span>
@@ -69,22 +68,21 @@
             </div>
             <mat-form-field appearance="fill">
                 <mat-label>Choose a date</mat-label>
-                <input [readonly]="true" mandatory class="form-control" id="form.controls.date_joined" formControlName="date_joined" matInput [matDatepicker]="picker" [disabled]="main_member">
+                <input [readonly]="true" mandatory *ngIf="!isParlour()" class="form-control" id="form.controls.date_joined" formControlName="date_joined" matInput [matDatepicker]="picker" [disabled]="main_member">
+                <input [readonly]="true" mandatory *ngIf="isParlour()" class="form-control" id="form.controls.date_joined" formControlName="date_joined" matInput [matDatepicker]="picker">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
                 <app-input-error [control]="form.controls.date_joined"></app-input-error>
               </mat-form-field>
 
-            <fieldset formGroupName="applicant">
-              <div class="form-group row">
-                  <span style="color: red;position:relative; bottom: -5rem; right: 20px;max-width: 10px">*</span>
-                  <label class="col-xs-3 col-form-label fs-4 d-flex justify-content-center">Policy Number:</label>
-                  <div class="col-xs-9">
-                    <input mandatory class="form-control" type="text" placeholder="Policy Number" id="form.controls.applicant.controls.policy_num" formControlName="policy_num" />
-                  </div>
-                  <app-input-error [control]="form.controls.policy_num"></app-input-error>
+              <div class="form-group row mb-3">
+                <span style="color: red;position:relative; bottom: -5rem; right: 20px;max-width: 10px">*</span>
+                <label class="col-xs-3 col-form-label fs-4 d-flex justify-content-center">Policy Number:</label>
+                <div class="col-xs-9">
+                  <input mandatory class="form-control" type="text" placeholder="Policy Number" id="form.controls.policy_num" formControlName="policy_num" />
                 </div>
-              </fieldset>
+                <app-input-error [control]="form.controls.policy_num"></app-input-error>
+              </div>
 
               <div class="mb-3">
                 <label for="waiting_period" class="col-form-label fs-4 d-flex justify-content-center">Waiting Period:</label>
@@ -92,7 +90,7 @@
                 <app-input-error [control]="form.controls.waiting_period"></app-input-error>
               </div>
 
-              <fieldset formGroupName="applicant" class="mb-3">
+              <fieldset class="mb-3">
                 <div class="form-group row">
                   <label class="col-xs-3 col-form-label fs-4 d-flex justify-content-center">Document:</label>
                   <div class="col-xs-9">
