@@ -6,7 +6,7 @@
             <mat-card-title class="mat-card-title-alt" fxLayout="row" fxLayoutAlign="center">
               <div class="d-flex justify-content-center">
                 <div *ngIf="form && false">
-                  <button class="btn-dark btn-lg w-100 m-2"  type="button" [routerLink]="['/main-members', main_member.id, 'invoices']">Invoices</button>
+                  <button class="btn-dark btn-lg w-100 m-2"  type="button" [routerLink]="['/applicants', main_member.applicant.id, 'invoices']">Invoices</button>
                 </div>
                 <div class="d-flex justify-content-center">
                   <p class="fs-1" style="margin-left: auto;"><strong>Make Payment</strong></p>
@@ -37,7 +37,7 @@
             </div>
 
             <div class="mb-3" style="margin-left: -10px;">
-              <button class="btn-dark btn-lg w-100 m-2"  type="button" [routerLink]="['/applicants', main_member.id, 'invoices']">Invoices</button>
+              <button class="btn-dark btn-lg w-100 m-2"  type="button" [routerLink]="['/applicants', main_member.applicant.id, 'invoices']">Invoices</button>
           </div>
 
             <div class="mb-3">

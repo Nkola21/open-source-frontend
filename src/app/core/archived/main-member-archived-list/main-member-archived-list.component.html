@@ -120,7 +120,7 @@
                 <ng-container matColumnDef="extended_members">
                   <th style="padding-left: 40px; padding-right: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef> Extended Members</th>
                   <td style="padding-left: 40px; padding-right: 10px;" mat-cell *matCellDef="let main_member">
-                    <a class="btn btn-md btn-dark m-2" (click)="navigateToExtendedMembersListView(main_member.id)">View</a>
+                    <a class="btn btn-md btn-dark m-2" (click)="navigateToExtendedMembersListView(main_member.applicant.id)">View</a>
                   </td>
                 </ng-container>
   

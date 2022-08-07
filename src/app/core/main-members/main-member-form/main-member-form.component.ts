@@ -33,13 +33,13 @@ export class MainMemberFormBuilder {
       'contact': [details.contact, [Validators.required, validateMSISDN]],
       'is_deceased': [details.is_deceased],
       'waiting_period': [details.waiting_period, [Validators.required]],
-      'policy_num': [details.applicant.policy_num, [Validators.required]],
-      'document': [details.applicant.document],
+      'policy_num': [details.applicant != undefined ? details.applicant.policy_num : "", [Validators.required]],
+      'document': [details.applicant != undefined ? details.applicant.document : ""],
       'cancelled': [details.cancelled],
       'status': [details.status],
       'date': [details.date],
-      'address': [details.applicant.address, [Validators.required]],
-      'plan_id': [details.applicant.plan.id, [Validators.required]]
+      'address': [details.applicant != undefined ? details.applicant.address : "", [Validators.required]],
+      'plan_id': [details.applicant != undefined ? details.applicant.plan.id : "", [Validators.required]]
     });
   }
 
@@ -196,7 +196,7 @@ export class MainMemberFormComponent implements OnInit  {
           this.toastr.error(err['description'], error['title'], {timeOut: 3000});
         });
     }else {
-      this.openService.post(`users/${this.user.id}/main-members`, formValue)
+      this.openService.post(`consultants/${this.user.id}/main-members`, formValue)
         .subscribe(
           (main_member: any) => {
             if (this.selectedFile){

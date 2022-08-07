@@ -318,10 +318,14 @@ export class MainMemberListComponent implements OnInit {
   setConsultant(consultant) {
     this.consultant = consultant;
     this.consultant_full_name = `${this.consultant.first_name} ${this.consultant.last_name}`;
+    let btn = document.getElementById("openConsultantPerfomanceModal");
+    btn.click();
   }
 
   setBranch(branch) {
     this.branch = branch;
+    let btn = document.getElementById("openBranchPerfomanceModal");
+    btn.click();
   }
 
   getByConsultant() {
@@ -511,7 +515,7 @@ export class MainMemberListComponent implements OnInit {
   }
 
   isCurrentConsultant(main_member: any) {
-    return main_member.applicant.consultant.id == this.user.id;
+    return main_member.applicant.consultant.id == this.user.id || this.isParlour();
   }
 
   navigateToNotifications() {
