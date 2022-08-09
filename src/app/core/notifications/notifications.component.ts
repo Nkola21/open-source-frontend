@@ -260,7 +260,6 @@ export class NotificationsComponent implements OnInit  {
     this.recipients = [];
     this.days_selected = [];
 
-    (<HTMLInputElement>document.getElementById("timeToSend")).value = "";
     (<HTMLUListElement>document.getElementById("emailList")).innerHTML = "";
     for (let i of Object.keys(checked_elements)) {
       (<HTMLInputElement>checked_elements[i]).checked = false

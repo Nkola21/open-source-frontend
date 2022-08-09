@@ -190,20 +190,20 @@
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="id_number">
-                  <th style="padding-right: 35px;" class="fs-6" mat-header-cell *matHeaderCellDef>ID number</th>
-                  <td style="padding-right: 35px;" mat-cell *matCellDef="let main_member"> {{main_member.id_number}}
+                  <th style="padding-right: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef>ID number</th>
+                  <td style="padding-right: 10px;" mat-cell *matCellDef="let main_member"> {{main_member.id_number}}
                   </td>
                 </ng-container>
   
                 <ng-container matColumnDef="contact">
-                  <th style="padding-left: 40px; padding-right: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef> Contact</th>
-                  <td style="padding-left: 40px; padding-right: 10px;" mat-cell *matCellDef="let main_member">
+                  <th style="padding-left: 10px; padding-right: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef> Contact</th>
+                  <td style="padding-left: 10px; padding-right: 10px;" mat-cell *matCellDef="let main_member">
                     {{main_member.contact}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="extended_members">
-                  <th style="padding-left: 40px; padding-right: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef> Extended Members</th>
-                  <td style="padding-left: 40px; padding-right: 10px;" mat-cell *matCellDef="let main_member">
+                  <th style="padding-left: 10px; padding-right: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef> Extended Members</th>
+                  <td style="padding-left: 10px; padding-right: 10px;" mat-cell *matCellDef="let main_member">
                     <a class="btn btn-md btn-dark m-2" *ngIf="noExtendedMembers(main_member) && isCurrentConsultant(main_member)" (click)="navigateToExtendedMembersListView(main_member.applicant.id)">View</a>
                     <button class="btn btn-md btn-dark m-2" *ngIf="!noExtendedMembers(main_member) || !isCurrentConsultant(main_member)" matTooltip="This plan is only for principal members." [disabled]="true">View</button>
                   </td>
@@ -252,7 +252,7 @@
                 </ng-container>
 
                 <ng-container matColumnDef="actions">
-                  <th style="width: 330px;padding-left: 5%;" class="fs-6" mat-header-cell *matHeaderCellDef>Action</th>
+                  <th style="padding-left: 10px;" class="fs-6" mat-header-cell *matHeaderCellDef>Action</th>
                   <td mat-cell *matCellDef="let main_member">
 
                     <div class="btn-group" role="group" style="margin-right: 10px;padding-top: 2%;">
@@ -280,13 +280,6 @@
                         </li>
                       </ul>
                     </div>
-                    <!-- <button class="btn btn-md btn-dark m-2" (click)="navigateToMainMemberForm(main_member)" *ngIf="isCurrentConsultant(main_member) || isParlour()">Edit</button>
-                    <button class="btn btn-md btn-dark m-2" *ngIf="!isCurrentConsultant(main_member) && isConsultant()" [disabled]="true">Edit</button> -->
-                    <!-- <a *ngIf="isCurrentConsultant(main_member) || isParlour()" class="btn btn-md btn-dark m-2" (click)="navigateToPaymentForm(main_member)">Pay now</a>
-                    <a *ngIf="!isCurrentConsultant(main_member) && isConsultant()" id="payNow" class="btn btn-md btn-dark m-2" (click)="setMainmemberOtherConsultant(main_member)">Pay now</a> -->
-                    <!-- <dialog-elements-example></dialog-elements-example> -->
-                    <!-- <button class="btn btn-md btn-dark" (click)="confirmDeleteApplicant(main_member)" *ngIf="isCurrentConsultant(main_member) || isParlour()">Delete</button>
-                    <button class="btn btn-md btn-dark"  *ngIf="!isCurrentConsultant(main_member) && isConsultant()" [disabled]="true">Delete</button> -->
                     <button class="btn btn-md btn-dark" style="display: none;" id="deleteApplicant" data-bs-toggle="modal" data-bs-target="#confirmDeleteApplicantModal"></button>
                     <button class="m-2" style="background-color: #fff; border: none;" *ngIf="main_member.age_limit_exceeded && !main_member.age_limit_exception" class="tooltip-test" title="This member exceeds the age limit set on current plan" (click)="ageLimitException(main_member)">
                       <span class="material-icons"  style="font-size:30px;color:red;">
