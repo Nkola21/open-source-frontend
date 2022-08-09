@@ -171,7 +171,7 @@ export class ExtendedMemberArchivedListComponent implements OnInit {
       .subscribe(
         (extended_members: Array<any>) => {
           this.extended_members = extended_members;
-          this.configureExtendedMembers(extended_members.reverse());
+          this.configureExtendedMembers(extended_members);
           this.loadingState = 'complete';
         },
         error => {
@@ -194,7 +194,7 @@ export class ExtendedMemberArchivedListComponent implements OnInit {
   }
 
   navigateToExtendedMemberForm(extended_member: any) {
-    this.router.navigate(['main-memebrs', this.applicant_id, 'extended-members', extended_member.id,'form']);
+    this.router.navigate(['main-members', this.applicant_id, 'extended-members', extended_member.id,'form']);
   }
 
   navigateToExtendedMemberAddForm() {
@@ -210,7 +210,7 @@ export class ExtendedMemberArchivedListComponent implements OnInit {
           this.status = null;
           this.searchField = formValue["searchField"];
           this.extended_members = extended_members;
-          this.configureExtendedMembers(extended_members.reverse());
+          this.configureExtendedMembers(extended_members);
           this.loadingState = 'complete';
         },
         error => {
@@ -242,7 +242,7 @@ export class ExtendedMemberArchivedListComponent implements OnInit {
         (extended_members: Array<any>) => {
           if (extended_members) {
             this.extended_members = extended_members;
-            this.configureExtendedMembers(extended_members.reverse());
+            this.configureExtendedMembers(extended_members);
             this.loadingState = 'complete';
           }
         },
@@ -272,7 +272,7 @@ export class ExtendedMemberArchivedListComponent implements OnInit {
               return val;
             }
           });
-          this.configureExtendedMembers(this.extended_members.reverse());
+          this.configureExtendedMembers(this.extended_members);
           this.toastr.success('Applicant has been deleted!', 'Success');
         },
         error => {
@@ -290,7 +290,7 @@ export class ExtendedMemberArchivedListComponent implements OnInit {
               return val;
             }
           });
-          this.configureExtendedMembers(this.extended_members.reverse());
+          this.configureExtendedMembers(this.extended_members);
           this.toastr.success('Applicant has been restored!', 'Success');
           this.changeDetectorRefs.detectChanges();
         },

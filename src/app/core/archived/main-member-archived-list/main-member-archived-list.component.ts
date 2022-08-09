@@ -105,6 +105,8 @@ export class MainMemberArchivedListComponent implements OnInit {
   permission: any
   parlour_id: any
   user: any;
+  total_count = 0;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild("dataBlock") block: ElementRef;
 
@@ -127,7 +129,8 @@ export class MainMemberArchivedListComponent implements OnInit {
 
     this.initSearchForm(this.searchField);
     this.initWaitingPeriodForm(this.waiting_period);
-    this.initMainMembers(this.user.id)
+    this.initMainMembers(this.user.id);
+    this.totalCount();
   }
 
   isParlour() {
@@ -155,6 +158,18 @@ export class MainMemberArchivedListComponent implements OnInit {
     this.waitingPeriodForm = this.waitingPeriodFormBuilder.buildForm(waitingPeriodFields);
   }
 
+  totalCount() {
+    this.openService.getUrl(`parlours/${this.parlour_id}/main-members/actions/count_archived?permission=${this.permission}&user_id=${this.user.id}`)
+      .subscribe(
+        (count: any) => {
+          this.total_count = count["count"];
+        },
+      error => {
+          let err = error['error'];
+          this.toastr.error(err['description'], error['title'], {timeOut: 3000});
+      });
+  }
+
   initMainMembers(id) {
     this.main_members = [];
     const permission = this.permission;
@@ -170,7 +185,7 @@ export class MainMemberArchivedListComponent implements OnInit {
       .subscribe(
         (main_members: Array<any>) => {
           this.main_members = main_members;
-          this.configureMainMembers(main_members.reverse());
+          this.configureMainMembers(main_members);
           this.loadingState = 'complete';
         },
         error => {
@@ -222,7 +237,7 @@ export class MainMemberArchivedListComponent implements OnInit {
               return val;
             }
           });
-          this.configureMainMembers(this.main_members.reverse());
+          this.configureMainMembers(this.main_members);
           this.toastr.success('Applicant has been restored!', 'Success');
           this.changeDetectorRefs.detectChanges();
         },
@@ -246,7 +261,7 @@ export class MainMemberArchivedListComponent implements OnInit {
               return val;
             }
           });
-          this.configureMainMembers(this.main_members.reverse());
+          this.configureMainMembers(this.main_members);
           this.toastr.success('Applicant has been deleted!', 'Success');
         },
         error => {
@@ -276,7 +291,7 @@ export class MainMemberArchivedListComponent implements OnInit {
         (main_members: Array<any>) => {
           this.status = status;
           this.main_members = main_members;
-          this.configureMainMembers(main_members.reverse());
+          this.configureMainMembers(main_members);
           this.loadingState = 'complete';
         },
         error => {
@@ -294,7 +309,7 @@ export class MainMemberArchivedListComponent implements OnInit {
           this.status = null;
           this.searchField = formValue["searchField"];
           this.main_members = main_members;
-          this.configureMainMembers(main_members.reverse());
+          this.configureMainMembers(main_members);
           this.loadingState = 'complete';
         },
         error => {

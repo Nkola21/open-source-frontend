@@ -132,7 +132,9 @@ export class NotificationsComponent implements OnInit  {
     let collection = document.getElementsByClassName("form-check-input");
 
     for (let i = 0; i < consultants.length; i++) {
-      if(collection[i] != undefined && collection[i].id != undefined && collection[i].id == "all") {
+      if(collection[i] != undefined && collection[i].id != undefined && consultants[i] =="all") {    
+        let npt = <HTMLInputElement>document.getElementById("all");
+        npt.checked = true;
       }else if (collection[i] != undefined && collection[i].id != undefined && ids.includes(parseInt(collection[i].id))) {
         (<HTMLInputElement>collection[i]).checked = true;
       }
@@ -144,7 +146,7 @@ export class NotificationsComponent implements OnInit  {
     let tag = document.getElementById("emailList");
     var entry = document.createElement('li');
     entry.appendChild(document.createTextNode(this.email));
-    
+
     for (let recepient of recipient_list) {
       let entry = document.createElement('li');
       entry.appendChild(document.createTextNode(recepient));
@@ -179,7 +181,6 @@ export class NotificationsComponent implements OnInit  {
     }
 
     if (this.notification) {
-
       this.openService.put(`notifications/${this.notification.id}/edit_notifications`, {"recipients": this.recipients, "days": this.days_selected, "consultants": this.notify_consultants})
         .subscribe(
           (result: any) => {

@@ -125,6 +125,7 @@
                     <button class="btn btn-md btn-dark" style="display: none;" id="restoreExtendedMemberModalBtn" data-bs-toggle="modal" data-bs-target="#restoreExtendedMemberModal"></button>
                     <button class="btn btn-md btn-dark m-2" (click)="confirmDeleteMember(extended_member)">Delete</button>
                     <button class="btn btn-md btn-dark m-2" (click)="confirmPromoteMember(extended_member)" *ngIf="canPromote(extended_member)">Promote</button>
+                    <a class="btn btn-md btn-dark m-2" (click)="navigateToExtendedMemberForm(extended_member)">Edit</a>
                     <button class="btn btn-md btn-dark" style="display: none;" id="deleteMember" data-bs-toggle="modal" data-bs-target="#confirmDeleteMemberModal"></button>
                     <button class="btn btn-md btn-dark" style="display: none;" id="promoteMember" data-bs-toggle="modal" data-bs-target="#promoteToMainMemberMemberModal"></button>
                       <img class="align-middle m-2" src="{{openService.getClientUrl()}}/assets/images/coffin_image.jpeg" height="40" width="40" alt="Deceased image" *ngIf="extended_member.is_deceased" />

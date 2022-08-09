@@ -15,7 +15,7 @@ const MainMemberArchivedRouting: ModuleWithProviders<MainMembersArchivedModule> 
     pathMatch: 'full',
     component: MainMemberArchivedListComponent,
     canActivate: []
-  },
+  }
 
 ]);
 
@@ -29,7 +29,7 @@ const MainMemberArchivedRouting: ModuleWithProviders<MainMembersArchivedModule> 
     ReactiveFormsModule
   ],
   declarations: [
-    MainMemberArchivedListComponent,
+    MainMemberArchivedListComponent
   ],
   exports: [
     MainMemberArchivedListComponent,
