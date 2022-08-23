@@ -329,17 +329,18 @@ export class MainMemberListComponent implements OnInit {
   }
 
   getByConsultant() {
-    let queryString= '';
+    let queryString = ``;
     const formValue = this.performanceForm.value;
+    this.branch = null;
     if (this.status) {
-      queryString = `status=${this.status}`
+      queryString = `&status=${this.status}`
     }
 
     if (this.searchField) {
       queryString = queryString ? `${queryString}&search_string=${this.searchField}` : `search_string=${this.searchField}`;
     }
 
-    let filter = `consultant=${this.consultant.id}`
+    let filter = `consultant_id=${this.consultant.id}`
     if (formValue['start_date']) {
       const start_date = formValue['start_date'];
       filter = `${filter}&start_date=${start_date}`;
@@ -385,11 +386,11 @@ export class MainMemberListComponent implements OnInit {
   }
 
   getByBranch(branch: any) {
-    let queryString: string;
+    let queryString = ``;
     const formValue = this.performanceForm.value;
-
+    this.consultant = null;
     if (this.status) {
-      queryString = `status=${this.status}`
+      queryString = `&status=${this.status}`
     }
 
     if (this.searchField) {
@@ -632,7 +633,6 @@ export class MainMemberListComponent implements OnInit {
     this.openService.getUrl(`${this.permission.toLowerCase()}s/${this.user.id}/main-members/all?status=${status}`)
       .subscribe(
         (main_members: Array<any>) => {
-          console.log(main_members.length);
           this.status = status;
           this.searchField = null;
           this.main_members = main_members;
@@ -699,6 +699,12 @@ export class MainMemberListComponent implements OnInit {
 
     if (this.status) {
       queryString = `${queryString}&status=${this.status}`
+    }
+
+    if (this.consultant) {
+      queryString = `${queryString}&consultant_id=${this.consultant.id}`
+    }else if (this.branch) {
+      queryString = `${queryString}&branch=${this.branch}`
     }
 
     return `${this.openService.getBaseUrl()}/actions/${this.user.id}/export_to_excel?${queryString}`
