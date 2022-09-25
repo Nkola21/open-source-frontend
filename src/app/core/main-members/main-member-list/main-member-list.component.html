@@ -325,11 +325,11 @@
             You are about to make a payment for a member created by:
           </p>
           <p class="mb-0 ml-3 fs-5" >
-            <strong>Consultant:</strong> {{ main_member.consultant.first_name | titlecase }} {{ main_member.consultant.last_name | titlecase }}
+            <strong>Consultant:</strong> {{ main_member.applicant.consultant.first_name | titlecase }} {{ main_member.applicant.consultant.last_name | titlecase }}
             <br />
-            <strong>Branch:</strong> {{ main_member.consultant.branch | titlecase }}
+            <strong>Branch:</strong> {{ main_member.applicant.consultant.branch | titlecase }}
             <br />
-            <strong>email:</strong> {{ main_member.consultant.email }}
+            <strong>email:</strong> {{ main_member.applicant.consultant.email }}
           </p>
         </div>
         <br />
