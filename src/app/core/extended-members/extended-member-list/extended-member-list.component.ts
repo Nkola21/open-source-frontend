@@ -129,6 +129,7 @@ export class ExtendedMemberListComponent implements OnInit {
       (params) => {
         const id = +params['id'];
         this.applicant_id = id;
+        this.checkExtendedMembersAgeLimit(id);
         this.initExtendedMembers(id);
       }
     )
@@ -155,9 +156,28 @@ export class ExtendedMemberListComponent implements OnInit {
     this.dataSource = new ExtendedMemberDataSource(this.extended_members, this.page);
   }
 
+  checkExtendedMembersAgeLimit(id) {
+    this.extended_members = [];
+    this.page = {
+      'pageSize': 5,
+      'pageIndex': 0,
+    };
+
+    this.loadingState = 'loading';
+    this.dataSource = new ExtendedMemberDataSource([], this.page);
+
+    this.openService.getUrl(`applicants/${id}/extended-members/check-age-limit`)
+      .subscribe(
+        (extended_members: any) => {
+
+        },
+        error => {
+          console.log(error);
+        });
+  }
+
   initExtendedMembers(id) {
     this.extended_members = [];
-    const permission = this.permission;
     this.page = {
       'pageSize': 5,
       'pageIndex': 0,
